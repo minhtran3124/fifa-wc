@@ -1,0 +1,69 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="FIFA World Cup 2026 matchball">
+  <defs>
+    <!-- ink squircle backdrop with a faint pitch glow in the corner -->
+    <radialGradient id="bg" cx="78%" cy="14%" r="95%">
+      <stop offset="0%" stop-color="#16224a"/>
+      <stop offset="48%" stop-color="#0d1430"/>
+      <stop offset="100%" stop-color="#080c1c"/>
+    </radialGradient>
+    <!-- gold sheen for the panels -->
+    <linearGradient id="gold" x1="22%" y1="8%" x2="80%" y2="96%">
+      <stop offset="0%" stop-color="#ffe49a"/>
+      <stop offset="42%" stop-color="#f5b50a"/>
+      <stop offset="100%" stop-color="#c4860a"/>
+    </linearGradient>
+    <!-- the ball body: subtle top-lit sphere -->
+    <radialGradient id="ball" cx="38%" cy="32%" r="78%">
+      <stop offset="0%" stop-color="#1c2750"/>
+      <stop offset="60%" stop-color="#111a3a"/>
+      <stop offset="100%" stop-color="#0a0f24"/>
+    </radialGradient>
+    <radialGradient id="pitch" cx="50%" cy="50%" r="50%">
+      <stop offset="62%" stop-color="#0a7d3c" stop-opacity="0"/>
+      <stop offset="86%" stop-color="#11b85a" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#0a7d3c" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="ballClip"><circle cx="50" cy="50" r="38"/></clipPath>
+  </defs>
+
+  <!-- backdrop -->
+  <rect x="2" y="2" width="96" height="96" rx="24" fill="url(#bg)"/>
+  <rect x="2.75" y="2.75" width="94.5" height="94.5" rx="23.5" fill="none" stroke="#ffffff" stroke-opacity="0.06"/>
+
+  <!-- pitch-green halo behind the ball -->
+  <circle cx="50" cy="50" r="44" fill="url(#pitch)"/>
+
+  <!-- ball body -->
+  <circle cx="50" cy="50" r="38" fill="url(#ball)"/>
+
+  <!-- gold panels + seams, clipped to the sphere -->
+  <g clip-path="url(#ballClip)">
+    <g stroke="url(#gold)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" fill="url(#gold)">
+      <!-- seams radiating from the center panel -->
+      <line x1="50.00" y1="38.00" x2="50.00" y2="12.00"/>
+      <line x1="61.41" y1="46.29" x2="86.14" y2="38.26"/>
+      <line x1="57.05" y1="59.71" x2="72.34" y2="80.74"/>
+      <line x1="42.95" y1="59.71" x2="27.66" y2="80.74"/>
+      <line x1="38.59" y1="46.29" x2="13.86" y2="38.26"/>
+      <!-- center pentagon -->
+      <path d="M50.00,38.00L61.41,46.29L57.05,59.71L42.95,59.71L38.59,46.29Z"/>
+      <!-- rim pentagons (clipped to the sphere edge) -->
+      <path d="M75.27,15.21L78.54,25.27L69.98,31.49L61.43,25.27L64.69,15.21Z"/>
+      <path d="M90.90,63.29L82.34,69.51L73.78,63.29L77.05,53.23L87.63,53.23Z"/>
+      <path d="M50.00,93.00L41.44,86.78L44.71,76.72L55.29,76.72L58.56,86.78Z"/>
+      <path d="M9.10,63.29L12.37,53.23L22.95,53.23L26.22,63.29L17.66,69.51Z"/>
+      <path d="M24.73,15.21L35.31,15.21L38.57,25.27L30.02,31.49L21.46,25.27Z"/>
+    </g>
+    <!-- specular highlight -->
+    <ellipse cx="38" cy="32" rx="15" ry="10" fill="#ffffff" fill-opacity="0.10"/>
+  </g>
+
+  <!-- crisp gold rim -->
+  <circle cx="50" cy="50" r="38" fill="none" stroke="url(#gold)" stroke-width="1.6" stroke-opacity="0.85"/>
+
+  <!-- championship mark: a tiny "26" tucked into the lower-right corner -->
+  <g transform="translate(72,73)">
+    <rect x="-13" y="-9" width="26" height="18" rx="6" fill="#0a7d3c" stroke="url(#gold)" stroke-width="1.2"/>
+    <text x="0" y="0.5" text-anchor="middle" dominant-baseline="central" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Arial, sans-serif" font-size="12" font-weight="800" fill="#ffe49a" letter-spacing="-0.5">26</text>
+  </g>
+</svg>
