@@ -38,7 +38,7 @@ export default function V2Layout({ children }: { children: ReactNode }) {
           <p className="al-foot-mascots">🫎 Maple · 🐆 Zayu · 🦅 Clutch — your World Cup 26 hosts</p>
           <p>
             Unofficial fan project · Sticker-album concept (v2) · FIFA World Cup 2026 ·
-            USA · Canada · Mexico · <Link href="/">Back to the classic site →</Link>
+            USA · Canada · Mexico
           </p>
         </div>
       </footer>

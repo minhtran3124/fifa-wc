@@ -28,7 +28,6 @@ export default function AlbumNav() {
           {l.label}
         </Link>
       ))}
-      <Link href="/" className="al-tab classic">Classic site</Link>
     </nav>
   );
 }
