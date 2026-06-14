@@ -26,7 +26,7 @@ export default function RefreshButton({
 
   function handleRefresh() {
     // Bust the cached WC data (revalidateTag "wc"), then re-render so the
-    // server re-fetches fresh scores. Cached data otherwise lives ~5 min.
+    // server re-fetches fresh scores. Cached data otherwise lives ~15 min.
     startTransition(async () => {
       await refreshWcData();
       router.refresh();

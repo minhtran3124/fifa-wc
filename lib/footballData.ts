@@ -8,7 +8,7 @@ import { ALL_MATCHES } from "./matches";
  *   FOOTBALL_DATA_TOKEN   (sent as the X-Auth-Token header)
  *
  * Returns real fixtures *and results*. Cached in the Next.js Data Cache (tag
- * "wc") and revalidated every 5 minutes in the background, so visitor traffic
+ * "wc") and revalidated every 15 minutes in the background, so visitor traffic
  * is decoupled from the upstream API rate limit. The Refresh button busts the
  * tag (revalidateTag) for an immediate update. On any failure it falls back to
  * the bundled dataset, so the site always renders.
@@ -106,9 +106,9 @@ export async function getWcData(): Promise<WcData> {
   try {
     const res = await fetch(MATCHES_URL, {
       headers: { "X-Auth-Token": token },
-      // Shared Data Cache, revalidated every 5 min in the background; the
+      // Shared Data Cache, revalidated every 15 min in the background; the
       // Refresh button busts tag "wc" (revalidateTag) for an immediate update.
-      next: { revalidate: 300, tags: ["wc"] },
+      next: { revalidate: 900, tags: ["wc"] },
     });
     if (!res.ok) return fallback(`http-${res.status}`);
     const json = await res.json();
@@ -148,7 +148,7 @@ export async function getWcScorers(): Promise<PlayerStat[]> {
   try {
     const res = await fetch(SCORERS_URL, {
       headers: { "X-Auth-Token": token },
-      next: { revalidate: 300, tags: ["wc"] },
+      next: { revalidate: 900, tags: ["wc"] },
     });
     if (!res.ok) return [];
     const json = await res.json();
