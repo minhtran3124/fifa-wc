@@ -40,8 +40,6 @@ function Leaderboard({ title, metric, players }: { title: string; metric: "goals
   );
 }
 
-export const dynamic = "force-dynamic";
-
 export default async function AlbumStats() {
   const [{ matches, source, fetchedAt }, scorers] = await Promise.all([
     getWcData(),

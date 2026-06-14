@@ -7,10 +7,11 @@ import { ALL_MATCHES } from "./matches";
  * Token is read from the environment, never hardcoded:
  *   FOOTBALL_DATA_TOKEN   (sent as the X-Auth-Token header)
  *
- * Returns real fixtures *and results*. Fetched with `cache: "no-store"` so the
- * data is never stale; pages are force-dynamic, so clicking Refresh
- * (router.refresh) always pulls the latest scores. No background polling.
- * On any failure it falls back to the bundled dataset, so the site always renders.
+ * Returns real fixtures *and results*. Cached in the Next.js Data Cache (tag
+ * "wc") and revalidated every 5 minutes in the background, so visitor traffic
+ * is decoupled from the upstream API rate limit. The Refresh button busts the
+ * tag (revalidateTag) for an immediate update. On any failure it falls back to
+ * the bundled dataset, so the site always renders.
  */
 
 const MATCHES_URL = "https://api.football-data.org/v4/competitions/WC/matches";
@@ -105,9 +106,9 @@ export async function getWcData(): Promise<WcData> {
   try {
     const res = await fetch(MATCHES_URL, {
       headers: { "X-Auth-Token": token },
-      // Always fetch fresh — no stale cache to get stuck on. Pages are
-      // force-dynamic, so Refresh (router.refresh) re-runs this with live data.
-      cache: "no-store",
+      // Shared Data Cache, revalidated every 5 min in the background; the
+      // Refresh button busts tag "wc" (revalidateTag) for an immediate update.
+      next: { revalidate: 300, tags: ["wc"] },
     });
     if (!res.ok) return fallback(`http-${res.status}`);
     const json = await res.json();
@@ -147,7 +148,7 @@ export async function getWcScorers(): Promise<PlayerStat[]> {
   try {
     const res = await fetch(SCORERS_URL, {
       headers: { "X-Auth-Token": token },
-      cache: "no-store",
+      next: { revalidate: 300, tags: ["wc"] },
     });
     if (!res.ok) return [];
     const json = await res.json();

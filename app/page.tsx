@@ -27,8 +27,6 @@ const CONFEDERATIONS = [
   { code: "OFC", region: "Oceania" },
 ] as const;
 
-export const dynamic = "force-dynamic";
-
 export default async function Home() {
   const { matches, source, fetchedAt } = await getWcData();
   const stats = tournamentStats(matches);

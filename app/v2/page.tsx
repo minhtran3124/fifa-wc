@@ -7,8 +7,6 @@ import { MASCOTS } from "@/lib/mascots";
 import MatchSticker, { side, STAGE_LABEL } from "./MatchSticker";
 import AlbumRefresh from "./AlbumRefresh";
 
-export const dynamic = "force-dynamic";
-
 // festive sticker-tape band (decorative)
 const PARADE = ["⚽", "🏆", "🥅", "🎉", "🎺", "🔥", "🌎", "🙌", "🥇", "📣", "🇺🇸", "🇨🇦", "🇲🇽", "🫎", "🐆", "🦅"];
 

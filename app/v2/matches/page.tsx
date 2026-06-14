@@ -7,8 +7,6 @@ import AlbumRefresh from "../AlbumRefresh";
 
 export const metadata: Metadata = { title: "Matches" };
 
-export const dynamic = "force-dynamic";
-
 export default async function AlbumMatches() {
   const { matches, source, fetchedAt } = await getWcData();
   const days = matchesByDay(matches);

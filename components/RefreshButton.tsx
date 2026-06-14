@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { refreshWcData } from "@/app/actions";
 
 export default function RefreshButton({
   fetchedAt,
@@ -24,9 +25,12 @@ export default function RefreshButton({
     : null;
 
   function handleRefresh() {
-    // Pages are force-dynamic + no-store, so a router refresh re-runs the
-    // server fetch and pulls the latest scores. No cache to invalidate.
-    startTransition(() => router.refresh());
+    // Bust the cached WC data (revalidateTag "wc"), then re-render so the
+    // server re-fetches fresh scores. Cached data otherwise lives ~5 min.
+    startTransition(async () => {
+      await refreshWcData();
+      router.refresh();
+    });
   }
 
   const loading = isPending;

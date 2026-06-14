@@ -66,8 +66,6 @@ function GroupCard({ group, matches }: { group: (typeof GROUPS)[number]; matches
   );
 }
 
-export const dynamic = "force-dynamic";
-
 export default async function AlbumGroups() {
   const { matches, source, fetchedAt } = await getWcData();
   return (

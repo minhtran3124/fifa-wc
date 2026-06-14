@@ -11,7 +11,6 @@ export const metadata: Metadata = {
 };
 
 // Render fresh on every request (and on Refresh) so live scores are never stale.
-export const dynamic = "force-dynamic";
 
 export default async function MatchesPage() {
   const { matches, source, fetchedAt } = await getWcData();

@@ -76,8 +76,6 @@ function LeaderboardEmpty({ title, note }: { title: string; note: string }) {
   );
 }
 
-export const dynamic = "force-dynamic";
-
 export default async function StatsPage() {
   const [{ matches, source, fetchedAt }, scorers] = await Promise.all([
     getWcData(),

@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { refreshWcData } from "@/app/actions";
 
 /** Album-styled refresh control for the v2 pages. Mirrors the classic
  *  RefreshButton: pages are force-dynamic + no-store, so router.refresh
@@ -37,7 +38,12 @@ export default function AlbumRefresh({
       {updated && <span className="al-updated">Updated {updated}</span>}
       <button
         type="button"
-        onClick={() => startTransition(() => router.refresh())}
+        onClick={() =>
+          startTransition(async () => {
+            await refreshWcData();
+            router.refresh();
+          })
+        }
         disabled={isPending}
         className="al-refresh"
       >

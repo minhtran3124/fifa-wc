@@ -40,8 +40,6 @@ export async function generateMetadata({ params }: { params: Promise<{ code: str
   return { title: team ? team.name : "Team not found" };
 }
 
-export const dynamic = "force-dynamic";
-
 export default async function AlbumTeam({ params }: { params: Promise<{ code: string }> }) {
   const { code } = await params;
   const team = getTeam(code.toLowerCase());

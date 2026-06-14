@@ -44,8 +44,6 @@ function Column({ stage, title }: { stage: Stage; title: string }) {
   );
 }
 
-export const dynamic = "force-dynamic";
-
 export default function AlbumKnockout() {
   const final = matchesByStage("final")[0];
   const third = matchesByStage("third")[0];
