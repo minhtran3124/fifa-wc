@@ -72,7 +72,13 @@ const vi: Dictionary = {
   },
   knockout: {
     title: "Nhánh loại trực tiếp",
-    sub: "32 đội, một con đường tới vinh quang. Các cặp đấu lấp đầy khi vòng bảng kết thúc — kéo ngang để theo dõi đường tới Chung kết.",
+    sub: "32 đội, một con đường tới vinh quang. Mỗi cặp đấu là một sticker — viền nét đứt khi chưa rõ đội, dán nhũ vàng và đóng dấu khi đã đá xong. Lần theo con đường xuống tới Chung kết.",
+    scribble: "Đường tới Chung kết",
+    ties: "cặp",
+    collected: "đã đá",
+    stickersDone: "sticker đã sưu tầm",
+    finalScribble: "Chung kết!",
+    pens: "Pen",
   },
   stats: {
     title: "Thống kê giải đấu",

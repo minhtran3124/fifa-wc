@@ -342,21 +342,272 @@
 .al-group-card { background: var(--al-paper2); border: 1px solid var(--al-line); border-radius: 16px; padding: 16px; }
 .al-group-card .gc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
 
-/* ---------- knockout bracket ---------- */
-.al-bracket { display: flex; gap: 18px; overflow-x: auto; padding-bottom: 14px; }
-.al-bracket::-webkit-scrollbar { height: 8px; }
-.al-col { display: flex; flex-direction: column; gap: 12px; min-width: 212px; }
-.al-col > h3 { font-family: var(--font-anton); font-weight: 400; text-transform: uppercase; font-size: 13px; letter-spacing: 0.05em; color: var(--al-ink-soft); text-align: center; margin: 0; }
-.al-col.final-col { justify-content: center; }
-.al-col > h3 .ct { color: var(--al-line); }
-.al-tie { background: var(--al-card); border: 1px solid var(--al-line); border-radius: 12px; overflow: hidden; }
-.al-tie.final { border: 5px solid transparent; background-image: linear-gradient(var(--al-card), var(--al-card)), var(--al-foil); background-origin: border-box; background-clip: padding-box, border-box; box-shadow: 0 10px 22px rgba(43, 33, 20, 0.16); }
-.al-tie .slot { display: flex; align-items: center; gap: 8px; padding: 9px 12px; font-size: 13px; font-weight: 700; }
-.al-tie .slot .fl { font-size: 17px; }
-.al-tie .slot.tbd { color: var(--al-ink-soft); font-weight: 600; }
-.al-tie .slot + .slot { border-top: 1px solid var(--al-line); }
-.al-tie .tfoot { background: rgba(43, 33, 20, 0.05); padding: 6px 12px; font-size: 10.5px; color: var(--al-ink-soft); }
-.al-final-ttl { font-family: var(--font-anton); text-transform: uppercase; font-size: 16px; text-align: center; color: var(--al-red); margin-bottom: 8px; }
+/* ---------- knockout: "Road to the Final" ---------- */
+/* progress strip — how much of the bracket is filled in */
+.al-ko-progress { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: clamp(20px, 4vw, 30px); }
+.al-ko-progress .scribble { font-family: var(--font-caveat), cursive; font-size: clamp(20px, 3.4vw, 26px); color: var(--al-red); line-height: 1; transform: rotate(-1.5deg); }
+.al-ko-progress .al-meter { width: clamp(120px, 30vw, 200px); }
+.al-ko-progress .ct { font-weight: 800; font-size: 12.5px; color: var(--al-ink-soft); font-variant-numeric: tabular-nums; }
+
+/* the journey: each stage is a node on a vertical spine + its ties */
+.al-road { position: relative; }
+.al-stage { display: grid; grid-template-columns: 40px 1fr; column-gap: clamp(12px, 2.5vw, 20px); padding-bottom: clamp(26px, 5vw, 40px); }
+.al-stage:last-child { padding-bottom: 0; }
+
+/* spine rail + node */
+.al-rail { position: relative; }
+.al-rail::before {
+  content: ""; position: absolute; left: 50%; top: 6px; bottom: -40px; width: 3px;
+  transform: translateX(-50%);
+  background-image: linear-gradient(var(--al-line) 60%, transparent 0);
+  background-size: 3px 11px; background-repeat: repeat-y;
+}
+.al-stage:last-child .al-rail::before { display: none; }
+.al-node {
+  position: relative; z-index: 1; display: grid; place-items: center;
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--al-paper2); border: 2px dashed var(--al-line);
+  font-family: var(--font-anton), sans-serif; font-size: 16px; color: var(--al-ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.al-node.full {
+  border: 4px solid transparent; color: var(--al-ink);
+  background-image: linear-gradient(var(--al-card), var(--al-card)), var(--al-foil);
+  background-origin: border-box; background-clip: padding-box, border-box;
+  box-shadow: 0 5px 12px rgba(43, 33, 20, 0.2);
+}
+.al-node.trophy { width: 46px; height: 46px; font-size: 22px; border-style: solid; border-color: var(--al-red); background: var(--al-card); }
+
+/* stage heading */
+.al-stage-body { min-width: 0; }
+.al-stage-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin: 4px 0 14px; }
+.al-stage-head h2 { font-family: var(--font-anton), sans-serif; font-weight: 400; text-transform: uppercase; font-size: clamp(1.4rem, 3.2vw, 2rem); line-height: 1; letter-spacing: 0.01em; margin: 0; }
+.al-stage-ct { font-weight: 700; font-size: 12.5px; color: var(--al-ink-soft); }
+
+/* ties grid */
+.al-ties { display: grid; grid-template-columns: repeat(auto-fill, minmax(216px, 1fr)); gap: 12px; }
+
+/* a single tie sticker */
+.al-ko-tie {
+  position: relative; display: block; text-decoration: none; color: inherit;
+  background: var(--al-card); border: 1px solid var(--al-line); border-radius: 13px;
+  padding: 11px 13px 0; overflow: hidden;
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.18s, border-color 0.18s;
+}
+.al-ko-tie:hover { transform: translateY(-2px); box-shadow: 0 12px 22px rgba(43, 33, 20, 0.16); border-color: var(--al-red); }
+.al-ko-tie.todo { border-style: dashed; background: transparent; }
+.al-ko-tie.todo .fl { filter: grayscale(1); opacity: 0.45; }
+.al-ko-tie.todo .nm { color: var(--al-ink-soft); font-weight: 600; }
+.al-ko-tie.done {
+  border: 4px solid transparent;
+  background-image: linear-gradient(var(--al-card), var(--al-card)), var(--al-foil);
+  background-origin: border-box; background-clip: padding-box, border-box;
+  box-shadow: 0 6px 14px rgba(43, 33, 20, 0.14);
+}
+
+/* collected check + live flag */
+.al-ko-got {
+  position: absolute; top: -7px; right: -6px; z-index: 2;
+  background: var(--al-green); color: #fff;
+  font-family: var(--font-caveat), cursive; font-size: 15px; line-height: 1;
+  padding: 4px 8px; border-radius: 8px; transform: rotate(-4deg);
+  box-shadow: 2px 2px 0 rgba(43, 33, 20, 0.22);
+}
+.al-ko-livetag {
+  position: absolute; top: 8px; right: 10px; z-index: 2;
+  display: inline-flex; align-items: center; gap: 5px;
+  font-weight: 800; font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--al-red);
+}
+.al-ko-livetag .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--al-red); }
+
+/* team rows */
+.al-ko-row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 9px; padding: 6px 0; }
+.al-ko-row .fl { font-size: 19px; line-height: 1; }
+.al-ko-row .nm { font-weight: 700; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.al-ko-row .sc { font-family: var(--font-anton), sans-serif; font-size: 19px; line-height: 1; color: var(--al-ink-soft); font-variant-numeric: tabular-nums; }
+.al-ko-row .sc sup { font-size: 0.55em; color: var(--al-ink-soft); margin-left: 1px; }
+.al-ko-row.win .nm { color: var(--al-ink); }
+.al-ko-row.win .sc { color: var(--al-red); }
+.al-ko-row.win .sc sup { color: var(--al-red); }
+.al-ko-row.lose .nm, .al-ko-row.lose .sc { color: var(--al-ink-soft); opacity: 0.7; }
+
+.al-ko-foot { margin: 6px -13px 0; padding: 7px 13px; border-top: 1px solid var(--al-line); display: flex; justify-content: space-between; gap: 8px; font-size: 10.5px; color: var(--al-ink-soft); }
+.al-ko-tie.todo .al-ko-foot { border-top-style: dashed; }
+.al-ko-foot .city { text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* the Final — foil showpiece */
+.al-ko-final {
+  display: block; text-decoration: none; color: inherit; position: relative;
+  max-width: 520px; background: var(--al-card);
+  border: 6px solid transparent; border-radius: 18px; padding: 22px 24px 18px;
+  background-image: linear-gradient(var(--al-card), var(--al-card)), var(--al-foil);
+  background-origin: border-box; background-clip: padding-box, border-box;
+  box-shadow: 0 16px 34px rgba(43, 33, 20, 0.2);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s;
+}
+.al-ko-final:hover { transform: translateY(-3px); box-shadow: 0 22px 42px rgba(43, 33, 20, 0.26); }
+.al-ko-final.todo { background: var(--al-card); }
+.al-ko-final.todo .fl { filter: grayscale(1); opacity: 0.5; }
+.al-ko-final .rib {
+  position: absolute; top: -13px; left: 20px; background: var(--al-red); color: #fff;
+  font-family: var(--font-caveat), cursive; font-size: 19px; line-height: 1;
+  padding: 5px 12px; border-radius: 8px; transform: rotate(-3deg);
+  box-shadow: 2px 2px 0 rgba(43, 33, 20, 0.25);
+}
+.al-ko-final-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 6px; }
+.al-ko-final-row .sd { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; flex: 1; min-width: 0; }
+.al-ko-final-row .sd .fl { font-size: clamp(42px, 9vw, 56px); line-height: 1; }
+.al-ko-final-row .sd .nm { font-weight: 800; font-size: 13.5px; }
+.al-ko-final-row .sd.win .nm { color: var(--al-red); }
+.al-ko-final-row .sd.lose { opacity: 0.62; }
+.al-ko-final-row .mid { display: flex; flex-direction: column; align-items: center; gap: 5px; flex-shrink: 0; }
+.al-ko-final-row .mid .sc { font-family: var(--font-anton), sans-serif; font-size: clamp(32px, 8vw, 44px); line-height: 1; font-variant-numeric: tabular-nums; }
+.al-ko-final-row .mid .sc i { color: var(--al-line); font-style: normal; margin: 0 5px; }
+.al-ko-final-row .mid .vs { font-family: var(--font-anton), sans-serif; font-size: 24px; color: var(--al-line); }
+.al-ko-final-row .mid .pens { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em; color: var(--al-ink-soft); }
+.al-ko-final-meta { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--al-line); font-size: 12px; color: var(--al-ink-soft); text-align: center; }
+
+/* third-place — bronze coda under the Final */
+.al-ko-third { margin-top: 20px; max-width: 360px; }
+.al-ko-third-ttl { display: block; font-family: var(--font-anton), sans-serif; font-weight: 400; text-transform: uppercase; font-size: 1rem; color: var(--al-ink-soft); margin-bottom: 8px; }
+
+@media (max-width: 480px) {
+  .al-stage { grid-template-columns: 30px 1fr; column-gap: 12px; }
+  .al-node { width: 30px; height: 30px; font-size: 13px; }
+  .al-node.trophy { width: 36px; height: 36px; font-size: 18px; }
+  .al-ties { grid-template-columns: 1fr; }
+}
+
+/* ---------- knockout: wide vs narrow switch ---------- */
+.al-ko-wide { display: none; }
+@media (min-width: 1000px) {
+  .al-ko-wide { display: block; }
+  .al-ko-narrow { display: none; }
+}
+
+/* ---------- mirrored wall-chart bracket ---------- */
+.al-wc {
+  --cw: 13px;            /* connector arm length; column gap is 2×cw */
+  --final-w: 196px;
+  display: flex; align-items: stretch; gap: calc(var(--cw) * 2);
+  overflow-x: auto; padding: 6px 2px 18px; min-height: 560px;
+}
+.al-wc-round { flex: 1 1 0; min-width: 84px; display: flex; flex-direction: column; }
+.al-wc-round.final { flex: 0 0 var(--final-w); }
+.al-wc-round > .hd {
+  height: 18px; margin-bottom: 12px; text-align: center;
+  font-family: var(--font-anton), sans-serif; font-weight: 400; text-transform: uppercase;
+  font-size: 12px; letter-spacing: 0.05em; color: var(--al-ink-soft);
+}
+.al-wc-matches { flex: 1; display: flex; flex-direction: column; }
+.al-wc-match { flex: 1 1 0; display: flex; align-items: center; position: relative; }
+
+/* compact tie card */
+.al-wc-card {
+  position: relative; display: block; width: 100%; text-decoration: none; color: inherit;
+  background: var(--al-card); border: 1px solid var(--al-line); border-radius: 8px;
+  padding: 3px 7px; transition: transform 0.16s, box-shadow 0.16s, border-color 0.16s;
+}
+.al-wc-card:hover { border-color: var(--al-red); box-shadow: 0 6px 14px rgba(43, 33, 20, 0.16); transform: translateY(-1px); }
+.al-wc-card.todo { border-style: dashed; background: transparent; }
+.al-wc-card.todo .fl { filter: grayscale(1); opacity: 0.4; }
+.al-wc-card.todo .cd { color: var(--al-ink-soft); font-weight: 600; }
+.al-wc-card.done {
+  border: 3px solid transparent;
+  background-image: linear-gradient(var(--al-card), var(--al-card)), var(--al-foil);
+  background-origin: border-box; background-clip: padding-box, border-box;
+  box-shadow: 0 4px 10px rgba(43, 33, 20, 0.14);
+}
+.al-wc-got {
+  position: absolute; top: -8px; right: -6px; z-index: 3;
+  background: var(--al-green); color: #fff; font-family: var(--font-caveat), cursive;
+  font-size: 12px; line-height: 1; padding: 2px 5px; border-radius: 6px; transform: rotate(-4deg);
+  box-shadow: 1px 1px 0 rgba(43, 33, 20, 0.22);
+}
+.al-wc-live { position: absolute; top: 4px; right: 4px; width: 7px; height: 7px; border-radius: 50%; background: var(--al-red); z-index: 3; }
+.al-wc-row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 6px; padding: 4px 0; }
+.al-wc-row + .al-wc-row { border-top: 1px solid var(--al-line); }
+.al-wc-card.todo .al-wc-row + .al-wc-row { border-top-style: dashed; }
+.al-wc-row .fl { font-size: 14px; line-height: 1; }
+.al-wc-row .cd { font-weight: 800; font-size: 12px; letter-spacing: 0.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.al-wc-row .sc { font-family: var(--font-anton), sans-serif; font-size: 14px; line-height: 1; color: var(--al-ink-soft); font-variant-numeric: tabular-nums; }
+.al-wc-row .sc sup { font-size: 0.55em; margin-left: 1px; }
+.al-wc-row.win .cd { color: var(--al-ink); }
+.al-wc-row.win .sc, .al-wc-row.win .sc sup { color: var(--al-red); }
+.al-wc-row.lose { opacity: 0.5; }
+
+/* connectors — left half flows right, right half flows left.
+   Each card draws an elbow toward the centre; pairs meet on a vertical bus. */
+.al-wc-round.l:not(.final) .al-wc-match::after,
+.al-wc-round.r:not(.final) .al-wc-match::after {
+  content: ""; position: absolute; width: var(--cw); border: 0 solid var(--al-line);
+}
+/* left: outgoing on the right edge */
+.al-wc-round.l:not(.final) .al-wc-match::after { left: 100%; }
+.al-wc-round.l:not(.final):not(.inner) .al-wc-match:nth-child(odd)::after { top: 50%; height: 50%; border-top-width: 2px; border-right-width: 2px; }
+.al-wc-round.l:not(.final):not(.inner) .al-wc-match:nth-child(even)::after { bottom: 50%; height: 50%; border-bottom-width: 2px; border-right-width: 2px; }
+.al-wc-round.l.inner .al-wc-match::after { top: 50%; height: 0; border-top-width: 2px; }
+/* right: outgoing on the left edge */
+.al-wc-round.r:not(.final) .al-wc-match::after { right: 100%; }
+.al-wc-round.r:not(.final):not(.inner) .al-wc-match:nth-child(odd)::after { top: 50%; height: 50%; border-top-width: 2px; border-left-width: 2px; }
+.al-wc-round.r:not(.final):not(.inner) .al-wc-match:nth-child(even)::after { bottom: 50%; height: 50%; border-bottom-width: 2px; border-left-width: 2px; }
+.al-wc-round.r.inner .al-wc-match::after { top: 50%; height: 0; border-top-width: 2px; }
+/* incoming stub into every round that receives (not the outermost) */
+.al-wc-round.l:not(.outer):not(.final) .al-wc-match::before {
+  content: ""; position: absolute; right: 100%; width: var(--cw); top: 50%; border-top: 2px solid var(--al-line);
+}
+.al-wc-round.r:not(.outer):not(.final) .al-wc-match::before {
+  content: ""; position: absolute; left: 100%; width: var(--cw); top: 50%; border-top: 2px solid var(--al-line);
+}
+
+/* central FINAL showpiece */
+.al-wc-round.final .al-wc-match { align-items: center; }
+.al-wc-fcard {
+  position: relative; display: block; width: 100%; text-decoration: none; color: inherit;
+  background: var(--al-card); border: 6px solid transparent; border-radius: 16px;
+  padding: 18px 16px 14px; text-align: center;
+  background-image: linear-gradient(var(--al-card), var(--al-card)), var(--al-foil);
+  background-origin: border-box; background-clip: padding-box, border-box;
+  box-shadow: 0 14px 30px rgba(43, 33, 20, 0.22);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.al-wc-fcard:hover { transform: translateY(-2px); box-shadow: 0 20px 38px rgba(43, 33, 20, 0.28); }
+.al-wc-fcard::before, .al-wc-fcard::after { content: ""; position: absolute; width: var(--cw); top: 50%; border-top: 2px solid var(--al-line); }
+.al-wc-fcard::before { right: 100%; }
+.al-wc-fcard::after { left: 100%; }
+.al-wc-fcard .rib {
+  position: absolute; top: -13px; left: 50%; transform: translateX(-50%) rotate(-2deg);
+  background: var(--al-red); color: #fff; font-family: var(--font-caveat), cursive;
+  font-size: 17px; line-height: 1; padding: 4px 12px; border-radius: 8px; white-space: nowrap;
+  box-shadow: 2px 2px 0 rgba(43, 33, 20, 0.25);
+}
+.al-wc-fcard .trophy { font-size: 26px; line-height: 1; display: block; margin: 4px 0 6px; }
+.al-wc-frow { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.al-wc-frow .sd { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; min-width: 0; }
+.al-wc-frow .sd .fl { font-size: 34px; line-height: 1; }
+.al-wc-frow .sd .nm { font-weight: 800; font-size: 11.5px; line-height: 1.15; }
+.al-wc-frow .sd.win .nm { color: var(--al-red); }
+.al-wc-frow .sd.lose { opacity: 0.55; }
+.al-wc-frow .mid { flex-shrink: 0; }
+.al-wc-frow .mid .sc { font-family: var(--font-anton), sans-serif; font-size: 30px; line-height: 1; font-variant-numeric: tabular-nums; }
+.al-wc-frow .mid .sc i { color: var(--al-line); font-style: normal; margin: 0 3px; }
+.al-wc-frow .mid .vs { font-family: var(--font-anton), sans-serif; font-size: 20px; color: var(--al-line); }
+.al-wc-fcard .meta { margin-top: 10px; padding-top: 9px; border-top: 1px solid var(--al-line); font-size: 11px; color: var(--al-ink-soft); }
+
+/* third-place coda below the Final */
+.al-wc-third {
+  position: absolute; left: 0; right: 0; top: calc(50% + 118px); z-index: 2;
+  display: block; text-decoration: none; color: inherit;
+  background: var(--al-card); border: 1px dashed var(--al-line); border-radius: 10px; padding: 6px 10px 7px;
+}
+.al-wc-third .ttl { display: block; font-family: var(--font-anton), sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--al-ink-soft); text-align: center; margin-bottom: 4px; }
+.al-wc-third .tr { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 6px; padding: 2px 0; }
+.al-wc-third .tr .fl { font-size: 14px; }
+.al-wc-third .tr .cd { font-weight: 800; font-size: 11px; }
+.al-wc-third .tr .sc { font-family: var(--font-anton), sans-serif; font-size: 13px; color: var(--al-ink-soft); font-variant-numeric: tabular-nums; }
+.al-wc-third .tr.win .cd { color: var(--al-ink); }
+.al-wc-third .tr.win .sc { color: var(--al-red); }
+.al-wc-third .tr.lose { opacity: 0.55; }
 
 /* ---------- stats leaderboard ---------- */
 .al-board { background: var(--al-paper2); border: 1px solid var(--al-line); border-radius: 16px; padding: 18px 20px; }
