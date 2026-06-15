@@ -194,6 +194,22 @@ const en = {
     homeCta: "Full preview →",
   },
   match: { live: "Live", fullTime: "Full time", grp: "Grp" },
+  fav: {
+    follow: "Follow",
+    following: "Following",
+    myTeams: "My teams",
+    myTeamsKicker: "Your picks",
+    empty: "Tap the star on any team to follow it here.",
+    next: "Next",
+    last: "Last",
+  },
+  matchPage: {
+    kicker: "Match centre",
+    formTitle: "Recent form",
+    tableTitle: "Group standings",
+    squadsTitle: "Squads",
+    vs: "vs",
+  },
   schedule: {
     filters: {
       all: "All",

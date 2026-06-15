@@ -9,6 +9,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/i18n";
 import MatchSticker, { side } from "@/components/MatchSticker";
 import AlbumRefresh from "@/components/AlbumRefresh";
+import MyTeams from "@/components/MyTeams";
 
 // festive sticker-tape band (decorative)
 const PARADE = ["⚽", "🏆", "🥅", "🎉", "🎺", "🔥", "🌎", "🙌", "🥇", "📣", "🇺🇸", "🇨🇦", "🇲🇽", "🫎", "🐆", "🦅"];
@@ -115,6 +116,9 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
           </div>
         )}
       </section>
+
+      {/* ---------- my teams (favourites) ---------- */}
+      <MyTeams matches={matches} locale={l} dict={dict} />
 
       {/* ---------- pre-match expert preview ---------- */}
       {preview && nextMatch && pHome && pAway && (

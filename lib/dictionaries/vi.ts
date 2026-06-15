@@ -196,6 +196,22 @@ const vi: Dictionary = {
     homeCta: "Xem nhận định đầy đủ →",
   },
   match: { live: "Trực tiếp", fullTime: "Hết giờ", grp: "Bg" },
+  fav: {
+    follow: "Theo dõi",
+    following: "Đang theo dõi",
+    myTeams: "Đội của tôi",
+    myTeamsKicker: "Bạn chọn",
+    empty: "Bấm ngôi sao ở một đội bất kỳ để theo dõi tại đây.",
+    next: "Sắp tới",
+    last: "Gần nhất",
+  },
+  matchPage: {
+    kicker: "Trung tâm trận đấu",
+    formTitle: "Phong độ gần đây",
+    tableTitle: "Bảng xếp hạng bảng",
+    squadsTitle: "Đội hình",
+    vs: "vs",
+  },
   schedule: {
     filters: {
       all: "Tất cả",

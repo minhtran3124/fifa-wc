@@ -31,7 +31,7 @@ export default function MatchSticker({
   const awayWin = finished && (m.awayScore ?? 0) > (m.homeScore ?? 0);
 
   return (
-    <Link href={`/${locale}/matches`} className="al-match">
+    <Link href={`/${locale}/matches/${m.id}`} className="al-match">
       <div className="top">
         <span>
           {dict.stage[m.stage]}
