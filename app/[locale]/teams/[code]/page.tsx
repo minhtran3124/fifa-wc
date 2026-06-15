@@ -5,6 +5,7 @@ import type { Match, Standing } from "@/lib/types";
 import { getTeam } from "@/lib/teams";
 import { groupStandings } from "@/lib/standings";
 import { getWcData } from "@/lib/footballData";
+import { getSquad, groupSquad } from "@/lib/squads";
 import { slotLabel } from "@/lib/matches";
 import { fmtDate } from "@/lib/format";
 import { getDictionary } from "@/lib/dictionaries";
@@ -40,9 +41,13 @@ export default async function AlbumTeam({ params }: { params: Promise<{ locale: 
   const team = getTeam(code.toLowerCase());
   if (!team) notFound();
 
-  const { matches, source, fetchedAt } = await getWcData();
+  const [{ matches, source, fetchedAt }, squad] = await Promise.all([
+    getWcData(),
+    getSquad(team.id),
+  ]);
   const id = team.id;
   const th = dict.groups.th;
+  const squadGroups = groupSquad(squad);
 
   const teamMatches = matches
     .filter((m) => m.home === id || m.away === id)
@@ -245,6 +250,49 @@ export default async function AlbumTeam({ params }: { params: Promise<{ locale: 
             <span className="dot" style={{ background: outlook.dot }} />
             {outlook.text}
           </p>
+        )}
+      </section>
+
+      {/* squad */}
+      <section className="al-sec">
+        <div className="al-sec-head">
+          <div>
+            <span className="scribble">{dict.team.squad.kicker}</span>
+            <h2>{dict.team.squad.title}</h2>
+          </div>
+          {squadGroups.length > 0 && (
+            <span className="more" style={{ color: "var(--al-ink-soft)", fontWeight: 700, maxWidth: "32ch", textAlign: "right" }}>
+              {dict.team.squad.note}
+            </span>
+          )}
+        </div>
+        {squadGroups.length > 0 ? (
+          squadGroups.map((g) => (
+            <div key={g.position} className="al-squad-group">
+              <h3 className="al-squad-pos">{dict.team.squad.positions[g.position]}</h3>
+              <div className="al-squad">
+                {g.players.map((p) => (
+                  <div key={p.id} className="al-player">
+                    <span className="num">{p.number ?? "–"}</span>
+                    {p.photo ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img className="ph" src={p.photo} alt="" loading="lazy" />
+                    ) : (
+                      <span className="ph ph-empty" aria-hidden />
+                    )}
+                    <span className="bd">
+                      <span className="nm">{p.name}</span>
+                      <span className="age">
+                        {p.age != null ? `${p.age} ${dict.team.squad.ageSuffix}` : ""}
+                      </span>
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="al-empty">{dict.team.squad.empty}</p>
         )}
       </section>
 

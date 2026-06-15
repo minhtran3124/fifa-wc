@@ -84,3 +84,80 @@ export function tournamentStats(matches: Match[]) {
     biggestWin,
   };
 }
+
+/**
+ * Richer aggregates across *every* finished match (group + knockout), for the
+ * detailed tournament summary on the Stats page. Kept separate from
+ * `tournamentStats` (which is group-only and feeds the home/stats pulse stamps)
+ * so neither view shifts unexpectedly.
+ */
+export function detailedStats(matches: Match[]) {
+  const finished = matches.filter(
+    (m) => m.status === "finished" && m.homeScore != null && m.awayScore != null
+  );
+
+  let homeWins = 0;
+  let awayWins = 0;
+  let draws = 0;
+  let shootouts = 0;
+  let highestScoring = { total: -1, match: null as Match | null };
+
+  const scoredFor = new Map<string, number>();
+  const concededBy = new Map<string, number>();
+  const playedBy = new Map<string, number>();
+
+  for (const m of finished) {
+    const hs = m.homeScore ?? 0;
+    const as = m.awayScore ?? 0;
+
+    if (hs > as) homeWins++;
+    else if (as > hs) awayWins++;
+    else draws++;
+    if (m.homePens != null && m.awayPens != null) shootouts++;
+
+    const total = hs + as;
+    if (total > highestScoring.total) highestScoring = { total, match: m };
+
+    scoredFor.set(m.home, (scoredFor.get(m.home) ?? 0) + hs);
+    scoredFor.set(m.away, (scoredFor.get(m.away) ?? 0) + as);
+    concededBy.set(m.home, (concededBy.get(m.home) ?? 0) + as);
+    concededBy.set(m.away, (concededBy.get(m.away) ?? 0) + hs);
+    playedBy.set(m.home, (playedBy.get(m.home) ?? 0) + 1);
+    playedBy.set(m.away, (playedBy.get(m.away) ?? 0) + 1);
+  }
+
+  let topScoringTeam: { teamId: string; goals: number } | null = null;
+  for (const [teamId, goals] of scoredFor) {
+    if (!topScoringTeam || goals > topScoringTeam.goals) {
+      topScoringTeam = { teamId, goals };
+    }
+  }
+
+  // Fewest conceded among teams that have played; ties broken by more games.
+  let bestDefense: { teamId: string; conceded: number; played: number } | null = null;
+  for (const [teamId, played] of playedBy) {
+    const conceded = concededBy.get(teamId) ?? 0;
+    if (
+      !bestDefense ||
+      conceded < bestDefense.conceded ||
+      (conceded === bestDefense.conceded && played > bestDefense.played)
+    ) {
+      bestDefense = { teamId, conceded, played };
+    }
+  }
+
+  const teamsScored = [...scoredFor.values()].filter((g) => g > 0).length;
+
+  return {
+    finishedCount: finished.length,
+    homeWins,
+    awayWins,
+    draws,
+    shootouts,
+    teamsScored,
+    highestScoring: highestScoring.match,
+    highestScoringTotal: highestScoring.total >= 0 ? highestScoring.total : 0,
+    topScoringTeam,
+    bestDefense,
+  };
+}

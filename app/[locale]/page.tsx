@@ -2,6 +2,7 @@ import Link from "next/link";
 import { TEAMS, GROUPS, teamsByGroup } from "@/lib/teams";
 import { tournamentStats } from "@/lib/standings";
 import { getWcData } from "@/lib/footballData";
+import { previewForMatch } from "@/lib/previews";
 import { fmtTime } from "@/lib/format";
 import { MASCOTS } from "@/lib/mascots";
 import { getDictionary } from "@/lib/dictionaries";
@@ -45,6 +46,12 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
   const fHome = featured ? side(featured.home, featured.homeName) : null;
   const fAway = featured ? side(featured.away, featured.awayName) : null;
   const fScored = featured && featured.homeScore != null && featured.awayScore != null;
+
+  // pre-match expert preview for the next scheduled fixture
+  const preview = nextMatch ? previewForMatch(nextMatch) : null;
+  const pHome = nextMatch ? side(nextMatch.home, nextMatch.homeName) : null;
+  const pAway = nextMatch ? side(nextMatch.away, nextMatch.awayName) : null;
+  const topTake = preview?.takes[0];
 
   return (
     <>
@@ -108,6 +115,38 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
           </div>
         )}
       </section>
+
+      {/* ---------- pre-match expert preview ---------- */}
+      {preview && nextMatch && pHome && pAway && (
+        <section className="al-sec">
+          <div className="al-sec-head">
+            <div>
+              <span className="scribble">{dict.previews.homeKicker}</span>
+              <h2>{dict.previews.homeTitle}</h2>
+            </div>
+            <Link className="more" href={`/${l}/previews`}>{dict.previews.homeCta}</Link>
+          </div>
+          <Link href={`/${l}/previews`} className="al-preview-card">
+            <div className="pc-head">
+              <span className="pc-team">
+                <span className="fl">{pHome.flag}</span>
+                <span className="nm">{pHome.name}</span>
+              </span>
+              <span className="pc-pred">{preview.predHome}<i>–</i>{preview.predAway}</span>
+              <span className="pc-team">
+                <span className="fl">{pAway.flag}</span>
+                <span className="nm">{pAway.name}</span>
+              </span>
+            </div>
+            <p className="pc-verdict">{preview.verdict[l]}</p>
+            {topTake && (
+              <p className="pc-take">
+                “{topTake.quote[l]}” <span className="outlet">— {topTake.outlet}</span>
+              </p>
+            )}
+          </Link>
+        </section>
+      )}
 
       {/* ---------- the album: 48 nations ---------- */}
       <section className="al-sec">
