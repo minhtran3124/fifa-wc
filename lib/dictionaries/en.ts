@@ -1,0 +1,137 @@
+// English dictionary — the source of truth for the Dictionary type.
+// Proper nouns (team / city / stadium / player names) are NOT translated.
+const en = {
+  common: {
+    badge: "Official Collection",
+    brand: "World Cup 2026 · Sticker Album",
+    back: "← Album home",
+    nav: {
+      home: "Home",
+      groups: "Tables",
+      matches: "Matches",
+      knockout: "Knockout",
+      stats: "Stats",
+      rules: "Rules",
+    },
+    refresh: { idle: "Refresh", busy: "Refreshing…", updated: "Updated" },
+    source: { live: "Live source", bundled: "Bundled" },
+    loading: "Sticking it in…",
+    loadingSr: "Loading content",
+    langLabel: "Language",
+  },
+  footer: {
+    mascots: "🫎 Maple · 🐆 Zayu · 🦅 Clutch — your World Cup 26 hosts",
+    tagline:
+      "Unofficial fan project · Sticker-album concept · FIFA World Cup 2026 · USA · Canada · Mexico",
+  },
+  countdown: { soon: "Kicks off soon", live: "Kicking off…", inPrefix: "Kicks off in" },
+  home: {
+    kicker: "Stick’em in!",
+    title: "World Cup",
+    sub: "Collect all 48 nations across the USA, Canada & Mexico. Every match you watch sticks a crest in the book — tables, the bracket and stats fill in as the tournament plays out.",
+    ctaOpen: "Open the album",
+    ctaTables: "Group tables",
+    albumKicker: "Gotta collect ’em all",
+    albumTitle: "The album · 48 nations",
+    collected: "collected", // "{n} / 48 collected"
+    pulseKicker: "Album stats",
+    pulseTitle: "By the numbers",
+    allStats: "All stats →",
+    stamps: {
+      stickers: "Stickers stuck",
+      goals: "Goals scored",
+      perMatch: "Goals / match",
+      cleanSheets: "Clean sheets",
+    },
+    mascotsKicker: "Say hello",
+    mascotsTitle: "The official crew",
+    mascotsUnveiled: "Unveiled Sept 2025",
+    resultsKicker: "Just stuck in",
+    resultsTitle: "Latest results",
+    resultsEmpty: "The first stickers go in when the tournament kicks off.",
+    upNextKicker: "Coming up",
+    upNextTitle: "Next to collect",
+    upNextEmpty: "No upcoming fixtures.",
+    fullSchedule: "Full schedule →",
+    featuredLive: "live now",
+    featuredNext: "next up",
+    kickOff: "Kick-off", // "Kick-off {time}"
+  },
+  groups: {
+    title: "Group Tables",
+    sub: "Top two of each group advance, plus the eight best third-placed teams — 32 nations reach the knockout round. Tap a crest to open that nation’s page.",
+    qualify: "Qualify (top 2)",
+    th: { team: "Team", p: "P", w: "W", d: "D", l: "L", gf: "GF", ga: "GA", gd: "GD", pts: "Pts" },
+  },
+  matches: {
+    title: "All Matches",
+    sub: "All 104 fixtures grouped by day. Filter by stage or status — every result is a sticker waiting for the book.",
+  },
+  knockout: {
+    title: "Knockout Bracket",
+    sub: "32 teams, one road to glory. Ties fill in once the group stage concludes — scroll sideways to follow the path to the Final.",
+  },
+  stats: {
+    title: "Tournament Stats",
+    sub: "Aggregates and scorer leaderboards from live match data.",
+    biggestWin: "Biggest win so far",
+    boardKicker: "Top of the pile",
+    boardTitle: "Leaderboards",
+    topScorers: "🥇 Top Scorers",
+    mostAssists: "🎯 Most Assists",
+    noScorers: "No scorer data available from the feed yet.",
+    noAssists: "Assist data isn’t provided by the feed yet.",
+    assistsSuffix: "assists",
+    goalsSuffix: "goals",
+    stamps: {
+      played: "Matches played",
+      goals: "Total goals",
+      perMatch: "Goals / match",
+      cleanSheets: "Clean sheets",
+    },
+  },
+  team: {
+    groupLabel: "Group", // "Group A"
+    fifaRanking: "FIFA ranking",
+    liveNow: "Live now",
+    upNext: "Up next",
+    groupStage: "Group stage",
+    allPlayed: "All matches played",
+    awaiting: "Awaiting kick-off",
+    threeToCome: "Three group games to come",
+    recordKicker: "The numbers",
+    recordTitle: "Group stage record",
+    form: "Form",
+    formEmpty: "No matches played yet.",
+    standKicker: "Group", // "Group A"
+    standTitle: "Where they stand",
+    allGroups: "All groups →",
+    outlookQualify: "inside the automatic qualifying places (top two advance).",
+    outlookThird: "in contention for one of the eight best third-place spots.",
+    outlookOut: "currently outside the qualifying places.",
+    sittingIn: "Sitting", // "Sitting 1st in Group A — ..."
+    finishedIn: "Finished", // "Finished 2nd in Group A"
+  },
+  rules: {
+    title: "New rules in 2026",
+    sub: "The first 48-team World Cup also debuts a wave of IFAB rule changes — some brand new, some expanded — aimed at cutting time-wasting, protecting players and giving VAR a wider remit.",
+    tags: {
+      var: "VAR",
+      time: "Time-wasting",
+      conduct: "Player conduct",
+      welfare: "Player welfare",
+    },
+  },
+  stage: {
+    group: "Group Stage",
+    R32: "Round of 32",
+    R16: "Round of 16",
+    QF: "Quarter-final",
+    SF: "Semi-final",
+    third: "Third Place",
+    final: "Final",
+  },
+};
+
+export default en;
+export type Dictionary = typeof en;
