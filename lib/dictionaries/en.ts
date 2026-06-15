@@ -70,7 +70,13 @@ const en = {
   },
   knockout: {
     title: "Knockout Bracket",
-    sub: "32 teams, one road to glory. Ties fill in once the group stage concludes — scroll sideways to follow the path to the Final.",
+    sub: "32 teams, one road to glory. Each tie is a sticker — dashed until its teams are known, foil-stamped and checked once it's played. Follow the road down to the Final.",
+    scribble: "Road to the Final",
+    ties: "ties",
+    collected: "played",
+    stickersDone: "stickers collected",
+    finalScribble: "The Final!",
+    pens: "Pens",
   },
   stats: {
     title: "Tournament Stats",
