@@ -3,19 +3,14 @@
 import { useMemo, useState } from "react";
 import type { Match } from "@/lib/types";
 import { fmtDayKey } from "@/lib/format";
+import type { Locale } from "@/lib/i18n";
+import type { Dictionary } from "@/lib/dictionaries";
 import MatchSticker from "./MatchSticker";
 
 type Day = { date: string; matches: Match[] };
 
-const FILTERS = [
-  { key: "all", label: "All" },
-  { key: "group", label: "Group Stage" },
-  { key: "knockout", label: "Knockout" },
-  { key: "finished", label: "Results" },
-  { key: "scheduled", label: "Upcoming" },
-] as const;
-
-type FilterKey = (typeof FILTERS)[number]["key"];
+const FILTER_KEYS = ["all", "group", "knockout", "finished", "scheduled"] as const;
+type FilterKey = (typeof FILTER_KEYS)[number];
 
 function keep(m: Match, f: FilterKey): boolean {
   switch (f) {
@@ -27,8 +22,24 @@ function keep(m: Match, f: FilterKey): boolean {
   }
 }
 
-export default function AlbumSchedule({ days }: { days: Day[] }) {
+export default function AlbumSchedule({
+  days,
+  locale,
+  dict,
+}: {
+  days: Day[];
+  locale: Locale;
+  dict: Dictionary;
+}) {
   const [filter, setFilter] = useState<FilterKey>("all");
+
+  const labels: Record<FilterKey, string> = {
+    all: dict.schedule.filters.all,
+    group: dict.schedule.filters.group,
+    knockout: dict.schedule.filters.knockout,
+    finished: dict.schedule.filters.results,
+    scheduled: dict.schedule.filters.upcoming,
+  };
 
   const filtered = useMemo(
     () =>
@@ -41,16 +52,16 @@ export default function AlbumSchedule({ days }: { days: Day[] }) {
   return (
     <div>
       <div className="al-chips" role="tablist" aria-label="Filter matches">
-        {FILTERS.map((f) => (
+        {FILTER_KEYS.map((key) => (
           <button
-            key={f.key}
+            key={key}
             type="button"
             role="tab"
-            aria-selected={filter === f.key}
-            onClick={() => setFilter(f.key)}
-            className={`al-chip ${filter === f.key ? "active" : ""}`}
+            aria-selected={filter === key}
+            onClick={() => setFilter(key)}
+            className={`al-chip ${filter === key ? "active" : ""}`}
           >
-            {f.label}
+            {labels[key]}
           </button>
         ))}
       </div>
@@ -58,18 +69,18 @@ export default function AlbumSchedule({ days }: { days: Day[] }) {
       {filtered.map((day) => (
         <section key={day.date}>
           <div className="al-day">
-            <span className="tab">{fmtDayKey(day.date)}</span>
+            <span className="tab">{fmtDayKey(day.date, locale)}</span>
             <span className="ln" />
           </div>
           <div className="al-matches">
             {day.matches.map((m) => (
-              <MatchSticker key={m.id} m={m} />
+              <MatchSticker key={m.id} m={m} locale={locale} dict={dict} />
             ))}
           </div>
         </section>
       ))}
 
-      {filtered.length === 0 && <p className="al-empty">No matches for this filter.</p>}
+      {filtered.length === 0 && <p className="al-empty">{dict.schedule.empty}</p>}
     </div>
   );
 }

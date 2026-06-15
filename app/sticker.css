@@ -57,6 +57,18 @@
 .al-tab:hover { background: rgba(43, 33, 20, 0.07); }
 .al-tab.active { background: var(--al-ink); color: #fff; }
 
+/* right cluster: nav + language switch */
+.al-bar-right { display: flex; align-items: center; gap: 10px; }
+
+/* language switch */
+.al-lang { display: inline-flex; border: 1.5px solid var(--al-line); border-radius: 999px; overflow: hidden; }
+.al-lang-opt {
+  font-weight: 800; font-size: 12px; line-height: 1; padding: 6px 10px;
+  text-decoration: none; color: var(--al-ink-soft); transition: background 0.18s, color 0.18s;
+}
+.al-lang-opt:hover { background: rgba(43, 33, 20, 0.07); }
+.al-lang-opt.active { background: var(--al-ink); color: #fff; }
+
 /* hamburger toggle — hidden on desktop, shown on mobile */
 .al-burger {
   display: none; align-items: center; justify-content: center;
@@ -67,9 +79,14 @@
 
 @media (max-width: 640px) {
   .al-burger { display: inline-flex; }
+  /* full-width dropdown anchored to the sticky bar */
   .al-nav {
-    display: none; flex-direction: column; align-items: stretch;
-    width: 100%; margin-top: 10px; gap: 4px;
+    display: none; position: absolute; top: 100%; left: 0; right: 0; z-index: 20;
+    flex-direction: column; align-items: stretch; gap: 4px;
+    background: rgba(231, 220, 196, 0.98);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--al-line);
+    padding: 10px clamp(16px, 4vw, 48px);
   }
   .al-nav.open { display: flex; }
   .al-nav .al-tab { padding: 11px 12px; border-radius: 8px; }

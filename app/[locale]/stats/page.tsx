@@ -1,15 +1,24 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import type { PlayerStat } from "@/lib/types";
 import { tournamentStats } from "@/lib/standings";
 import { getTeam, getVenue } from "@/lib/teams";
 import { getWcData, getWcScorers } from "@/lib/footballData";
-import { side } from "../MatchSticker";
-import AlbumRefresh from "../AlbumRefresh";
+import { getDictionary, type Dictionary } from "@/lib/dictionaries";
+import type { Locale } from "@/lib/i18n";
+import { side } from "@/components/MatchSticker";
+import AlbumRefresh from "@/components/AlbumRefresh";
 
-export const metadata: Metadata = { title: "Tournament Stats" };
-
-function Leaderboard({ title, metric, players }: { title: string; metric: "goals" | "assists"; players: PlayerStat[] }) {
+function Leaderboard({
+  title,
+  metric,
+  players,
+  dict,
+}: {
+  title: string;
+  metric: "goals" | "assists";
+  players: PlayerStat[];
+  dict: Dictionary;
+}) {
   const max = Math.max(...players.map((p) => p[metric]), 1);
   return (
     <div className="al-board">
@@ -29,7 +38,10 @@ function Leaderboard({ title, metric, players }: { title: string; metric: "goals
                 </span>
                 <span className="bar"><i style={{ width: `${(val / max) * 100}%` }} /></span>
                 <span className="sub">
-                  {team?.name} · {p.position} · {metric === "goals" ? `${p.assists} assists` : `${p.goals} goals`}
+                  {team?.name} · {p.position} ·{" "}
+                  {metric === "goals"
+                    ? `${p.assists} ${dict.stats.assistsSuffix}`
+                    : `${p.goals} ${dict.stats.goalsSuffix}`}
                 </span>
               </span>
             </li>
@@ -40,7 +52,10 @@ function Leaderboard({ title, metric, players }: { title: string; metric: "goals
   );
 }
 
-export default async function AlbumStats() {
+export default async function AlbumStats({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const l = locale as Locale;
+  const dict = getDictionary(l);
   const [{ matches, source, fetchedAt }, scorers] = await Promise.all([
     getWcData(),
     getWcScorers(),
@@ -56,23 +71,21 @@ export default async function AlbumStats() {
   const bwAway = bw ? side(bw.away, bw.awayName) : null;
 
   const stamps = [
-    { v: `${t.matchesPlayed}`, frac: `/${t.totalMatches}`, l: "Matches played" },
-    { v: `${t.goals}`, l: "Total goals" },
-    { v: `${t.avgGoals}`, l: "Goals / match" },
-    { v: `${t.cleanSheets}`, l: "Clean sheets" },
+    { v: `${t.matchesPlayed}`, frac: `/${t.totalMatches}`, l: dict.stats.stamps.played },
+    { v: `${t.goals}`, l: dict.stats.stamps.goals },
+    { v: `${t.avgGoals}`, l: dict.stats.stamps.perMatch },
+    { v: `${t.cleanSheets}`, l: dict.stats.stamps.cleanSheets },
   ];
 
   return (
     <>
       <div className="al-page-head">
         <div>
-          <Link href="/" className="al-back">← Album home</Link>
-          <h1 className="al-page-title">Tournament Stats</h1>
-          <p className="al-page-sub">
-            Aggregates and scorer leaderboards from live match data.
-          </p>
+          <Link href={`/${l}`} className="al-back">{dict.common.back}</Link>
+          <h1 className="al-page-title">{dict.stats.title}</h1>
+          <p className="al-page-sub">{dict.stats.sub}</p>
         </div>
-        <AlbumRefresh source={source} fetchedAt={fetchedAt} />
+        <AlbumRefresh source={source} fetchedAt={fetchedAt} locale={l} dict={dict} />
       </div>
 
       <div className="al-stamps">
@@ -87,7 +100,7 @@ export default async function AlbumStats() {
       {bw && bwHome && bwAway && (
         <section className="al-sec">
           <div className="al-bigwin">
-            <div className="lbl">Biggest win so far</div>
+            <div className="lbl">{dict.stats.biggestWin}</div>
             <div className="row">
               <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
                 <span style={{ fontSize: 30 }}>{bwHome.flag}</span> {bwHome.name}
@@ -99,7 +112,7 @@ export default async function AlbumStats() {
             </div>
             <p style={{ marginTop: 10, fontSize: 12, color: "var(--al-ink-soft)" }}>
               {getVenue(bw.venueId)?.stadium ?? bw.venueName ?? ""}
-              {bw.group ? ` · Group ${bw.group}` : ""}
+              {bw.group ? ` · ${dict.team.groupLabel} ${bw.group}` : ""}
             </p>
           </div>
         </section>
@@ -108,29 +121,25 @@ export default async function AlbumStats() {
       <section className="al-sec">
         <div className="al-sec-head">
           <div>
-            <span className="scribble">Top of the pile</span>
-            <h2>Leaderboards</h2>
+            <span className="scribble">{dict.stats.boardKicker}</span>
+            <h2>{dict.stats.boardTitle}</h2>
           </div>
         </div>
         <div className="al-cols">
           {topScorers.length > 0 ? (
-            <Leaderboard title="🥇 Top Scorers" metric="goals" players={topScorers} />
+            <Leaderboard title={dict.stats.topScorers} metric="goals" players={topScorers} dict={dict} />
           ) : (
             <div className="al-board">
-              <h3>🥇 Top Scorers</h3>
-              <p style={{ fontSize: 13, color: "var(--al-ink-soft)" }}>
-                No scorer data available from the feed yet.
-              </p>
+              <h3>{dict.stats.topScorers}</h3>
+              <p style={{ fontSize: 13, color: "var(--al-ink-soft)" }}>{dict.stats.noScorers}</p>
             </div>
           )}
           {topAssists.length > 0 ? (
-            <Leaderboard title="🎯 Most Assists" metric="assists" players={topAssists} />
+            <Leaderboard title={dict.stats.mostAssists} metric="assists" players={topAssists} dict={dict} />
           ) : (
             <div className="al-board">
-              <h3>🎯 Most Assists</h3>
-              <p style={{ fontSize: 13, color: "var(--al-ink-soft)" }}>
-                Assist data isn&rsquo;t provided by the feed yet.
-              </p>
+              <h3>{dict.stats.mostAssists}</h3>
+              <p style={{ fontSize: 13, color: "var(--al-ink-soft)" }}>{dict.stats.noAssists}</p>
             </div>
           )}
         </div>

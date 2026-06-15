@@ -113,6 +113,19 @@ const vi: Dictionary = {
     outlookOut: "hiện ở ngoài nhóm đi tiếp.",
     sittingIn: "Đang đứng",
     finishedIn: "Kết thúc",
+    fixturesKicker: "Mọi trận",
+    fixturesTitle: "Lịch & kết quả",
+    fixturesEmpty: "Lịch thi đấu sẽ xuất hiện khi được xác nhận.",
+    rivalsKicker: "Cùng bảng",
+    rivalsWord: "Đối thủ",
+    regions: {
+      UEFA: "Châu Âu",
+      CONMEBOL: "Nam Mỹ",
+      CONCACAF: "Bắc & Trung Mỹ",
+      CAF: "Châu Phi",
+      AFC: "Châu Á",
+      OFC: "Châu Đại Dương",
+    },
   },
   rules: {
     title: "Luật mới năm 2026",
@@ -123,6 +136,17 @@ const vi: Dictionary = {
       conduct: "Hành vi cầu thủ",
       welfare: "Sức khỏe cầu thủ",
     },
+  },
+  match: { live: "Trực tiếp", fullTime: "Hết giờ", grp: "Bg" },
+  schedule: {
+    filters: {
+      all: "Tất cả",
+      group: "Vòng bảng",
+      knockout: "Loại trực tiếp",
+      results: "Kết quả",
+      upcoming: "Sắp tới",
+    },
+    empty: "Không có trận nào với bộ lọc này.",
   },
   stage: {
     group: "Vòng bảng",

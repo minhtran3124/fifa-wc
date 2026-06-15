@@ -111,6 +111,19 @@ const en = {
     outlookOut: "currently outside the qualifying places.",
     sittingIn: "Sitting", // "Sitting 1st in Group A — ..."
     finishedIn: "Finished", // "Finished 2nd in Group A"
+    fixturesKicker: "Every match",
+    fixturesTitle: "Fixtures & results",
+    fixturesEmpty: "Fixtures will appear once the schedule is confirmed.",
+    rivalsKicker: "Same group",
+    rivalsWord: "rivals",
+    regions: {
+      UEFA: "Europe",
+      CONMEBOL: "South America",
+      CONCACAF: "N. & C. America",
+      CAF: "Africa",
+      AFC: "Asia",
+      OFC: "Oceania",
+    },
   },
   rules: {
     title: "New rules in 2026",
@@ -121,6 +134,17 @@ const en = {
       conduct: "Player conduct",
       welfare: "Player welfare",
     },
+  },
+  match: { live: "Live", fullTime: "Full time", grp: "Grp" },
+  schedule: {
+    filters: {
+      all: "All",
+      group: "Group Stage",
+      knockout: "Knockout",
+      results: "Results",
+      upcoming: "Upcoming",
+    },
+    empty: "No matches for this filter.",
   },
   stage: {
     group: "Group Stage",

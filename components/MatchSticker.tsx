@@ -3,23 +3,23 @@ import type { Match } from "@/lib/types";
 import { getTeam, getVenue } from "@/lib/teams";
 import { slotLabel } from "@/lib/matches";
 import { fmtDate, fmtTime } from "@/lib/format";
-
-export const STAGE_LABEL: Record<string, string> = {
-  group: "Group Stage",
-  R32: "Round of 32",
-  R16: "Round of 16",
-  QF: "Quarter-final",
-  SF: "Semi-final",
-  third: "Third Place",
-  final: "Final",
-};
+import type { Locale } from "@/lib/i18n";
+import type { Dictionary } from "@/lib/dictionaries";
 
 export function side(code: string, name?: string) {
   const t = getTeam(code);
   return { flag: t?.flag ?? "⬜", name: t?.name ?? name ?? slotLabel(code) };
 }
 
-export default function MatchSticker({ m }: { m: Match }) {
+export default function MatchSticker({
+  m,
+  locale,
+  dict,
+}: {
+  m: Match;
+  locale: Locale;
+  dict: Dictionary;
+}) {
   const home = side(m.home, m.homeName);
   const away = side(m.away, m.awayName);
   const venue = getVenue(m.venueId);
@@ -31,16 +31,16 @@ export default function MatchSticker({ m }: { m: Match }) {
   const awayWin = finished && (m.awayScore ?? 0) > (m.homeScore ?? 0);
 
   return (
-    <Link href="/matches" className="al-match">
+    <Link href={`/${locale}/matches`} className="al-match">
       <div className="top">
         <span>
-          {STAGE_LABEL[m.stage]}
-          {m.group ? ` · Grp ${m.group}` : ""}
+          {dict.stage[m.stage]}
+          {m.group ? ` · ${dict.match.grp} ${m.group}` : ""}
         </span>
         {live ? (
-          <span className="live"><span className="dot" /> Live</span>
+          <span className="live"><span className="dot" /> {dict.match.live}</span>
         ) : (
-          <span>{finished ? "Full time" : fmtTime(m.date)}</span>
+          <span>{finished ? dict.match.fullTime : fmtTime(m.date, locale)}</span>
         )}
       </div>
 
@@ -60,7 +60,7 @@ export default function MatchSticker({ m }: { m: Match }) {
       </div>
 
       <div className="foot">
-        <span>{fmtDate(m.date)}</span>
+        <span>{fmtDate(m.date, locale)}</span>
         <span style={{ textAlign: "right", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
           {venueText}
         </span>

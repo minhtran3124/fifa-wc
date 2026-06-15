@@ -1,8 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
-import Link from "next/link";
 import { Manrope, Big_Shoulders, Anton, Inter, Caveat } from "next/font/google";
-import AlbumNav from "./AlbumNav";
 import "./globals.css";
 import "./sticker.css";
 
@@ -34,36 +32,14 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
+  // lang defaults to the default locale; the active locale is reflected on the
+  // client by <HtmlLang> inside app/[locale]/layout.tsx.
   return (
     <html
-      lang="en"
+      lang="vi"
       className={`${manrope.variable} ${headline.variable} ${anton.variable} ${inter.variable} ${caveat.variable}`}
     >
-      <body>
-        <div className="album-root">
-          <div className="al-bar">
-            <div className="al-bar-inner">
-              <Link href="/" className="al-brand">
-                <span className="al-badge">Official Collection</span>
-                <span className="wm">World Cup 2026 · Sticker Album</span>
-              </Link>
-              <AlbumNav />
-            </div>
-          </div>
-
-          <main className="al-wrap">{children}</main>
-
-          <footer className="al-foot">
-            <div className="inner">
-              <p className="al-foot-mascots">🫎 Maple · 🐆 Zayu · 🦅 Clutch — your World Cup 26 hosts</p>
-              <p>
-                Unofficial fan project · Sticker-album concept · FIFA World Cup 2026 ·
-                USA · Canada · Mexico
-              </p>
-            </div>
-          </footer>
-        </div>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
