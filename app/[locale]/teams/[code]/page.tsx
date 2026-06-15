@@ -124,15 +124,13 @@ export default async function AlbumTeam({ params }: { params: Promise<{ locale: 
               <span className="gtab">{dict.team.groupLabel} {team.group}</span>
               <span className="code">{team.code}</span>
             </div>
-            <h1>
-              {team.name}
-              <FavoriteButton teamId={team.id} teamName={team.name} dict={dict} />
-            </h1>
+            <h1>{team.name}</h1>
             <div className="facts">
               <span><b>#{team.fifaRank}</b> {dict.team.fifaRanking}</span>
               <span>·</span>
               <span>{team.confederation} — {dict.team.regions[team.confederation]}</span>
             </div>
+            <FavoriteButton teamId={team.id} teamName={team.name} dict={dict} />
           </div>
         </div>
 

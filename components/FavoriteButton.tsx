@@ -23,18 +23,19 @@ export default function FavoriteButton({
     setFav(isFavorite(teamId));
   }, [teamId]);
 
-  const label = `${fav ? dict.fav.following : dict.fav.follow} · ${teamName}`;
+  const on = mounted && fav;
+  const text = on ? dict.fav.following : dict.fav.follow;
 
   return (
     <button
       type="button"
-      className={`al-fav ${mounted && fav ? "on" : ""}`}
+      className={`al-fav ${on ? "on" : ""}`}
       aria-pressed={mounted ? fav : undefined}
-      aria-label={label}
-      title={label}
+      aria-label={`${text} · ${teamName}`}
       onClick={() => setFav(toggleFavorite(teamId))}
     >
-      <span aria-hidden>{mounted && fav ? "★" : "☆"}</span>
+      <span className="ic" aria-hidden>{on ? "★" : "☆"}</span>
+      <span className="tx">{text}</span>
     </button>
   );
 }

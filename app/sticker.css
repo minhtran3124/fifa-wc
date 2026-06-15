@@ -548,15 +548,18 @@
 .al-player .nm { font-weight: 700; font-size: 13.5px; line-height: 1.25; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .al-player .age { font-size: 11.5px; color: var(--al-ink-soft); }
 
-/* ---------- favourite star ---------- */
+/* ---------- favourite / follow button ---------- */
 .al-fav {
-  display: inline-flex; align-items: center; justify-content: center;
-  margin-left: 10px; padding: 0; width: 1.1em; height: 1.1em; vertical-align: middle;
-  background: none; border: none; cursor: pointer; color: var(--al-line);
-  font-size: 0.62em; line-height: 1; transition: transform 0.15s, color 0.15s;
+  display: inline-flex; align-items: center; gap: 7px; cursor: pointer;
+  margin-top: 14px; padding: 9px 18px; border-radius: 999px; line-height: 1;
+  font-weight: 800; font-size: 13.5px; letter-spacing: 0.01em;
+  border: 2px solid var(--al-ink); background: transparent; color: var(--al-ink);
+  transition: transform 0.15s, background 0.15s, color 0.15s, box-shadow 0.15s;
 }
-.al-fav:hover { transform: scale(1.15); color: var(--al-red); }
-.al-fav.on { color: #e0a92b; }
+.al-fav .ic { font-size: 16px; line-height: 1; color: #e0a92b; }
+.al-fav:hover { transform: translateY(-2px); box-shadow: 3px 4px 0 rgba(43, 33, 20, 0.22); }
+.al-fav.on { background: var(--al-ink); color: #fff; }
+.al-fav.on .ic { color: #f6c552; }
 
 /* ---------- my teams ---------- */
 .al-myteams { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
