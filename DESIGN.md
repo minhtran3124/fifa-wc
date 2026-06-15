@@ -1,362 +1,470 @@
 ---
-name: FIFA World Cup 2026
-description: A night-match broadcast for the first 48-team World Cup — midnight surfaces, floodlight gold, live data.
+name: World Cup 2026 — Sticker Album
+description: A Panini-style collector's album for the first 48-team World Cup — warm paper, foil crests, halftone print and live data.
 colors:
-  ink: "#070b16"
-  ink-soft: "#0e1424"
-  ink-card: "#141d33"
-  line: "#232f4a"
-  text: "#eaf0fb"
-  gold: "#fbbf24"
-  gold-soft: "#fcd34d"
-  pitch: "#16a34a"
-  pitch-dark: "#0a6b35"
-  live: "#ef4444"
-  source-live: "#34d399"
-  source-bundled: "#fbbf24"
+  paper: "#e7dcc4"
+  paper-raised: "#f2ead7"
+  card: "#fffdf7"
+  ink: "#2b2114"
+  ink-soft: "#5d5037"
+  line: "#cabd9b"
+  red: "#bb3829"
+  green: "#1c7a47"
+  blue: "#185a92"
+  foil-gold: "#d9b24a"
+  source-bundled: "#c9a238"
+  source-bundled-ink: "#9c6b14"
 typography:
   display:
-    fontFamily: "Big Shoulders, Arial Narrow, Manrope, sans-serif"
-    fontSize: "clamp(3rem, 9vw, 6rem)"
-    fontWeight: 900
-    lineHeight: 0.9
-    letterSpacing: "0"
-  headline:
-    fontFamily: "Big Shoulders, Arial Narrow, sans-serif"
-    fontSize: "clamp(1.875rem, 4vw, 2.25rem)"
-    fontWeight: 800
-    lineHeight: 1.1
-    letterSpacing: "-0.01em"
-  title:
-    fontFamily: "Big Shoulders, Arial Narrow, sans-serif"
-    fontSize: "1.125rem"
-    fontWeight: 800
-    lineHeight: 1.2
-    letterSpacing: "0"
-  body:
-    fontFamily: "Manrope, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "0.875rem"
+    fontFamily: "Anton, Arial Narrow, sans-serif"
+    fontSize: "clamp(2.75rem, 9vw, 5.5rem)"
     fontWeight: 400
-    lineHeight: 1.5
-    letterSpacing: "normal"
-    fontFeature: "'ss01', 'cv01'"
-  data:
-    fontFamily: "Big Shoulders, Manrope, sans-serif"
-    fontSize: "2.25rem"
-    fontWeight: 800
+    lineHeight: 0.86
+    letterSpacing: "0.005em"
+  headline:
+    fontFamily: "Anton, Arial Narrow, sans-serif"
+    fontSize: "clamp(2rem, 5vw, 3rem)"
+    fontWeight: 400
+    lineHeight: 0.95
+    letterSpacing: "0.01em"
+  title:
+    fontFamily: "Anton, Arial Narrow, sans-serif"
+    fontSize: "1.15rem"
+    fontWeight: 400
     lineHeight: 1
-    letterSpacing: "0"
-    fontFeature: "tabular-nums"
+    letterSpacing: "0.01em"
+  body:
+    fontFamily: "Inter, system-ui, sans-serif"
+    fontSize: "14.5px"
+    fontWeight: 400
+    lineHeight: 1.55
+    letterSpacing: "normal"
   label:
-    fontFamily: "Manrope, sans-serif"
-    fontSize: "0.72rem"
-    fontWeight: 700
+    fontFamily: "Inter, system-ui, sans-serif"
+    fontSize: "11px"
+    fontWeight: 800
     lineHeight: 1.2
-    letterSpacing: "0.22em"
+    letterSpacing: "0.06em"
+  data:
+    fontFamily: "Anton, sans-serif"
+    fontSize: "1.5rem"
+    fontWeight: 400
+    lineHeight: 1
+    letterSpacing: "normal"
+    fontFeature: "tabular-nums"
+  script:
+    fontFamily: "Caveat, cursive"
+    fontSize: "1.375rem"
+    fontWeight: 700
+    lineHeight: 1
+    letterSpacing: "normal"
 rounded:
-  xs: "0.25rem"
-  sm: "0.5rem"
-  md: "0.75rem"
-  lg: "1rem"
-  xl: "1.75rem"
+  sm: "8px"
+  btn: "10px"
+  md: "14px"
+  lg: "16px"
+  xl: "20px"
   pill: "9999px"
 spacing:
-  xs: "0.625rem"
-  sm: "0.875rem"
-  md: "1.25rem"
-  lg: "2rem"
-  section: "3.5rem"
+  xs: "6px"
+  sm: "10px"
+  md: "16px"
+  lg: "24px"
+  gutter: "clamp(16px, 4vw, 48px)"
+  section: "clamp(40px, 6vw, 64px)"
 components:
   button-primary:
-    backgroundColor: "{colors.gold}"
+    backgroundColor: "{colors.red}"
+    textColor: "#ffffff"
+    rounded: "{rounded.btn}"
+    padding: "12px 22px"
+  button-ghost:
+    backgroundColor: "transparent"
     textColor: "{colors.ink}"
-    rounded: "{rounded.pill}"
-    padding: "0.75rem 1.5rem"
-  button-secondary:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.text}"
-    rounded: "{rounded.pill}"
-    padding: "0.75rem 1.5rem"
+    rounded: "{rounded.btn}"
+    padding: "12px 22px"
   chip-filter:
-    backgroundColor: "{colors.gold}"
-    textColor: "{colors.ink}"
+    backgroundColor: "transparent"
+    textColor: "{colors.ink-soft}"
     rounded: "{rounded.pill}"
-    padding: "0.5rem 1rem"
-  card-match:
-    backgroundColor: "{colors.ink-soft}"
-    textColor: "{colors.text}"
-    rounded: "{rounded.md}"
-    padding: "0.875rem"
-  panel:
-    backgroundColor: "{colors.ink-card}"
-    textColor: "{colors.text}"
-    rounded: "{rounded.lg}"
-    padding: "1.25rem"
-  nav-link-active:
-    backgroundColor: "{colors.gold}"
-    textColor: "{colors.ink}"
+    padding: "9px 16px"
+  chip-filter-active:
+    backgroundColor: "{colors.red}"
+    textColor: "#ffffff"
     rounded: "{rounded.pill}"
-    padding: "0.5rem 0.75rem"
-  source-badge-live:
+    padding: "9px 16px"
+  nav-tab-active:
     backgroundColor: "{colors.ink}"
-    textColor: "{colors.source-live}"
+    textColor: "#ffffff"
     rounded: "{rounded.pill}"
-    padding: "0.25rem 0.625rem"
+    padding: "7px 12px"
+  card-sticker:
+    backgroundColor: "{colors.card}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.md}"
+    padding: "14px 16px"
+  panel:
+    backgroundColor: "{colors.paper-raised}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.lg}"
+    padding: "16px"
+  refresh:
+    backgroundColor: "{colors.ink}"
+    textColor: "#ffffff"
+    rounded: "{rounded.pill}"
+    padding: "8px 16px"
+  fav:
+    backgroundColor: "transparent"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.pill}"
+    padding: "9px 18px"
+  fav-on:
+    backgroundColor: "{colors.ink}"
+    textColor: "#ffffff"
+    rounded: "{rounded.pill}"
+    padding: "9px 18px"
+  source-badge-live:
+    backgroundColor: "rgba(28, 122, 71, 0.1)"
+    textColor: "{colors.green}"
+    rounded: "{rounded.pill}"
+    padding: "5px 11px"
 ---
 
-# Design System: FIFA World Cup 2026
+# Design System: World Cup 2026 — Sticker Album
 
 ## 1. Overview
 
-**Creative North Star: "The Night-Match Broadcast"**
+**Creative North Star: "The Collector's Sticker Album"**
 
-This is a floodlit stadium seen through a live TV broadcast. The surface is deep
-midnight blue, the kind a camera sees in the stands after sunset; the light comes
-from a single source — floodlight gold — falling on the things that matter: the
-score, the call-to-action, the team that just qualified. Touchline green marks the
-pitch and everything tied to it. The system speaks the grammar of broadcast
-graphics: lower-third score panels, a scrolling results ticker, a pulsing LIVE
-dot, big condensed athletic headlines stamped over the dark. Atmosphere arrives
-*around* the answer, never in front of it.
+This is the Panini album spread open on a kitchen table during the tournament.
+The surface is warm collector's-album paper, dotted with halftone print; the
+crests you've earned are foil-bordered shinies that catch the light, and the bits
+that matter — a score, a "got it!", the Final — are stamped on in handwritten
+marker. Every card is a sticker: it sits at a slight rotation, drops a hard
+print-shadow onto the page, and lifts when you reach for it. The system speaks
+the grammar of collectible football print — foil edges, dashed "still-to-collect"
+slots, ribbons, page tabs, a progress meter for how full the album is — not the
+grammar of a screen. The warmth is the product: it makes a live tournament feel
+like something you're physically assembling.
 
-It is a **product** at heart — the reason it exists is to let a casual fan read a
-score, a table, a bracket or a stat in two seconds, mostly one-handed on a phone.
-So the spectacle is disciplined: condensed display type for headlines and numbers,
-a clean humanist sans for everything a user actually reads, generous hairline
-structure instead of clutter, and motion that conveys state (live, refreshing,
-incoming) rather than decoration. The dark is functional, not moody — it lets the
-gold and the green carry meaning, and it lets a glowing scoreline read like a
-broadcast caption.
+Underneath, it is still a **product**. The reason it exists is to let a casual
+fan read a score, a table, a bracket or a stat in two seconds, mostly one-handed
+on a phone. So the nostalgia is disciplined: Anton's condensed athletic caps
+carry every headline and every number, Inter handles everything a fan actually
+reads, and the album devices (foil, rotation, scribble) are reserved for moments
+of arrival — a collected sticker, a featured shiny, the Final — never sprayed
+across the reading surface. Numbers are always tabular and never reflow. The
+paper is functional, not merely pretty: it lets the red carry the answer and the
+green carry qualification.
 
-This system explicitly rejects the four things its product brief names: the flat
-gray **SaaS dashboard** (this is a stadium, not an analytics tool), the dense
+This system explicitly rejects the four things the product brief names: the flat
+gray **SaaS dashboard** (this is an album, not an analytics tool), the dense
 ad-stuffed **scores aggregator** (breathing room over table-soup), the stiff
-sponsor-wall **governing-body site** (this has a fan's pulse), and **gimmickry**
-that gets between a fan and the score (every effect earns its place or is cut).
+sponsor-wall **governing-body site** (this has a collector's pulse), and
+**gimmickry** that gets between a fan and the score (every foil edge and rotation
+earns its place or is cut).
 
 **Key Characteristics:**
-- Midnight-navy surfaces lit by a single floodlight-gold accent.
-- Tonal layering (ink → ink-soft → ink-card) and hairline borders instead of shadows.
-- Condensed athletic display type (Big Shoulders) for headlines + numbers; Manrope for reading.
-- Broadcast cues: score panels, the marquee ticker, the LIVE pulse, the source badge.
-- Tabular-nums everywhere a number can change. The scoreline is sacred.
-- Motion that signals state, with a `prefers-reduced-motion` answer for every animation.
+- Warm album-paper surfaces (`#e7dcc4`) with a fine halftone print dot.
+- Foil-bordered "shiny" stickers (`--al-foil` gradient via `background-clip`) for collected / featured items only.
+- Anton condensed caps for headlines + numbers; Inter for reading; Caveat marker for scribbled moments.
+- Tactile print elevation: hard offset shadows, slight per-card rotation, lift-on-hover, dashed "to-collect" slots.
+- Red (`#bb3829`) is the single answer accent; green (`#1c7a47`) means qualification and the pitch.
+- Tabular-nums on every number that can change. Live-vs-bundled source badge always visible.
+- The whole app renders inside a `.album-root` scope; every component is an `.al-*` class.
 
 ## 2. Colors
 
-A near-black midnight field, lit by one warm gold and grounded by one pitch green; everything else is a tonal step or a state signal.
+A warm, printed palette: aged album paper grounded by dark earth ink, lit by one collectible red and one pitch green, with a foil gradient reserved for things you've earned.
 
 ### Primary
-- **Floodlight Gold** (#fbbf24): The single source of light. Reserved for primary
-  CTAs, the active nav/filter pill, all live and final scores, points totals,
-  stat figures, and the section-day markers. Its scarcity is what makes a score
-  feel lit. **Gold-Soft** (#fcd34d) is its lighter partner, used only inside the
-  gold-to-gold gradient on badges and the biggest-win chip.
+- **Album Red** (#bb3829): The single answer accent. Primary CTA (`.al-btn.primary`),
+  active filter chip, every winning score, points totals, leaderboard values and
+  bars, kickers/scribbles (Caveat), link hover, the "self" team highlight, and the
+  red border a sticker takes on hover. Its scarcity is what makes a result feel
+  stamped on.
 
 ### Secondary
-- **Touchline Green** (#16a34a): The pitch. Marks qualification (top-two rows tint
-  `pitch/6`, rank badges go solid green), the home-hero gradient wash, and the
-  brand badge. **Pitch-Dark** (#0a6b35) anchors the logo gradient. Green is
-  semantic, never decorative.
+- **Pitch Green** (#1c7a47): Qualification and the pitch. Marks qualifying rows
+  (`tr.q` tints `green/10` + a solid green rank badge), the live source badge, a
+  home-result split segment, the form "W" pill, and "got it!" collected tabs.
+  Green is semantic, never decorative.
+
+### Tertiary
+- **Stadium Blue** (#185a92): A single supporting role — the *away* segment of the
+  home/draw/away results split bar. Not used anywhere else.
+- **Foil Gold** (#d9b24a, representative; full gradient `#f6e7a8 → #d9b24a → #fff6d0 → #c9a238 → #9c7a1f`):
+  Not a flat color — a metallic gradient applied as a sticker *border* (collected
+  discs, featured shinies, mascot cards, "my teams", the Final, match-detail
+  header). It is the reward material; never use it as a fill or for text.
 
 ### Neutral
-- **Midnight Navy** (#070b16): The body surface — the stadium at night. Also the
-  text color *on* gold (CTAs, active pills, badges).
-- **Ink-Soft** (#0e1424): The first raised layer — match cards, the ticker, the
-  stat-grid cells, bracket ties.
-- **Ink-Card** (#141d33): The second raised layer — panels and hover states.
-- **Line** (#232f4a): Every hairline — borders, dividers, table row rules, and
-  (as a background behind `gap-px` grids) the seam that separates stat cells.
-- **Caption White** (#eaf0fb): Body and heading text. Hierarchy is built by
-  *opacity* of this one ink: `white/85` strong body, `white/55` secondary,
-  `white/35–45` labels and metadata.
+- **Album Paper** (#e7dcc4): The body surface — open-album paper, carrying the
+  halftone dot pattern. Also the sticky top-bar fill at `92%` alpha.
+- **Page Paper** (#f2ead7): The first raised paper layer — group/album pages,
+  standings wraps, the team-status card, knockout nodes.
+- **Sticker Card** (#fffdf7): The near-white sticker face — match stickers, player
+  rows, fact cards, rules, all foil shinies sit on this.
+- **Earth Ink** (#2b2114): Primary text; also the fill of dark chips, day tabs,
+  page tabs, the refresh button, the score "chip" behind highlight results, and
+  the active nav tab.
+- **Soft Ink** (#5d5037): Secondary text — metadata, labels, captions, table cells.
+- **Album Line** (#cabd9b): Every hairline and dashed edge — borders, dividers,
+  table rules, "still-to-collect" dashed slots, the spine rail dashes, and the
+  "v"/score separators (set in line color).
 
 ### State / Semantic
-- **Live Red** (#ef4444): The LIVE dot and live scores only. Always paired with a
-  pulse animation — never a static red.
-- **Source Live** (#34d399, emerald) / **Source Bundled** (#fbbf24, amber): The
-  honesty badge — live API vs. bundled fallback. This pairing is load-bearing
-  trust UI, not styling.
+- **Source Live** (#1c7a47, green) / **Source Bundled** (#c9a238 border on
+  #9c6b14 ink, amber): The honesty badge — live API vs. bundled fallback. This
+  pairing is load-bearing trust UI, not styling.
+- **Live Red** (#bb3829): The LIVE dot + live labels, always paired with a small
+  filled dot — reuses Album Red.
+- **Foil Star** (#e0a92b idle / #f6c552 active): The favourite/follow star glyph only.
 
 ### Named Rules
-**The One Light Rule.** Floodlight Gold is the only thing that glows. If two
-elements on a screen both reach for gold, one is wrong — demote it to caption
-white at reduced opacity. Gold marks *the answer* (the score, the action, the
-result), nothing else.
+**The One Answer Rule.** Album Red is the only color that marks the answer — the
+score, the primary action, the current selection, the result. If two things on a
+screen both reach for red without being "the answer", one is wrong; demote it to
+Soft Ink. Red's rarity on the warm paper is what makes it read as stamped.
 
-**The Opacity-Ramp Rule.** Neutral text hierarchy is built from one color
-(#eaf0fb) at stepped opacity, not from separate gray tokens. Body never drops
-below `white/55`; `white/35–45` is for labels and metadata only. Verify any
-muted value against its actual backdrop for WCAG AA before shipping it.
+**The Foil-Is-Earned Rule.** The foil gradient border means *collected, featured,
+or the Final* — nothing else. A foil edge on an ordinary card is forbidden; it
+cheapens the reward. Uncollected slots get a **dashed Album Line** border and a
+grayscaled flag, never foil.
 
-**The Green-Means-Pitch Rule.** Touchline green is reserved for qualification and
-the pitch. Never use it for a generic "success" or as a second accent.
+**The Green-Means-Pitch Rule.** Pitch Green is reserved for qualification, live
+source, and the pitch (form W, home segment). Never use it as a generic "success"
+color or a second decorative accent.
+
+**The Print-Ink Rule.** Neutral text hierarchy is built from Earth Ink → Soft Ink
+on warm paper, not from gray. Body and table-cell text stays at Earth/Soft Ink;
+verify Soft Ink (#5d5037) on its actual paper backdrop for WCAG AA before
+dropping anything lighter.
 
 ## 3. Typography
 
-**Display Font:** Big Shoulders (with Arial Narrow, then Manrope, fallback)
-**Body Font:** Manrope (with ui-sans-serif, system-ui fallback)
+**Display Font:** Anton (with Arial Narrow fallback)
+**Body Font:** Inter (with system-ui fallback)
+**Script Font:** Caveat (handwritten marker, for collector's annotations)
 
-**Character:** A contrast pairing on the condensed-vs-open axis. Big Shoulders is
-a tall, condensed, athletic grotesque — it reads like the number on the back of a
-shirt or a stadium scoreboard, and it carries every headline, score and stat.
-Manrope is an open, friendly humanist sans that handles everything a fan actually
-*reads*. The tension between the two is the whole voice: stadium signage over
-calm prose.
+**Character:** A three-voice print pairing. Anton is a single-weight (400),
+ultra-condensed grotesque set in caps — it reads like the block lettering stamped
+on a sticker or a scoreboard, and it carries every headline, team name and
+number. Inter is a neutral, highly legible screen sans for everything a fan
+actually reads. Caveat is the felt-tip marker a collector scrawls in the margins
+— "Got it!", "Road to the Final", section labels. The tension between stamped
+caps, calm reading sans, and handwriting *is* the album voice.
 
 ### Hierarchy
-- **Display** (900, `clamp(3rem, 9vw, 6rem)`, line-height 0.9, uppercase): Hero
-  headline only, on the home page. Stamped, condensed, balanced. Capped at 6rem.
-- **Headline** (800, `clamp(1.875rem, 4vw, 2.25rem)`, tracking-tight): Page `<h1>`
-  titles (`PageHeader`).
-- **Title** (800, 1rem–1.125rem): Section `<h2>` headings, panel headers, group names.
-- **Body** (400–500, 0.875rem–1rem, line-height 1.5): Descriptions and prose at
-  `white/55–85`. Cap reading measure at 65–75ch (`max-w-2xl` on subtitles).
-- **Data** (800, condensed, tabular-nums): Scores, points, stat figures, the
-  countdown — always Big Shoulders, always `tnum`, usually gold.
-- **Label** (700, 0.72rem, letter-spacing 0.22em, uppercase): The `.eyebrow`
-  kicker, table headers, stage tags, day markers. Gold/80 or white/35–45.
+- **Display** (Anton 400, `clamp(2.75rem, 9vw, 5.5rem)`, line-height 0.86,
+  uppercase): The hero album title only (`.al-title`). The year accent is red with
+  an ink text-stroke. Capped well below the 6rem ceiling.
+- **Headline** (Anton 400, `clamp(2rem, 5vw, 3rem)` / section `clamp(1.7rem,
+  3.4vw, 2.4rem)`, uppercase): Page titles (`.al-page-title`) and section `<h2>`
+  headings (`.al-sec-head h2`, knockout stage heads).
+- **Title** (Anton 400, ~1.05–1.2rem, uppercase): Card names (`.al-myteam .nm`),
+  squad position headers, match-detail squad titles, board headings.
+- **Body** (Inter 400–500, 13–15px, line-height 1.55): Descriptions, subtitles,
+  verdicts and prose at Earth/Soft Ink. Cap reading measure at ~56–62ch
+  (`.al-sub`, `.al-page-sub` already do).
+- **Data** (Anton 400, tabular-nums): Scores, points, stat stamps, meters,
+  predictions, countdowns — always Anton, always `tnum`, usually red.
+- **Label** (Inter 700–800, 10.5–12px, letter-spacing 0.05–0.08em, uppercase):
+  Card meta rows (`.al-match .top`), tags (`.al-mh-tag`), table headers, day tabs.
+- **Script** (Caveat 700, 18–32px, often rotated −2°, red): The hero kicker,
+  section `.scribble` labels, ribbons, "got it!" tabs, the loading scribble.
 
 ### Named Rules
-**The Scoreboard Rule.** Every number that can change — scores, points, GD,
-countdowns, stat totals — is set in condensed display type with
-`font-variant-numeric: tabular-nums`. Numbers must not reflow as they tick.
+**The Stamp Rule.** Every number that can change — scores, points, GD, meters,
+predictions, countdowns — is set in Anton with `font-variant-numeric:
+tabular-nums`. Numbers must not reflow as they tick.
 
-**The Display-Stays-Big Rule.** Big Shoulders is for headlines, scores and stat
-figures only. Never set body copy, button labels, table cells, or form text in
-the display face — that's a product-UI smell. Reading text is always Manrope.
+**The Three-Voice Rule.** Anton stamps, Inter reads, Caveat annotates. Never set
+body copy, table cells, button labels or form text in Anton (a print-poster
+smell), and never set a heading or a long sentence in Caveat — the marker is for
+short collector's annotations only (≤ a few words).
 
-**The Eyebrow-Is-Earned Rule.** The all-caps gold `.eyebrow` kicker is a real
-broadcast lower-third label, used on page and major section headers — not a
-reflex above every block. Keep it as a deliberate cadence, not scaffolding.
+**The Caps-Are-Anton Rule.** Uppercase display caps are always Anton at weight
+400 — never faux-bold a body sans into a headline. If it's a big stamped word,
+it's Anton; if it's read, it's Inter.
 
 ## 4. Elevation
 
-**Flat tonal layering + selective gold glow.** Surfaces are flat at rest. Depth
-comes from a three-step tonal ramp (Midnight Navy → Ink-Soft → Ink-Card) and
-hairline `line` borders, not from drop shadows. The one exception is the
-floodlight: shadows appear only as *gold glow* under the things the One Light Rule
-already privileges — the primary CTA, group badges, the highlighted Final tie, the
-logo trophy. There is also one functional blur: the sticky nav and mobile menu use
-`backdrop-blur-xl` over `ink/80` so content reads while scrolling beneath them.
+**Tactile print stacking — the opposite of flat.** Depth is physical: stickers sit
+at a slight rotation, cast a *hard offset* print-shadow onto the paper, and lift
+on hover. Three paper tones (Album Paper → Page Paper → Sticker Card) layer the
+surfaces, Album Line hairlines (often dashed) separate them, and the foil border
+adds a metallic raised edge to earned items. There is one functional blur: the
+sticky top bar uses `backdrop-filter: blur(10px)` over paper at 92% so content
+reads while scrolling beneath it.
 
 ### Shadow Vocabulary
-- **Floodlight glow** (`box-shadow: 0 10px 25px -5px rgba(251,191,36,0.20)`):
-  Under the primary gold CTA and the highlighted Final tie. The accent appears lit.
-- **Badge glow** (`box-shadow: 0 4px 6px -1px rgba(251,191,36,0.20)`): Under
-  small gold badges (group letters, active filter chips).
-- **Menu lift** (`box-shadow: 0 20px 25px -5px rgba(0,0,0,0.30)`): The mobile
-  dropdown only — a true dark shadow, because it floats over content.
+- **Print stamp** (`box-shadow: 2px 2px 0 rgba(43,33,20,0.22)`): The hard,
+  offset, single-color shadow under badges, day tabs, page tabs and ribbons — the
+  look of a sticker pressed onto paper.
+- **Button press** (`box-shadow: 3px 4px 0 rgba(43,33,20,0.28)`, grows to `5px 7px
+  0` on hover with `translate(-1px,-2px)`): Primary buttons, refresh, fav — the
+  control physically presses up off the page.
+- **Sticker lift** (`box-shadow: 0 12px 22px rgba(43,33,20,0.16)`): The diffuse
+  shadow a card grows into on hover (`translateY(-2px)`), paired with a red border.
+- **Foil drop** (`box-shadow: 0 16px 34px rgba(43,33,20,0.2)`, up to `0 22px 42px`
+  for the Final/mascots): The deeper soft shadow under foil shinies — they sit
+  highest on the page.
+- **Inset highlight** (`box-shadow: inset 0 1px 0 rgba(255,255,255,0.5)`): A
+  faint top sheen on paper pages, like light on a glossy page.
 
 ### Named Rules
-**The Flat-Until-Lit Rule.** Surfaces are flat. A shadow on this site means
-"this is lit by the floodlight" — so shadows are gold and rare. A neutral drop
-shadow is only ever allowed on a floating overlay (the mobile menu). If a card
-has a gray shadow at rest, it's wrong; raise it with a tonal step or a `gold/40`
-hover border instead.
+**The Sticker-On-Paper Rule.** Shadows here are warm and ink-tinted
+(`rgba(43,33,20,...)`), never neutral black, because the light is falling on
+paper. A cool/black drop shadow is wrong. Resting cards may already carry a print
+or foil shadow — this is intentional weight, not a flat-design violation.
+
+**The Rotation Rule.** Collectible elements (stickers, badges, tabs, ribbons,
+discs) sit at a slight rotation (±1–4°) at rest and straighten toward 0° on hover.
+Reading surfaces (tables, prose blocks, panels) stay square. Rotation signals
+"this is a physical object you can pick up."
 
 ## 5. Components
 
-Components are **broadcast-grade and tactile**: TV-graphics-clean, confident, with
-a small physical response on hover (lift, scale, or a gold border igniting),
-while the data underneath stays crisp and scannable.
+Components are **collectible and tactile**: print-clean, confident, each behaving
+like a physical sticker — rotated at rest, hard-shadowed, lifting and squaring up
+on hover — while the data underneath stays crisp and scannable. Everything lives
+inside `.album-root` and is prefixed `.al-`.
 
 ### Buttons
-- **Shape:** Fully rounded pill (`rounded-full`).
-- **Primary:** Floodlight gold background, Midnight Navy text, bold, `px-6 py-3`,
-  with floodlight glow. Hover scales to `1.03–1.04` (no color change — the gold
-  already glows). Used for the hero CTA and Refresh.
-- **Secondary:** Transparent on `line` border, caption-white text. Hover lifts the
-  border to `white/40` and washes `white/5`.
-- **Refresh (signature):** Primary pill with a ⚽ glyph that spins 360° on hover and
-  switches to a continuous `ball-spin` while the transition is pending.
+- **Shape:** Rounded rectangle (`{rounded.btn}`, 10px); controls that are
+  status/utility (refresh, fav, source) are full pills (`{rounded.pill}`).
+- **Primary** (`.al-btn.primary`): Album Red fill, white text, weight 800,
+  `12px 22px`, with the Button-press hard shadow. Hover nudges `translate(-1px,
+  -2px)` and grows the shadow — no color change.
+- **Ghost** (`.al-btn.ghost`): Transparent on a 2px Earth-Ink border, ink text.
+  Hover washes `ink/6` and lifts `translateY(-2px)`.
+- **Refresh (signature)** (`.al-refresh`): Earth-Ink pill, white text, with a ⚽
+  glyph that spins continuously (`al-spin`) while the revalidate transition is
+  pending; disabled drops to 0.65 opacity.
 
 ### Chips (filters)
-- **Style:** Pill. **Active** = gold fill, ink text, badge glow. **Inactive** =
-  `line` border, `white/65` text; hover lifts border to `white/30` and text to white.
-- **Behavior:** Horizontal scroll row on mobile (`no-scrollbar`), never wraps.
+- **Style** (`.al-chip`): Pill, 1.5px Album-Line border, Soft-Ink text,
+  transparent fill. Horizontal scroll row (`.al-chips`, scrollbar hidden), never
+  wraps.
+- **States:** Hover lifts border + text to Earth Ink. **Active** = Album Red fill,
+  white text, red border, Print-stamp shadow.
 
 ### Cards / Containers
-- **Match Card:** `rounded-xl`, `ink-soft/70` on a `line` border, `p-3.5`. Hover
-  lifts `-translate-y-0.5`, igniting a `gold/40` border and deepening to
-  `ink-card/70`. Stage/meta in uppercase `white/35` labels top and bottom;
-  winner's name and score go bold + gold, loser dims to `white/50`.
-- **Panel:** The workhorse surface — a subtle vertical gradient
-  (`ink-card → ink-soft` at 85% alpha) on a `line` border, `rounded-lg` (1rem),
-  `p-4/p-5`. Used for tables, leaderboards, confederation lists. Hover may warm
-  the border. **Never nest a panel inside a panel.**
-- **Corner scale:** xs `0.25rem` (rank badges) · sm `0.5rem` (icon tiles, menu) ·
-  md `0.75rem` (cards, ties) · lg `1rem` (panels, stat grids) · xl `1.75rem` (hero).
+- **Sticker card** (`.al-match`, `.al-fact`, `.al-rival`, `.al-player`,
+  `.al-hl-row`): Sticker-Card paper on a 1px Album-Line border, `{rounded.md}`.
+  Hover lifts `translateY(-2px)`, grows the Sticker-lift shadow, and turns the
+  border Album Red. Winner's name + score go Earth-Ink/red bold; loser dims to
+  Soft Ink.
+- **Foil shiny** (`.al-shiny`, `.al-mascot`, `.al-myteam`, `.al-ko-final`,
+  `.al-thero`, `.al-mh`, collected `.al-disc.got`): Sticker-Card face inside a
+  ~6px **foil-gradient border** (`background-clip: padding-box, border-box`),
+  rotated at rest, Foil-drop shadow. Reserved for collected / featured / the Final
+  (the Foil-Is-Earned Rule).
+- **Paper panel** (`.al-page`, `.al-standwrap`, `.al-group-card`, `.al-board`,
+  `.al-split`, `.al-block`, status card): Page-Paper fill on Album-Line border,
+  `{rounded.lg}`, sometimes an Inset-highlight sheen. The workhorse reading
+  surface — square, never rotated, never foil.
+- **To-collect slot** (`.al-disc.todo`, `.al-ko-tie.todo`): A **dashed** Album-Line
+  border on transparent, with a grayscaled flag at ~0.4 opacity — the empty
+  pocket waiting for a sticker.
+- **Corner scale:** sm 8px (badges, rank chips, tabs) · btn 10px (buttons) · md
+  14px (cards, players, rules) · lg 16px (panels, tables, group cards) · xl 20px
+  (team hero, match-detail header) · pill (chips, fav, source, refresh, meters).
 
 ### Tables (standings — signature)
-- **Header:** Uppercase `white/40` labels, 11px, no fill.
-- **Rows:** Separated by `line/60` top borders (no zebra). Hover washes
-  `white/3`. **Qualifying rows** (top two) tint `pitch/6` and get a solid green
-  rank badge; the third-place contender gets a neutral `white/15` badge.
-- **Numbers:** All cells `tabular-nums`, `white/70`; the Points column is condensed
-  display gold.
-- A legend (green / neutral swatch) always explains the row tints.
+- **Wrap** (`.al-standwrap`): Page-Paper panel, horizontal scroll on overflow.
+- **Header:** Soft-Ink uppercase labels, 10.5px, on a 2px Earth-Ink bottom rule.
+- **Rows:** Separated by 1px Album-Line rules (no zebra). **Qualifying rows**
+  (`tr.q`) tint `green/10` and get a solid green rank badge; the user's followed
+  team (`tr.self`) tints `red/9` with a red name.
+- **Numbers:** All cells `tabular-nums`, Soft Ink; the Points column is Anton in
+  Album Red. A green/neutral **legend** always explains the row tints.
 
 ### Navigation
-- **Desktop:** Sticky top bar, `ink/80` + `backdrop-blur-xl`, hairline bottom
-  border. Pill links; active = gold fill + ink text, inactive = `white/70` with a
-  `white/10` hover wash.
-- **Mobile:** Hamburger that animates to an X; a backdrop-dimmed dropdown that
-  slides + fades, with the links staggering in (`60 + i*45`ms). Honors
-  `motion-reduce`. `inert` when closed.
+- **Desktop** (`.al-bar` / `.al-tab`): Sticky top bar, paper at 92% +
+  `backdrop-blur(10px)`, Album-Line bottom border. Pill tabs; active = Earth-Ink
+  fill + white text, inactive = ink-soft with an `ink/7` hover wash. A red
+  rotated `.al-badge` brand stamp sits at the left.
+- **Language switch** (`.al-lang`): A segmented pill (VI · EN) inside an Album-Line
+  border; the active locale gets the Earth-Ink fill. Keeps the user on the same
+  page under the other locale.
+- **Mobile:** A solid Earth-Ink hamburger (☰ ↔ ✕) reveals a full-width paper
+  dropdown anchored under the sticky bar; tabs stack as rounded rows. `aria-expanded`
+  / `aria-controls` wired.
 
-### Stat Grid (signature)
-A row of figures rendered as a `gap-px` grid over a `line` background, so a single
-hairline seam separates each cell — a broadcast stat strip, not a row of cards.
-Each cell: `ink-soft/90`, a big gold condensed `tnum` figure, an uppercase
-`white/45` label. This is the house alternative to the banned hero-metric template.
+### Fields / Favourite control
+- The album has no text inputs; the primary stateful control is the **favourite /
+  follow** button (`.al-fav`): a pill, 2px Earth-Ink border, transparent at rest
+  with a ☆ Foil-Star glyph; **on** state fills Earth Ink with white text and a ★
+  in lit foil-gold. `aria-pressed` reflects state; renders a stable off-state on
+  first paint, then hydrates from `localStorage`.
 
-### Broadcast Ticker (signature)
-A full-width marquee inside a `line`-bordered, `stripes`-textured strip: flags +
-3-letter codes + scores scrolling left at 45s, paused on hover, with gradient
-fade masks at both edges. Live scores go red, finished go gold. Pure atmosphere
-that doubles as a glanceable results crawl.
+### Source badge (signature, trust UI)
+`.al-src`: A bordered pill with a leading status dot. **Live** = green text on a
+green-tinted fill; **Bundled** = amber. Always rendered next to the refresh
+control on data pages — the honest "live API vs. bundled fallback" signal the
+"Always renders, never lies" principle demands.
 
-### Knockout Bracket (signature)
-Horizontally-scrolling columns (R32 → Final) of `Tie` cards: two stacked team
-slots split by a hairline, a date/venue footer on `black/20`. The Final tie is
-highlighted with a `gold/50` border and floodlight glow.
+### Match sticker (signature)
+`.al-match`: The collectible result card. Stage/group label + kickoff time (or a
+red LIVE dot, or "Full time") on top; two team lines with flag, name and Anton
+score; a footer with date + venue on an Album-Line rule. Winner emphasised, loser
+dimmed. Links to the match-detail page.
+
+### Knockout — "Road to the Final" (signature)
+`.al-road`: A vertical spine of dashed rail + Anton-numbered nodes (foil when the
+stage is complete, a solid-red trophy node at the end). Each stage lists `.al-ko-tie`
+sticker ties — dashed when still to come, foil when collected, with a green "got
+it!" tab. The Final is a large foil showpiece (`.al-ko-final`) with a red ribbon.
+
+### Stamps & meters (signature)
+`.al-stamp` (dashed Sticker-Card tile, Anton red value over a Soft-Ink label) is
+the house stat unit — the album alternative to the banned hero-metric template.
+The collection-progress `.al-meter` / `.al-board .bar` are green/red fills on a
+paper track, showing how full the album / how dominant a leader is.
 
 ## 6. Do's and Don'ts
 
 ### Do:
-- **Do** keep Floodlight Gold (#fbbf24) for the answer only — scores, primary
-  actions, current selection, results. Honor the One Light Rule.
-- **Do** build neutral text hierarchy from #eaf0fb at stepped opacity; keep body
-  ≥ `white/55` and verify muted values hit WCAG AA on their actual backdrop.
-- **Do** set every changeable number in condensed display type with
-  `tabular-nums` (the Scoreboard Rule).
-- **Do** convey depth with the ink → ink-soft → ink-card tonal ramp and hairline
-  `line` borders; reserve shadows for gold glow under lit elements.
-- **Do** give every animation (floodlight, rolling ball, marquee, reveals, nav
-  stagger) a `prefers-reduced-motion: reduce` fallback.
+- **Do** keep Album Red (#bb3829) for the answer only — scores, primary actions,
+  current selection, results, links-on-hover. Honor the One Answer Rule.
+- **Do** reserve the foil-gradient border for collected, featured, or Final items;
+  give still-to-collect slots a dashed Album-Line border + grayscaled flag (the
+  Foil-Is-Earned Rule).
+- **Do** build neutral text from Earth Ink → Soft Ink on warm paper; verify Soft
+  Ink (#5d5037) hits WCAG AA on its actual paper backdrop before shipping.
+- **Do** set every changeable number in Anton with `tabular-nums` (the Stamp Rule).
+- **Do** convey depth with the paper ramp (Album → Page → Card), warm ink-tinted
+  shadows, slight rotation at rest, and lift-on-hover.
+- **Do** rotate collectible objects ±1–4° at rest and straighten them on hover;
+  keep reading surfaces (tables, prose, panels) square.
+- **Do** give every animation (al-pop reveal, refresh spin, hover bounce, hero
+  float, parade marquee) a `prefers-reduced-motion: reduce` fallback — already
+  scoped under `.album-root`.
 - **Do** keep the live-vs-bundled source badge visible and honest on every data
-  page — it's trust UI (the "Always renders, never lies" principle).
-- **Do** design mobile-first and one-handed: scrollable filter/bracket rows,
-  thumb-reachable nav, sticky day markers.
+  page — it's trust UI ("Always renders, never lies").
+- **Do** design mobile-first and one-handed: scrollable chip/bracket rows, the
+  hamburger dropdown, thumb-reachable nav, sticky day tabs.
 
 ### Don't:
 - **Don't** ship the flat gray **SaaS-dashboard** look — card grids of icon +
-  heading + text, one token accent, corporate admin energy. This is a stadium.
-- **Don't** drift toward a dense, ad-stuffed **scores-aggregator** table-soup.
-  Breathing room and hairline structure win over raw density.
+  heading + text, one token accent, corporate admin energy. This is an album.
+- **Don't** drift toward a dense, ad-stuffed **scores-aggregator** table-soup;
+  breathing room and hairline structure win over raw density.
 - **Don't** adopt the stiff **governing-body** sponsor-wall, press-release tone.
-- **Don't** add gimmicky, **over-the-top** motion or gaudy gradients that get
-  between a fan and the score. Every effect earns its place or is cut.
-- **Don't** set body copy, button labels, table cells, or form text in Big
-  Shoulders — display type is for headlines, scores and stat figures only.
-- **Don't** restate the eyebrow kicker or numbered markers above *every* section;
-  keep them a deliberate broadcast cadence, not reflexive scaffolding.
-- **Don't** use `background-clip: text` gradient text anywhere, ever. Gold words
-  (the "2026" lockup, a hero phrase) are a single solid `gold`; emphasis comes
-  from weight and size, never a gradient fill.
-- **Don't** put a neutral gray drop shadow on a resting surface; if it has a
-  shadow at rest it should be gold glow, or it should be flat.
-- **Don't** use Touchline Green as a generic success color or a second accent —
-  it means qualification and the pitch.
-- **Don't** nest a panel inside a panel.
+- **Don't** add gimmicky, **over-the-top** motion or extra foil that gets between
+  a fan and the score. Every foil edge and rotation earns its place or is cut.
+- **Don't** set body copy, table cells, button labels or form text in Anton, and
+  don't set headings or sentences in Caveat — Anton stamps, Inter reads, Caveat
+  annotates (the Three-Voice Rule).
+- **Don't** put foil on an ordinary card, or red on something that isn't the
+  answer; both cheapen the signal.
+- **Don't** use a neutral/black drop shadow — album shadows are warm and
+  ink-tinted (`rgba(43,33,20,...)`) because light falls on paper.
+- **Don't** use `background-clip: text` gradient *text* anywhere; the foil is a
+  border material only. The "2026" lockup is solid Album Red with an ink stroke.
+- **Don't** use Pitch Green as a generic success color or a second accent — it
+  means qualification, live source, and the pitch.
+- **Don't** nest a paper panel inside a paper panel; let the paper → card tonal
+  step carry the layering instead.
