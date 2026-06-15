@@ -10,6 +10,7 @@ const LINKS = [
   { href: "/matches", label: "Matches" },
   { href: "/knockout", label: "Knockout" },
   { href: "/stats", label: "Stats" },
+  { href: "/rules", label: "Rules" },
 ];
 
 export default function AlbumNav() {

@@ -241,6 +241,28 @@
 .al-parade:hover .al-parade-track { animation-play-state: paused; }
 @keyframes al-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
+/* ---------- new rules ---------- */
+.al-rules { display: grid; gap: 14px; }
+@media (min-width: 720px) { .al-rules { grid-template-columns: 1fr 1fr; } }
+.al-rule {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: var(--al-card); border: 2px dashed var(--al-line);
+  border-radius: 14px; padding: 16px 18px;
+}
+.al-rule .ic { font-size: 30px; line-height: 1; flex-shrink: 0; }
+.al-rule .bd { min-width: 0; }
+.al-rule .top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+.al-rule h3 {
+  font-family: var(--font-anton), sans-serif; font-weight: 400; text-transform: uppercase;
+  font-size: 1.1rem; line-height: 1; letter-spacing: 0.01em; margin: 0;
+}
+.al-rule .tag {
+  font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--al-red); background: rgba(187, 56, 41, 0.1);
+  border: 1px solid rgba(187, 56, 41, 0.3); border-radius: 999px; padding: 2px 8px; white-space: nowrap;
+}
+.al-rule p { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--al-ink-soft); }
+
 /* ---------- route loading fallback ---------- */
 .al-loading { min-height: 46vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; }
 .al-loading .ball { font-size: 52px; line-height: 1; animation: al-spin 0.8s linear infinite; }
