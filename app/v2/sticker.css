@@ -57,8 +57,24 @@
 }
 .al-tab:hover { background: rgba(43, 33, 20, 0.07); }
 .al-tab.active { background: var(--al-ink); color: #fff; }
-.al-tab.classic { color: var(--al-red); border: 1.5px solid var(--al-red); margin-left: 4px; }
-.al-tab.classic:hover { background: var(--al-red); color: #fff; }
+
+/* hamburger toggle — hidden on desktop, shown on mobile */
+.al-burger {
+  display: none; align-items: center; justify-content: center;
+  width: 40px; height: 36px; padding: 0; cursor: pointer;
+  background: var(--al-ink); color: #fff; border: none; border-radius: 8px;
+  font-size: 17px; line-height: 1;
+}
+
+@media (max-width: 640px) {
+  .al-burger { display: inline-flex; }
+  .al-nav {
+    display: none; flex-direction: column; align-items: stretch;
+    width: 100%; margin-top: 10px; gap: 4px;
+  }
+  .al-nav.open { display: flex; }
+  .al-nav .al-tab { padding: 11px 12px; border-radius: 8px; }
+}
 
 /* ---------- page header (per sub-page) ---------- */
 .al-page-head { padding: 26px 0 10px; border-bottom: 1px solid var(--al-line); margin-bottom: 26px; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
