@@ -1,335 +1,262 @@
 import Link from "next/link";
-import { getWcData } from "@/lib/footballData";
+import { TEAMS, GROUPS, teamsByGroup } from "@/lib/teams";
 import { tournamentStats } from "@/lib/standings";
-import { TEAMS } from "@/lib/teams";
-import MatchCard from "@/components/MatchCard";
-import FeaturedMatch from "@/components/FeaturedMatch";
-import RefreshButton from "@/components/RefreshButton";
-import SectionHeading from "@/components/SectionHeading";
-import Ticker from "@/components/Ticker";
-import Mascots from "@/components/Mascots";
-import EmojiParade from "@/components/EmojiParade";
+import { getWcData } from "@/lib/footballData";
+import { fmtTime } from "@/lib/format";
+import { MASCOTS } from "@/lib/mascots";
+import MatchSticker, { side, STAGE_LABEL } from "./MatchSticker";
+import AlbumRefresh from "./AlbumRefresh";
 
-const SECTIONS = [
-  { href: "/groups", no: "01", icon: "📊", title: "Tables", desc: "Live standings for all 12 groups." },
-  { href: "/matches", no: "02", icon: "📅", title: "Matches", desc: "All 104 fixtures and live results." },
-  { href: "/knockout", no: "03", icon: "🏆", title: "Knockout", desc: "Round of 32 to the Final." },
-  { href: "/stats", no: "04", icon: "📈", title: "Stats", desc: "Scorers and tournament numbers." },
-];
+// festive sticker-tape band (decorative)
+const PARADE = ["⚽", "🏆", "🥅", "🎉", "🎺", "🔥", "🌎", "🙌", "🥇", "📣", "🇺🇸", "🇨🇦", "🇲🇽", "🫎", "🐆", "🦅"];
 
-// ordered by number of qualified teams (largest first)
-const CONFEDERATIONS = [
-  { code: "UEFA", region: "Europe" },
-  { code: "CAF", region: "Africa" },
-  { code: "AFC", region: "Asia" },
-  { code: "CONMEBOL", region: "South America" },
-  { code: "CONCACAF", region: "N. & C. America" },
-  { code: "OFC", region: "Oceania" },
-] as const;
-
-export default async function Home() {
+export default async function AlbumHome() {
   const { matches, source, fetchedAt } = await getWcData();
-  const stats = tournamentStats(matches);
-  const recent = matches.filter((m) => m.status === "finished").slice(-4).reverse();
+
+  const finished = matches.filter((m) => m.status === "finished");
   const live = matches.filter((m) => m.status === "live");
   const scheduled = matches.filter((m) => m.status === "scheduled");
   const nextMatch = scheduled[0];
-  const upcoming = scheduled.slice(0, 4);
+  const featured = live[0] ?? nextMatch;
+  const recent = finished.slice(-6).reverse();
+  const upcoming = scheduled.slice(0, 6);
+  const stats = tournamentStats(matches);
 
-  const facts = [
-    { value: "48", label: "Teams", icon: "⚽" },
-    { value: "104", label: "Matches", icon: "📅" },
-    { value: "16", label: "Host Cities", icon: "🏟️" },
-    { value: "3", label: "Host Nations", icon: "🌎" },
+  const playedIds = new Set<string>();
+  for (const m of finished) {
+    playedIds.add(m.home);
+    playedIds.add(m.away);
+  }
+  const collected = TEAMS.filter((t) => playedIds.has(t.id)).length;
+  const pct = Math.round((collected / 48) * 100);
+
+  const stamps = [
+    { v: `${stats.matchesPlayed}`, frac: `/${stats.totalMatches}`, l: "Stickers stuck", icon: "📒" },
+    { v: `${stats.goals}`, l: "Goals scored", icon: "⚽" },
+    { v: `${stats.avgGoals}`, l: "Goals / match", icon: "🎯" },
+    { v: `${stats.cleanSheets}`, l: "Clean sheets", icon: "🧤" },
   ];
 
-  const pulse = [
-    { v: `${stats.matchesPlayed}`, sub: `/ ${stats.totalMatches}`, l: "Matches played" },
-    { v: `${stats.goals}`, l: "Goals scored" },
-    { v: `${stats.avgGoals}`, l: "Goals / match" },
-    { v: `${stats.cleanSheets}`, l: "Clean sheets" },
-  ];
+  const fHome = featured ? side(featured.home, featured.homeName) : null;
+  const fAway = featured ? side(featured.away, featured.awayName) : null;
+  const fScored = featured && featured.homeScore != null && featured.awayScore != null;
 
   return (
-    <div className="space-y-14">
-      {/* ---------- Hero ---------- */}
-      <section className="relative overflow-hidden rounded-[1.75rem] border border-line bg-gradient-to-br from-pitch/25 via-ink-soft to-ink px-6 py-10 sm:px-10 sm:py-16">
-        <div aria-hidden className="stripes pointer-events-none absolute inset-0 opacity-60" />
-        <span
-          aria-hidden
-          className="pointer-events-none absolute -right-4 -top-12 select-none font-display text-[9rem] font-extrabold leading-none text-white/[0.035] sm:-top-10 sm:text-[17rem]"
-        >
-          26
-        </span>
-        <div
-          aria-hidden
-          className="animate-floodlight pointer-events-none absolute -right-28 -top-28 h-80 w-80 rounded-full bg-gold/15 blur-3xl"
-        />
-        {/* football rolling across (clipped by the hero's overflow-hidden) */}
-        <span
-          aria-hidden
-          className="animate-roll pointer-events-none absolute top-[44%] z-0 select-none text-4xl opacity-50 drop-shadow-[0_4px_10px_rgba(0,0,0,0.4)] will-change-transform sm:text-5xl"
-        >
-          ⚽
-        </span>
+    <>
+      <div
+        className="al-page-head"
+        style={{ borderBottom: "none", marginBottom: 0, paddingBottom: 0, justifyContent: "flex-end" }}
+      >
+        <AlbumRefresh source={source} fetchedAt={fetchedAt} />
+      </div>
 
-        {/* drifting WC emoji — playful, low-opacity, clipped by the hero */}
-        <span aria-hidden className="hero-float pointer-events-none absolute left-[5%] top-[16%] z-0 select-none text-3xl opacity-25 sm:text-4xl">
-          🏆
-        </span>
-        <span aria-hidden className="hero-float pointer-events-none absolute bottom-[14%] left-[8%] z-0 hidden select-none text-3xl opacity-20 sm:block" style={{ animationDelay: "1.5s" }}>
-          🥅
-        </span>
-        <span aria-hidden className="hero-float pointer-events-none absolute right-[7%] top-[58%] z-0 select-none text-3xl opacity-20 sm:text-4xl" style={{ animationDelay: "0.8s" }}>
-          🎉
-        </span>
+      {/* ---------- hero ---------- */}
+      <section className="al-hero">
+        {/* drifting album stickers — playful, behind the content */}
+        <span className="al-float" aria-hidden style={{ left: "31%", bottom: "2px" }}>⚽</span>
+        <span className="al-float" aria-hidden style={{ right: "5%", top: "4px", animationDelay: "1.4s" }}>🎉</span>
+        <span className="al-float" aria-hidden style={{ left: "-1%", top: "42%", animationDelay: "0.7s" }}>🏆</span>
 
-        <div className="relative">
-          <p className="reveal eyebrow flex items-center gap-2 text-gold">
-            <span className="h-3 w-6 stripes rounded-sm border border-gold/30" />
-            June 11 – July 19 · 2026
-          </p>
-          <h1
-            className="reveal mt-4 max-w-4xl text-5xl font-black uppercase leading-[0.9] sm:text-8xl"
-            style={{ animationDelay: "80ms" }}
-          >
-            The world&rsquo;s game
-            <br className="hidden sm:block" /> comes to{" "}
-            <span className="text-gold">North America</span>
+        <div className="al-reveal">
+          <span className="al-kicker">Stick&rsquo;em in!</span>
+          <h1 className="al-title">
+            World&nbsp;Cup <span className="yr">26</span>
           </h1>
-          <p
-            className="reveal mt-5 max-w-xl text-base text-white/65 sm:text-lg"
-            style={{ animationDelay: "160ms" }}
-          >
-            48 nations. 104 matches. Three host countries. Live tables, the full
-            bracket and every stat — all in one place.
+          <p className="al-sub">
+            Collect all 48 nations across the USA, Canada &amp; Mexico. Every match you
+            watch sticks a crest in the book — tables, the bracket and stats fill in as
+            the tournament plays out.
           </p>
-          <div
-            className="reveal mt-7 flex flex-wrap items-center gap-3"
-            style={{ animationDelay: "240ms" }}
-          >
-            <Link
-              href="/matches"
-              className="rounded-full bg-gold px-6 py-3 text-sm font-bold text-ink shadow-lg shadow-gold/20 transition-transform hover:scale-[1.04]"
-            >
-              Explore matches
-            </Link>
-            <Link
-              href="/groups"
-              className="rounded-full border border-line px-6 py-3 text-sm font-bold text-white/90 transition-colors hover:border-white/40 hover:bg-white/5"
-            >
-              Group tables
-            </Link>
-            <span className="ml-1 flex items-center gap-1 text-2xl" title="USA · Canada · Mexico">
-              🇺🇸 🇨🇦 🇲🇽
-            </span>
+          <div className="al-cta">
+            <Link className="al-btn primary" href="/matches">Open the album</Link>
+            <Link className="al-btn ghost" href="/groups">Group tables</Link>
+            <span className="al-hostflags" title="USA · Canada · Mexico">🇺🇸 🇨🇦 🇲🇽</span>
           </div>
         </div>
 
-        <dl
-          className="reveal relative mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:mt-12 sm:grid-cols-4"
-          style={{ animationDelay: "320ms" }}
-        >
-          {facts.map((f) => (
-            <div key={f.label} className="group/fact bg-ink-soft/90 px-4 py-5">
-              <span className="mb-1 inline-block text-xl transition-transform duration-300 group-hover/fact:-translate-y-0.5 group-hover/fact:scale-125">
-                {f.icon}
+        {featured && fHome && fAway && (
+          <div className="al-shiny al-reveal" style={{ animationDelay: "120ms" }}>
+            <span className="ribbon">{live[0] ? "live now" : "next up"}</span>
+            <div className="row">
+              <span className="side">
+                <span className="fl">{fHome.flag}</span>
+                <span className="nm">{fHome.name}</span>
               </span>
-              <dt className="font-display text-3xl font-extrabold text-white sm:text-4xl">
-                {f.value}
-              </dt>
-              <dd className="mt-1 text-xs uppercase tracking-wider text-white/45">
-                {f.label}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </section>
-
-      {/* ---------- Broadcast score ticker ---------- */}
-      <Ticker matches={matches} />
-
-      {/* ---------- Live + Up next ---------- */}
-      {(live.length > 0 || nextMatch) && (
-        <section className="space-y-6">
-          {live.length > 0 && (
-            <div>
-              <SectionHeading
-                eyebrow="Happening now"
-                title={
-                  <span className="flex items-center gap-2.5">
-                    <span className="relative flex h-3 w-3">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500/70" />
-                      <span className="relative inline-flex h-3 w-3 rounded-full bg-red-500" />
-                    </span>
-                    Live now
-                  </span>
-                }
-              />
-              <div className="grid gap-4 sm:grid-cols-2">
-                {live.slice(0, 2).map((m) => (
-                  <FeaturedMatch key={m.id} match={m} variant="live" />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {nextMatch && (
-            <div>
-              <SectionHeading
-                eyebrow="On the clock"
-                title="Up next"
-                action={
-                  <Link
-                    href="/matches"
-                    className="text-sm font-semibold text-gold hover:underline"
-                  >
-                    Full schedule →
-                  </Link>
-                }
-              />
-              <FeaturedMatch match={nextMatch} variant="next" />
-            </div>
-          )}
-        </section>
-      )}
-
-      {/* ---------- Section nav ---------- */}
-      <section>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {SECTIONS.map((s) => (
-            <Link
-              key={s.href}
-              href={s.href}
-              className="group panel relative overflow-hidden p-5 transition-all duration-300 hover:-translate-y-1 hover:border-gold/50"
-            >
-              <div className="flex items-start justify-between">
-                <span className="nav-icon inline-block text-3xl">
-                  {s.icon}
+              {fScored ? (
+                <span className="score">
+                  {featured.homeScore}<span style={{ color: "var(--al-line)" }}>–</span>{featured.awayScore}
                 </span>
-                <span className="font-display text-sm font-bold text-white/20 transition-colors group-hover:text-gold/60">
-                  {s.no}
-                </span>
-              </div>
-              <h3 className="mt-4 text-lg font-extrabold transition-colors group-hover:text-gold">
-                {s.title}
-              </h3>
-              <p className="mt-1 text-sm text-white/55">{s.desc}</p>
-              <span className="mt-3 inline-block text-sm text-gold opacity-0 transition-opacity group-hover:opacity-100">
-                Open →
+              ) : (
+                <span className="vs">vs</span>
+              )}
+              <span className="side">
+                <span className="fl">{fAway.flag}</span>
+                <span className="nm">{fAway.name}</span>
               </span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* ---------- Mascots ---------- */}
-      <Mascots />
-
-      {/* ---------- Festive emoji parade ---------- */}
-      <EmojiParade />
-
-      {/* ---------- Tournament pulse ---------- */}
-      <section>
-        <SectionHeading
-          eyebrow="By the numbers"
-          title="Tournament pulse"
-          action={<RefreshButton fetchedAt={fetchedAt} source={source} />}
-        />
-        <div className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-4">
-          {pulse.map((s) => (
-            <div key={s.l} className="bg-ink-soft/90 px-4 py-6 text-center">
-              <div className="font-display text-4xl font-extrabold text-gold tnum">
-                {s.v}
-                {s.sub && <span className="text-xl text-white/30">{s.sub}</span>}
-              </div>
-              <div className="mt-1.5 text-xs uppercase tracking-wider text-white/45">
-                {s.l}
-              </div>
             </div>
-          ))}
-        </div>
+            <div className="meta">
+              <span>
+                {STAGE_LABEL[featured.stage]}
+                {featured.group ? ` · Group ${featured.group}` : ""}
+              </span>
+              {live[0] ? (
+                <span className="live"><span className="dot" /> Live</span>
+              ) : (
+                <span>Kick-off {fmtTime(featured.date)}</span>
+              )}
+            </div>
+          </div>
+        )}
       </section>
 
-      {/* ---------- Results + Upcoming ---------- */}
-      <section className="grid gap-10 lg:grid-cols-2">
-        <div>
-          <SectionHeading eyebrow="Full time" title="Latest results" />
-          <div className="grid gap-3">
-            {recent.length ? (
-              recent.map((m) => <MatchCard key={m.id} match={m} />)
-            ) : (
-              <p className="text-sm text-white/50">The tournament kicks off soon.</p>
-            )}
+      {/* ---------- the album: 48 nations ---------- */}
+      <section className="al-sec">
+        <div className="al-sec-head">
+          <div>
+            <span className="scribble">Gotta collect &rsquo;em all</span>
+            <h2>The album · 48 nations</h2>
+          </div>
+          <div className="al-progress">
+            <span>{collected} / 48 collected</span>
+            <span className="al-meter"><i style={{ width: `${Math.max(pct, 3)}%` }} /></span>
           </div>
         </div>
-        <div>
-          <SectionHeading
-            eyebrow="Kick-off"
-            title="Coming up"
-            action={
-              <Link href="/matches" className="text-sm font-semibold text-gold hover:underline">
-                All matches →
-              </Link>
-            }
-          />
-          <div className="grid gap-3">
-            {upcoming.map((m) => (
-              <MatchCard key={m.id} match={m} />
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* ---------- Teams by confederation ---------- */}
-      <section>
-        <SectionHeading
-          eyebrow="The field"
-          title={`${TEAMS.length} nations`}
-          sub="Six confederations, one trophy — qualified teams ranked by FIFA standing."
-        />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {CONFEDERATIONS.map((c) => {
-            const teams = TEAMS.filter((t) => t.confederation === c.code).sort(
-              (a, b) => a.fifaRank - b.fifaRank
-            );
+        <div className="al-pages">
+          {GROUPS.map((g) => {
+            const teams = teamsByGroup(g);
+            const got = teams.filter((t) => playedIds.has(t.id)).length;
             return (
-              <div key={c.code} className="panel p-4 transition-colors hover:border-gold/30">
-                <div className="mb-3 flex items-center justify-between">
-                  <div>
-                    <h3 className="font-display text-base font-extrabold">{c.code}</h3>
-                    <p className="text-[11px] uppercase tracking-wider text-white/40">
-                      {c.region}
-                    </p>
-                  </div>
-                  <span className="grid h-8 w-8 place-items-center rounded-lg bg-gold/10 font-display text-sm font-extrabold text-gold">
-                    {teams.length}
-                  </span>
+              <div key={g} className="al-page">
+                <div className="pg-head">
+                  <span className="pg-tab">{g}</span>
+                  <span className="pg-ttl">Group {g}</span>
+                  <span className="pg-ct">{got}/{teams.length}</span>
                 </div>
-                <ul className="space-y-0.5">
-                  {teams.map((t, i) => (
-                    <li key={t.id}>
+                <div className="al-discs">
+                  {teams.map((t) => {
+                    const has = playedIds.has(t.id);
+                    return (
                       <Link
+                        key={t.id}
                         href={`/teams/${t.id}`}
-                        className="group/team flex items-center gap-2.5 rounded-md px-1.5 py-1 transition-colors hover:bg-white/[0.04]"
+                        className={`al-disc ${has ? "got" : "todo"}`}
+                        aria-label={`${t.name}${has ? " — collected" : " — not collected yet"}`}
                       >
-                        <span className="w-4 text-right text-[11px] font-semibold tnum text-white/30">
-                          {i + 1}
+                        <span className="ring">
+                          <span className="fl">{t.flag}</span>
+                          {has && <span className="got-tab">✓</span>}
                         </span>
-                        <span className="text-base leading-none">{t.flag}</span>
-                        <span className="flex-1 truncate text-sm font-medium text-white/80 transition-colors group-hover/team:text-gold">
-                          {t.name}
-                        </span>
-                        <span className="text-[11px] tnum text-white/35">#{t.fifaRank}</span>
+                        <span className="nm">{t.name}</span>
                       </Link>
-                    </li>
-                  ))}
-                </ul>
+                    );
+                  })}
+                </div>
               </div>
             );
           })}
         </div>
       </section>
-    </div>
+
+      {/* ---------- pulse stamps ---------- */}
+      <section className="al-sec">
+        <div className="al-sec-head">
+          <div>
+            <span className="scribble">Album stats</span>
+            <h2>By the numbers</h2>
+          </div>
+          <Link className="more" href="/stats">All stats →</Link>
+        </div>
+        <div className="al-stamps">
+          {stamps.map((s) => (
+            <div key={s.l} className="al-stamp">
+              <span className="ic">{s.icon}</span>
+              <div className="v">
+                {s.v}{s.frac && <span className="frac">{s.frac}</span>}
+              </div>
+              <div className="l">{s.l}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ---------- mascots ---------- */}
+      <section className="al-sec">
+        <div className="al-sec-head">
+          <div>
+            <span className="scribble">Say hello</span>
+            <h2>The official crew</h2>
+          </div>
+          <span className="more" style={{ color: "var(--al-ink-soft)", fontWeight: 700 }}>
+            Unveiled Sept 2025
+          </span>
+        </div>
+        <div className="al-mascots">
+          {MASCOTS.map((m, i) => (
+            <Link
+              key={m.name}
+              href={`/teams/${m.teamId}`}
+              className="al-mascot al-reveal"
+              style={{ animationDelay: `${i * 90}ms` }}
+            >
+              <span className="glow" style={{ background: m.accent }} aria-hidden />
+              <span className="role" style={{ background: m.accent }}>{m.role}</span>
+              <span className="crest">{m.emoji}</span>
+              <h3>{m.name}</h3>
+              <p className="who">
+                <span className="fl">{m.flag}</span> {m.animal} · {m.country}
+              </p>
+              <p className="blurb">{m.blurb}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ---------- sticker-tape parade ---------- */}
+      <div className="al-parade" aria-hidden>
+        <div className="al-parade-track">
+          {[...PARADE, ...PARADE].map((e, i) => (
+            <span key={i}>{e}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* ---------- results + upcoming ---------- */}
+      <section className="al-sec">
+        <div className="al-cols">
+          <div>
+            <div className="al-sec-head">
+              <div>
+                <span className="scribble">Just stuck in</span>
+                <h2>Latest results</h2>
+              </div>
+            </div>
+            {recent.length ? (
+              <div className="al-matches">
+                {recent.map((m) => <MatchSticker key={m.id} m={m} />)}
+              </div>
+            ) : (
+              <p className="al-empty">The first stickers go in when the tournament kicks off.</p>
+            )}
+          </div>
+          <div>
+            <div className="al-sec-head">
+              <div>
+                <span className="scribble">Coming up</span>
+                <h2>Next to collect</h2>
+              </div>
+              <Link className="more" href="/matches">Full schedule →</Link>
+            </div>
+            {upcoming.length ? (
+              <div className="al-matches">
+                {upcoming.map((m) => <MatchSticker key={m.id} m={m} />)}
+              </div>
+            ) : (
+              <p className="al-empty">No upcoming fixtures.</p>
+            )}
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

@@ -4,10 +4,9 @@ import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { refreshWcData } from "@/app/actions";
 
-/** Album-styled refresh control for the v2 pages. Mirrors the classic
- *  RefreshButton: pages are force-dynamic + no-store, so router.refresh
- *  re-runs the server fetch and pulls the latest scores. Source badge and
- *  "updated" stamp render only when the page passes that data in. */
+/** Refresh control. Busts the cached WC data (revalidateTag "wc") via a server
+ *  action, then re-renders so the page re-fetches the latest scores. Source
+ *  badge and "updated" stamp render only when the page passes that data in. */
 export default function AlbumRefresh({
   fetchedAt,
   source,

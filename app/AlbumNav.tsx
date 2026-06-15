@@ -5,18 +5,18 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const LINKS = [
-  { href: "/v2", label: "Home" },
-  { href: "/v2/groups", label: "Tables" },
-  { href: "/v2/matches", label: "Matches" },
-  { href: "/v2/knockout", label: "Knockout" },
-  { href: "/v2/stats", label: "Stats" },
+  { href: "/", label: "Home" },
+  { href: "/groups", label: "Tables" },
+  { href: "/matches", label: "Matches" },
+  { href: "/knockout", label: "Knockout" },
+  { href: "/stats", label: "Stats" },
 ];
 
 export default function AlbumNav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const isActive = (href: string) =>
-    href === "/v2" ? pathname === "/v2" : pathname.startsWith(href);
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
     <>

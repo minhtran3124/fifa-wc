@@ -31,7 +31,7 @@ export default function MatchSticker({ m }: { m: Match }) {
   const awayWin = finished && (m.awayScore ?? 0) > (m.homeScore ?? 0);
 
   return (
-    <Link href="/v2/matches" className="al-match">
+    <Link href="/matches" className="al-match">
       <div className="top">
         <span>
           {STAGE_LABEL[m.stage]}

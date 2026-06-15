@@ -1,66 +1,68 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope, Big_Shoulders } from "next/font/google";
+import type { ReactNode } from "react";
+import Link from "next/link";
+import { Manrope, Big_Shoulders, Anton, Inter, Caveat } from "next/font/google";
+import AlbumNav from "./AlbumNav";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
+import "./sticker.css";
 
-const manrope = Manrope({
-  subsets: ["latin"],
-  variable: "--font-manrope",
-  display: "swap",
-});
-
+const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
 const headline = Big_Shoulders({
   subsets: ["latin"],
   weight: ["600", "700", "800", "900"],
   variable: "--font-headline",
   display: "swap",
 });
+const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton", display: "swap" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
+const caveat = Caveat({ weight: "700", subsets: ["latin"], variable: "--font-caveat", display: "swap" });
 
 export const metadata: Metadata = {
-  title: "FIFA World Cup 2026 — Overview, Tables, Matches & Stats",
+  title: {
+    default: "World Cup 2026 — Sticker Album",
+    template: "%s — World Cup 2026",
+  },
   description:
-    "Follow the 2026 FIFA World Cup across the USA, Canada and Mexico — group tables, full match schedule, the knockout bracket and tournament stats.",
+    "A sticker-album take on the 2026 FIFA World Cup: collect all 48 nations, follow live results, tables, the bracket and stats.",
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#0b1020",
+  themeColor: "#e7dcc4",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${manrope.variable} ${headline.variable}`}>
+    <html
+      lang="en"
+      className={`${manrope.variable} ${headline.variable} ${anton.variable} ${inter.variable} ${caveat.variable}`}
+    >
       <body>
-        <Navbar />
-        <main className="mx-auto max-w-6xl px-4 py-6 sm:py-10">{children}</main>
-        <footer className="mt-8 border-t border-line/60">
-          <div className="mx-auto max-w-6xl px-4 py-8 text-center text-xs text-white/40">
-            <p className="mb-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm text-white/55">
-              <span className="text-base">🫎</span> Maple
-              <span className="text-white/20">·</span>
-              <span className="text-base">🐆</span> Zayu
-              <span className="text-white/20">·</span>
-              <span className="text-base">🦅</span> Clutch
-              <span className="ml-1 text-xs text-white/35">— your World Cup 26 hosts</span>
-            </p>
-            <p>
-              Unofficial fan project · Live data from{" "}
-              <a
-                href="https://www.football-data.org"
-                className="text-white/60 underline-offset-2 hover:text-gold hover:underline"
-              >
-                football-data.org
-              </a>{" "}
-              · FIFA World Cup 2026 · USA · Canada · Mexico
-            </p>
+        <div className="album-root">
+          <div className="al-bar">
+            <div className="al-bar-inner">
+              <Link href="/" className="al-brand">
+                <span className="al-badge">Official Collection</span>
+                <span className="wm">World Cup 2026 · Sticker Album</span>
+              </Link>
+              <AlbumNav />
+            </div>
           </div>
-        </footer>
+
+          <main className="al-wrap">{children}</main>
+
+          <footer className="al-foot">
+            <div className="inner">
+              <p className="al-foot-mascots">🫎 Maple · 🐆 Zayu · 🦅 Clutch — your World Cup 26 hosts</p>
+              <p>
+                Unofficial fan project · Sticker-album concept · FIFA World Cup 2026 ·
+                USA · Canada · Mexico
+              </p>
+            </div>
+          </footer>
+        </div>
       </body>
     </html>
   );

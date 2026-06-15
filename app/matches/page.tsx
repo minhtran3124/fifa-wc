@@ -1,35 +1,31 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { getWcData } from "@/lib/footballData";
 import { matchesByDay } from "@/lib/matches";
-import MatchSchedule from "@/components/MatchSchedule";
-import RefreshButton from "@/components/RefreshButton";
-import PageHeader from "@/components/PageHeader";
+import AlbumSchedule from "../AlbumSchedule";
+import AlbumRefresh from "../AlbumRefresh";
 
-export const metadata: Metadata = {
-  title: "Match Schedule — FIFA World Cup 2026",
-  description: "All 104 fixtures and live results of the 2026 FIFA World Cup.",
-};
+export const metadata: Metadata = { title: "Matches" };
 
-// Render fresh on every request (and on Refresh) so live scores are never stale.
-
-export default async function MatchesPage() {
+export default async function AlbumMatches() {
   const { matches, source, fetchedAt } = await getWcData();
   const days = matchesByDay(matches);
 
   return (
-    <div className="space-y-6">
-      <PageHeader
-        eyebrow="Fixtures & Results"
-        title="Match Schedule"
-        sub={
-          source === "live"
-            ? "Real fixtures & live results — tap Refresh for the latest scores. 🇻🇳 Times in Vietnam time (GMT+7)."
-            : "All 104 matches from the group stage through to the Final on July 19. 🇻🇳 Times in Vietnam time (GMT+7)."
-        }
-        action={<RefreshButton fetchedAt={fetchedAt} source={source} />}
-      />
+    <>
+      <div className="al-page-head">
+        <div>
+          <Link href="/" className="al-back">← Album home</Link>
+          <h1 className="al-page-title">All Matches</h1>
+          <p className="al-page-sub">
+            All 104 fixtures grouped by day. Filter by stage or status — every result is
+            a sticker waiting for the book.
+          </p>
+        </div>
+        <AlbumRefresh source={source} fetchedAt={fetchedAt} />
+      </div>
 
-      <MatchSchedule days={days} />
-    </div>
+      <AlbumSchedule days={days} />
+    </>
   );
 }
