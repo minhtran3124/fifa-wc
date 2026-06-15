@@ -54,7 +54,7 @@ function outcome(m: Match) {
 /* ── desktop: mirrored wall-chart bracket ───────────────────────────── */
 
 /** Compact tie card used inside the mirrored bracket (flag + 3-letter code). */
-function BracketCard({ m, locale, dict }: { m: Match; locale: Locale; dict: Dictionary }) {
+function BracketCard({ m, locale }: { m: Match; locale: Locale }) {
   const home = teamSide(m.home, m.homeName);
   const away = teamSide(m.away, m.awayName);
   const { scored, homeWin, awayWin } = outcome(m);
@@ -101,14 +101,12 @@ function BracketRound({
   label,
   ties,
   locale,
-  dict,
 }: {
   side: "l" | "r";
   position: "outer" | "mid" | "inner";
   label: string;
   ties: Match[];
   locale: Locale;
-  dict: Dictionary;
 }) {
   return (
     <div className={`al-wc-round ${side} ${position}`}>
@@ -116,7 +114,7 @@ function BracketRound({
       <div className="al-wc-matches">
         {ties.map((m) => (
           <div className="al-wc-match" key={m.id}>
-            <BracketCard m={m} locale={locale} dict={dict} />
+            <BracketCard m={m} locale={locale} />
           </div>
         ))}
       </div>
@@ -406,15 +404,15 @@ export default async function AlbumKnockout({ params }: { params: Promise<{ loca
       {/* desktop / wide: mirrored wall-chart converging on the Final */}
       <div className="al-ko-wide al-reveal">
         <div className="al-wc">
-          <BracketRound side="l" position="outer" label={dict.stage.R32} ties={half(r32, "l")} locale={l} dict={dict} />
-          <BracketRound side="l" position="mid" label={dict.stage.R16} ties={half(r16, "l")} locale={l} dict={dict} />
-          <BracketRound side="l" position="mid" label={dict.stage.QF} ties={half(qf, "l")} locale={l} dict={dict} />
-          <BracketRound side="l" position="inner" label={dict.stage.SF} ties={half(sf, "l")} locale={l} dict={dict} />
+          <BracketRound side="l" position="outer" label={dict.stage.R32} ties={half(r32, "l")} locale={l} />
+          <BracketRound side="l" position="mid" label={dict.stage.R16} ties={half(r16, "l")} locale={l} />
+          <BracketRound side="l" position="mid" label={dict.stage.QF} ties={half(qf, "l")} locale={l} />
+          <BracketRound side="l" position="inner" label={dict.stage.SF} ties={half(sf, "l")} locale={l} />
           <FinalColumn final={final} third={third} locale={l} dict={dict} />
-          <BracketRound side="r" position="inner" label={dict.stage.SF} ties={half(sf, "r")} locale={l} dict={dict} />
-          <BracketRound side="r" position="mid" label={dict.stage.QF} ties={half(qf, "r")} locale={l} dict={dict} />
-          <BracketRound side="r" position="mid" label={dict.stage.R16} ties={half(r16, "r")} locale={l} dict={dict} />
-          <BracketRound side="r" position="outer" label={dict.stage.R32} ties={half(r32, "r")} locale={l} dict={dict} />
+          <BracketRound side="r" position="inner" label={dict.stage.SF} ties={half(sf, "r")} locale={l} />
+          <BracketRound side="r" position="mid" label={dict.stage.QF} ties={half(qf, "r")} locale={l} />
+          <BracketRound side="r" position="mid" label={dict.stage.R16} ties={half(r16, "r")} locale={l} />
+          <BracketRound side="r" position="outer" label={dict.stage.R32} ties={half(r32, "r")} locale={l} />
         </div>
       </div>
 

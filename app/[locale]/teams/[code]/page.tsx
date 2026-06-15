@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Match, Standing } from "@/lib/types";
-import { getTeam } from "@/lib/teams";
+import { getTeam, TEAMS } from "@/lib/teams";
 import { groupStandings } from "@/lib/standings";
 import { getWcData } from "@/lib/footballData";
 import { getSquad } from "@/lib/squads";
@@ -28,6 +28,12 @@ function opponent(m: Match, id: string) {
   const oppName = isHome ? m.awayName : m.homeName;
   const opp = getTeam(oppId);
   return { flag: opp?.flag ?? "⬜", name: opp?.name ?? oppName ?? slotLabel(oppId) };
+}
+
+// All 48 team codes are known at build time — prerender each as static HTML
+// (composed with the parent [locale] params, so /vi/teams/… and /en/teams/…).
+export function generateStaticParams() {
+  return TEAMS.map((t) => ({ code: t.id }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ code: string }> }): Promise<Metadata> {
