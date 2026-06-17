@@ -1,6 +1,6 @@
 import type { Match, Stage, GroupName, PlayerStat } from "./types";
 import { ALL_MATCHES } from "./matches";
-import { getMatchDetail } from "./matchDetails";
+import { loadDetailMap, enrichMatches } from "./matchDetails";
 
 /**
  * football-data.org v4 client (free tier covers the FIFA World Cup).
@@ -86,20 +86,6 @@ function normalise(m: any): Match {
   const pen = m.score?.penalties ?? {};
   if (pen.home != null) match.homePens = pen.home;
   if (pen.away != null) match.awayPens = pen.away;
-
-  // Enrich played group matches with real results + goal events from
-  // openfootball (the free football-data feed carries no goalscorer data).
-  if (stage === "group") {
-    const detail = getMatchDetail(match.home, match.away);
-    if (detail) {
-      match.status = "finished";
-      match.homeScore = detail.ftHome;
-      match.awayScore = detail.ftAway;
-      if (detail.htHome != null) match.htHome = detail.htHome;
-      if (detail.htAway != null) match.htAway = detail.htAway;
-      if (detail.goals.length) match.goals = detail.goals;
-    }
-  }
   return match;
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
@@ -108,12 +94,16 @@ export async function getWcData(): Promise<WcData> {
   const fetchedAt = new Date().toISOString();
   const token = process.env.FOOTBALL_DATA_TOKEN?.trim();
 
+  // Real results + goal events (live mirror, bundled fallback). Used to enrich
+  // matches from either source with finished scores + goalscorers.
+  const detailMap = await loadDetailMap();
+
   const fallback = (reason: string): WcData => ({
     available: false,
     source: "bundled",
     reason,
     fetchedAt,
-    matches: ALL_MATCHES,
+    matches: enrichMatches(ALL_MATCHES, detailMap),
   });
 
   if (!token) return fallback("no-token");
@@ -129,9 +119,10 @@ export async function getWcData(): Promise<WcData> {
     const json = await res.json();
     const raw = json?.matches;
     if (!Array.isArray(raw) || raw.length === 0) return fallback("empty");
-    const matches = raw
-      .map(normalise)
-      .sort((a, b) => a.date.localeCompare(b.date));
+    const matches = enrichMatches(
+      raw.map(normalise).sort((a, b) => a.date.localeCompare(b.date)),
+      detailMap
+    );
     return { available: true, source: "live", fetchedAt, matches };
   } catch {
     return fallback("exception");
