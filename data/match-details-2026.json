@@ -1,0 +1,590 @@
+[
+ {
+  "home": "mex",
+  "away": "rsa",
+  "date": "2026-06-11",
+  "ft": [
+   2,
+   0
+  ],
+  "ht": [
+   1,
+   0
+  ],
+  "goals1": [
+   {
+    "name": "Julián Quiñones",
+    "minute": "9"
+   },
+   {
+    "name": "Raúl Jiménez",
+    "minute": "67"
+   }
+  ],
+  "goals2": []
+ },
+ {
+  "home": "kor",
+  "away": "cze",
+  "date": "2026-06-11",
+  "ft": [
+   2,
+   1
+  ],
+  "ht": [
+   0,
+   0
+  ],
+  "goals1": [
+   {
+    "name": "Hwang In-Beom",
+    "minute": "67"
+   },
+   {
+    "name": "Oh Hyeon-Gyu",
+    "minute": "80"
+   }
+  ],
+  "goals2": [
+   {
+    "name": "Ladislav Krejcí",
+    "minute": "59"
+   }
+  ]
+ },
+ {
+  "home": "can",
+  "away": "bih",
+  "date": "2026-06-12",
+  "ft": [
+   1,
+   1
+  ],
+  "ht": [
+   0,
+   1
+  ],
+  "goals1": [
+   {
+    "name": "Cyle Larin",
+    "minute": "78"
+   }
+  ],
+  "goals2": [
+   {
+    "name": "Jovo Lukić",
+    "minute": "21"
+   }
+  ]
+ },
+ {
+  "home": "qat",
+  "away": "sui",
+  "date": "2026-06-13",
+  "ft": [
+   1,
+   1
+  ],
+  "ht": [
+   0,
+   1
+  ],
+  "goals1": [
+   {
+    "name": "Boualem Khoukhi",
+    "minute": "90+4"
+   }
+  ],
+  "goals2": [
+   {
+    "name": "Breel Embolo",
+    "minute": "17",
+    "penalty": true
+   }
+  ]
+ },
+ {
+  "home": "bra",
+  "away": "mar",
+  "date": "2026-06-13",
+  "ft": [
+   1,
+   1
+  ],
+  "ht": [
+   1,
+   1
+  ],
+  "goals1": [
+   {
+    "name": "Vinícius Júnior",
+    "minute": "32"
+   }
+  ],
+  "goals2": [
+   {
+    "name": "Ismael Saibari",
+    "minute": "21"
+   }
+  ]
+ },
+ {
+  "home": "hai",
+  "away": "sco",
+  "date": "2026-06-13",
+  "ft": [
+   0,
+   1
+  ],
+  "ht": [
+   0,
+   1
+  ],
+  "goals1": [],
+  "goals2": [
+   {
+    "name": "John McGinn",
+    "minute": "28"
+   }
+  ]
+ },
+ {
+  "home": "usa",
+  "away": "par",
+  "date": "2026-06-12",
+  "ft": [
+   4,
+   1
+  ],
+  "ht": [
+   3,
+   0
+  ],
+  "goals1": [
+   {
+    "name": "Damian Bobadilla",
+    "minute": "7",
+    "owngoal": true
+   },
+   {
+    "name": "Folarin Balogun",
+    "minute": "31"
+   },
+   {
+    "name": "Folarin Balogun",
+    "minute": "45+5"
+   },
+   {
+    "name": "Giovanni Reyna",
+    "minute": "90+8"
+   }
+  ],
+  "goals2": [
+   {
+    "name": "Mauricio",
+    "minute": "73"
+   }
+  ]
+ },
+ {
+  "home": "aus",
+  "away": "tur",
+  "date": "2026-06-13",
+  "ft": [
+   2,
+   0
+  ],
+  "ht": [
+   1,
+   0
+  ],
+  "goals1": [
+   {
+    "name": "Nestory Irankunda",
+    "minute": "27"
+   },
+   {
+    "name": "Connor Metcalfe",
+    "minute": "75"
+   }
+  ],
+  "goals2": []
+ },
+ {
+  "home": "ger",
+  "away": "cuw",
+  "date": "2026-06-14",
+  "ft": [
+   7,
+   1
+  ],
+  "ht": [
+   3,
+   1
+  ],
+  "goals1": [
+   {
+    "name": "Felix Nmecha",
+    "minute": "6"
+   },
+   {
+    "name": "Nico Schlotterbeck",
+    "minute": "38"
+   },
+   {
+    "name": "Kai Havertz",
+    "minute": "45+5",
+    "penalty": true
+   },
+   {
+    "name": "Kai Havertz",
+    "minute": "88"
+   },
+   {
+    "name": "Jamal Musiala",
+    "minute": "47"
+   },
+   {
+    "name": "Nathaniel Brown",
+    "minute": "68"
+   },
+   {
+    "name": "Deniz Undav",
+    "minute": "78"
+   }
+  ],
+  "goals2": [
+   {
+    "name": "Livano Comenencia",
+    "minute": "21"
+   }
+  ]
+ },
+ {
+  "home": "civ",
+  "away": "ecu",
+  "date": "2026-06-14",
+  "ft": [
+   1,
+   0
+  ],
+  "ht": [
+   0,
+   0
+  ],
+  "goals1": [
+   {
+    "name": "Amad Diallo",
+    "minute": "90"
+   }
+  ],
+  "goals2": []
+ },
+ {
+  "home": "ned",
+  "away": "jpn",
+  "date": "2026-06-14",
+  "ft": [
+   2,
+   2
+  ],
+  "ht": [
+   0,
+   0
+  ],
+  "goals1": [
+   {
+    "name": "Virgil van Dijk",
+    "minute": "51"
+   },
+   {
+    "name": "Crysencio Summerville",
+    "minute": "64"
+   }
+  ],
+  "goals2": [
+   {
+    "name": "Keito Nakamura",
+    "minute": "57"
+   },
+   {
+    "name": "Daichi Kamada",
+    "minute": "88"
+   }
+  ]
+ },
+ {
+  "home": "swe",
+  "away": "tun",
+  "date": "2026-06-14",
+  "ft": [
+   5,
+   1
+  ],
+  "ht": [
+   2,
+   1
+  ],
+  "goals1": [
+   {
+    "name": "Yasin Ayari",
+    "minute": "7"
+   },
+   {
+    "name": "Alexander Isak",
+    "minute": "30"
+   },
+   {
+    "name": "Viktor Gyökeres",
+    "minute": "59"
+   },
+   {
+    "name": "Mattias Svanberg",
+    "minute": "84"
+   },
+   {
+    "name": "Yasin Ayari",
+    "minute": "90+6"
+   }
+  ],
+  "goals2": [
+   {
+    "name": "Omar Rekik",
+    "minute": "43"
+   }
+  ]
+ },
+ {
+  "home": "bel",
+  "away": "egy",
+  "date": "2026-06-15",
+  "ft": [
+   1,
+   1
+  ],
+  "ht": [
+   0,
+   1
+  ],
+  "goals1": [
+   {
+    "name": "Mohamed Hany",
+    "minute": "66",
+    "owngoal": true
+   }
+  ],
+  "goals2": [
+   {
+    "name": "Emam Ashour",
+    "minute": "19"
+   }
+  ]
+ },
+ {
+  "home": "irn",
+  "away": "nzl",
+  "date": "2026-06-15",
+  "ft": [
+   2,
+   2
+  ],
+  "ht": [
+   1,
+   1
+  ],
+  "goals1": [
+   {
+    "name": "Ramin Rezaeian",
+    "minute": "32"
+   },
+   {
+    "name": "Mohammad Mohebbi",
+    "minute": "64"
+   }
+  ],
+  "goals2": [
+   {
+    "name": "Elijah Just",
+    "minute": "7"
+   },
+   {
+    "name": "Elijah Just",
+    "minute": "54"
+   }
+  ]
+ },
+ {
+  "home": "esp",
+  "away": "cpv",
+  "date": "2026-06-15",
+  "ft": [
+   0,
+   0
+  ],
+  "ht": [
+   0,
+   0
+  ],
+  "goals1": [],
+  "goals2": []
+ },
+ {
+  "home": "ksa",
+  "away": "uru",
+  "date": "2026-06-15",
+  "ft": [
+   1,
+   1
+  ],
+  "ht": [
+   1,
+   0
+  ],
+  "goals1": [
+   {
+    "name": "Abdulelah Al-Amri",
+    "minute": "41"
+   }
+  ],
+  "goals2": [
+   {
+    "name": "Maxi Araújo",
+    "minute": "80"
+   }
+  ]
+ },
+ {
+  "home": "fra",
+  "away": "sen",
+  "date": "2026-06-16",
+  "ft": [
+   3,
+   1
+  ],
+  "ht": [
+   0,
+   0
+  ],
+  "goals1": [
+   {
+    "name": "Kylian Mbappé",
+    "minute": "66"
+   },
+   {
+    "name": "Bradley Barcola",
+    "minute": "82"
+   },
+   {
+    "name": "Kylian Mbappé",
+    "minute": "90+6"
+   }
+  ],
+  "goals2": [
+   {
+    "name": "Ibrahim Mbaye",
+    "minute": "90+5"
+   }
+  ]
+ },
+ {
+  "home": "irq",
+  "away": "nor",
+  "date": "2026-06-16",
+  "ft": [
+   1,
+   4
+  ],
+  "ht": [
+   1,
+   2
+  ],
+  "goals1": [
+   {
+    "name": "Aymen Hussein",
+    "minute": "39"
+   }
+  ],
+  "goals2": [
+   {
+    "name": "Erling Haaland",
+    "minute": "29"
+   },
+   {
+    "name": "Erling Haaland",
+    "minute": "43"
+   },
+   {
+    "name": "Leo Østigard",
+    "minute": "76"
+   },
+   {
+    "name": "Aymen Hussein",
+    "minute": "90+6",
+    "owngoal": true
+   }
+  ]
+ },
+ {
+  "home": "arg",
+  "away": "alg",
+  "date": "2026-06-16",
+  "ft": [
+   3,
+   0
+  ],
+  "ht": [
+   1,
+   0
+  ],
+  "goals1": [
+   {
+    "name": "Lionel Messi",
+    "minute": "17"
+   },
+   {
+    "name": "Lionel Messi",
+    "minute": "60"
+   },
+   {
+    "name": "Lionel Messi",
+    "minute": "76"
+   }
+  ],
+  "goals2": []
+ },
+ {
+  "home": "aut",
+  "away": "jor",
+  "date": "2026-06-16",
+  "ft": [
+   3,
+   1
+  ],
+  "ht": [
+   1,
+   0
+  ],
+  "goals1": [
+   {
+    "name": "Romano Schmid",
+    "minute": "21"
+   },
+   {
+    "name": "Yazan Al-Arab",
+    "minute": "76",
+    "owngoal": true
+   },
+   {
+    "name": "Marko Arnautovic",
+    "minute": "90+12",
+    "penalty": true
+   }
+  ],
+  "goals2": [
+   {
+    "name": "Ali Olwan",
+    "minute": "50"
+   }
+  ]
+ }
+]

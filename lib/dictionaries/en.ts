@@ -214,6 +214,11 @@ const en = {
     formTitle: "Recent form",
     tableTitle: "Group standings",
     squadsTitle: "Squads",
+    goalsKicker: "On the scoresheet",
+    goalsTitle: "Goals",
+    halfTime: "Half-time",
+    penaltyShort: "P",
+    ownGoalShort: "OG",
     vs: "vs",
   },
   schedule: {

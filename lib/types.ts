@@ -53,6 +53,23 @@ export interface Match {
   /** for knockout: penalty result if drawn */
   homePens?: number;
   awayPens?: number;
+  /** half-time score (finished matches, from openfootball match data) */
+  htHome?: number;
+  htAway?: number;
+  /** goalscorer timeline (finished matches, from openfootball match data) */
+  goals?: GoalEvent[];
+}
+
+/** A single goal event on the match timeline. */
+export interface GoalEvent {
+  /** which side the goal counts for */
+  team: "home" | "away";
+  /** scorer name (for an own goal, the player who put it in their own net) */
+  name: string;
+  /** minute as reported, e.g. "67" or "90+5" */
+  minute: string;
+  penalty?: boolean;
+  owngoal?: boolean;
 }
 
 export interface Standing {
