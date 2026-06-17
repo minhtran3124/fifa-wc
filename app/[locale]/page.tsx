@@ -117,6 +117,24 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
         )}
       </section>
 
+      {/* ---------- up next (top of page — no scrolling needed) ---------- */}
+      <section className="al-sec">
+        <div className="al-sec-head">
+          <div>
+            <span className="scribble">{dict.home.upNextKicker}</span>
+            <h2>{dict.home.upNextTitle}</h2>
+          </div>
+          <Link className="more" href={`/${l}/matches`}>{dict.home.fullSchedule}</Link>
+        </div>
+        {upcoming.length ? (
+          <div className="al-matches">
+            {upcoming.map((m) => <MatchSticker key={m.id} m={m} locale={l} dict={dict} />)}
+          </div>
+        ) : (
+          <p className="al-empty">{dict.home.upNextEmpty}</p>
+        )}
+      </section>
+
       {/* ---------- my teams (favourites) ---------- */}
       <MyTeams matches={matches} locale={l} dict={dict} />
 
@@ -264,41 +282,21 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
         </div>
       </div>
 
-      {/* ---------- results + upcoming ---------- */}
+      {/* ---------- recent results ---------- */}
       <section className="al-sec">
-        <div className="al-cols">
+        <div className="al-sec-head">
           <div>
-            <div className="al-sec-head">
-              <div>
-                <span className="scribble">{dict.home.resultsKicker}</span>
-                <h2>{dict.home.resultsTitle}</h2>
-              </div>
-            </div>
-            {recent.length ? (
-              <div className="al-matches">
-                {recent.map((m) => <MatchSticker key={m.id} m={m} locale={l} dict={dict} />)}
-              </div>
-            ) : (
-              <p className="al-empty">{dict.home.resultsEmpty}</p>
-            )}
-          </div>
-          <div>
-            <div className="al-sec-head">
-              <div>
-                <span className="scribble">{dict.home.upNextKicker}</span>
-                <h2>{dict.home.upNextTitle}</h2>
-              </div>
-              <Link className="more" href={`/${l}/matches`}>{dict.home.fullSchedule}</Link>
-            </div>
-            {upcoming.length ? (
-              <div className="al-matches">
-                {upcoming.map((m) => <MatchSticker key={m.id} m={m} locale={l} dict={dict} />)}
-              </div>
-            ) : (
-              <p className="al-empty">{dict.home.upNextEmpty}</p>
-            )}
+            <span className="scribble">{dict.home.resultsKicker}</span>
+            <h2>{dict.home.resultsTitle}</h2>
           </div>
         </div>
+        {recent.length ? (
+          <div className="al-matches">
+            {recent.map((m) => <MatchSticker key={m.id} m={m} locale={l} dict={dict} />)}
+          </div>
+        ) : (
+          <p className="al-empty">{dict.home.resultsEmpty}</p>
+        )}
       </section>
     </>
   );
