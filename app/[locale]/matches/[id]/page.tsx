@@ -102,6 +102,40 @@ export default async function MatchDetail({ params }: { params: Promise<{ locale
         </div>
       </section>
 
+      {/* goals / scoresheet */}
+      {m.goals && m.goals.length > 0 && (
+        <section className="al-sec">
+          <div className="al-sec-head">
+            <div>
+              <span className="scribble">{dict.matchPage.goalsKicker}</span>
+              <h2>{dict.matchPage.goalsTitle}</h2>
+            </div>
+            {m.htHome != null && m.htAway != null && (
+              <span className="more" style={{ color: "var(--al-ink-soft)", fontWeight: 700 }}>
+                {dict.matchPage.halfTime} {m.htHome}–{m.htAway}
+              </span>
+            )}
+          </div>
+          <ul className="al-goals">
+            {m.goals.map((g, i) => {
+              const isHome = g.team === "home";
+              const s = isHome ? home : away;
+              return (
+                <li key={`${g.minute}-${g.name}-${i}`} className={`al-goal ${isHome ? "h" : "a"}`}>
+                  <span className="min">{g.minute}&rsquo;</span>
+                  <span className="who">
+                    <span className="fl">{s.flag}</span>
+                    <span className="nm">{g.name}</span>
+                    {g.penalty && <span className="gbdg pen">{dict.matchPage.penaltyShort}</span>}
+                    {g.owngoal && <span className="gbdg og">{dict.matchPage.ownGoalShort}</span>}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
+
       {/* recent form */}
       {(homeForm.length > 0 || awayForm.length > 0) && (
         <section className="al-sec">

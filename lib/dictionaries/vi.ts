@@ -216,6 +216,11 @@ const vi: Dictionary = {
     formTitle: "Phong độ gần đây",
     tableTitle: "Bảng xếp hạng bảng",
     squadsTitle: "Đội hình",
+    goalsKicker: "Người ghi bàn",
+    goalsTitle: "Bàn thắng",
+    halfTime: "Hiệp một",
+    penaltyShort: "P",
+    ownGoalShort: "OG",
     vs: "vs",
   },
   schedule: {

@@ -1,6 +1,7 @@
 import type { Match, GroupName, Stage } from "./types";
 import { getTeam } from "./teams";
 import { teamId } from "./teamMeta";
+import { getMatchDetail } from "./matchDetails";
 import { vnDayKey } from "./format";
 import fixturesData from "@/data/fixtures.json";
 
@@ -96,15 +97,28 @@ export function fixturesToMatches(fixtures: any[]): Match[] { // eslint-disable-
       status: "scheduled",
     };
 
-    if (isGroup && kickoff < TODAY) {
-      match.status = "finished";
-      const s = simulateScore(
-        match.id,
-        getTeam(home)?.fifaRank ?? 50,
-        getTeam(away)?.fifaRank ?? 50
-      );
-      match.homeScore = s.home;
-      match.awayScore = s.away;
+    if (isGroup) {
+      // Prefer real results + goal events from openfootball when the match has
+      // been played; otherwise fall back to the deterministic preview score for
+      // matches dated before the simulated "today" (keeps tables/stats populated).
+      const detail = getMatchDetail(home, away);
+      if (detail) {
+        match.status = "finished";
+        match.homeScore = detail.ftHome;
+        match.awayScore = detail.ftAway;
+        if (detail.htHome != null) match.htHome = detail.htHome;
+        if (detail.htAway != null) match.htAway = detail.htAway;
+        if (detail.goals.length) match.goals = detail.goals;
+      } else if (kickoff < TODAY) {
+        match.status = "finished";
+        const s = simulateScore(
+          match.id,
+          getTeam(home)?.fifaRank ?? 50,
+          getTeam(away)?.fifaRank ?? 50
+        );
+        match.homeScore = s.home;
+        match.awayScore = s.away;
+      }
     }
     return match;
   });

@@ -1,5 +1,6 @@
 import type { Match, Stage, GroupName, PlayerStat } from "./types";
 import { ALL_MATCHES } from "./matches";
+import { getMatchDetail } from "./matchDetails";
 
 /**
  * football-data.org v4 client (free tier covers the FIFA World Cup).
@@ -85,6 +86,20 @@ function normalise(m: any): Match {
   const pen = m.score?.penalties ?? {};
   if (pen.home != null) match.homePens = pen.home;
   if (pen.away != null) match.awayPens = pen.away;
+
+  // Enrich played group matches with real results + goal events from
+  // openfootball (the free football-data feed carries no goalscorer data).
+  if (stage === "group") {
+    const detail = getMatchDetail(match.home, match.away);
+    if (detail) {
+      match.status = "finished";
+      match.homeScore = detail.ftHome;
+      match.awayScore = detail.ftAway;
+      if (detail.htHome != null) match.htHome = detail.htHome;
+      if (detail.htAway != null) match.htAway = detail.htAway;
+      if (detail.goals.length) match.goals = detail.goals;
+    }
+  }
   return match;
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
