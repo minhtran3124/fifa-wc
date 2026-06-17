@@ -11,3 +11,6 @@ next-env.d.ts
 .cursor/
 .mcp.json
 .impeccable/
+
+# Local Claude Code harness files
+.claude/

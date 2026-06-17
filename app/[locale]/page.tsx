@@ -26,7 +26,7 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
   const nextMatch = scheduled[0];
   const featured = live[0] ?? nextMatch;
   const recent = finished.slice(-6).reverse();
-  const upcoming = scheduled.slice(0, 6);
+  const upcoming = scheduled.slice(0, 3);
   const stats = tournamentStats(matches);
 
   const playedIds = new Set<string>();
