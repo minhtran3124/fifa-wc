@@ -11,6 +11,7 @@ import MatchSticker, { side } from "@/components/MatchSticker";
 import AlbumRefresh from "@/components/AlbumRefresh";
 import MyTeams from "@/components/MyTeams";
 import StickerPacks, { type Pack } from "@/components/StickerPacks";
+import { Reveal, CountUp, MeterFill } from "@/components/motion";
 import { crestUrl } from "@/lib/crests";
 
 // festive sticker-tape band — every nation in the tournament (decorative)
@@ -40,10 +41,10 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
   const pct = Math.round((collected / 48) * 100);
 
   const stamps = [
-    { v: `${stats.matchesPlayed}`, frac: `/${stats.totalMatches}`, l: dict.home.stamps.stickers, icon: "📒" },
-    { v: `${stats.goals}`, l: dict.home.stamps.goals, icon: "⚽" },
-    { v: `${stats.avgGoals}`, l: dict.home.stamps.perMatch, icon: "🎯" },
-    { v: `${stats.cleanSheets}`, l: dict.home.stamps.cleanSheets, icon: "🧤" },
+    { n: stats.matchesPlayed, dec: 0, frac: `/${stats.totalMatches}`, l: dict.home.stamps.stickers, icon: "📒" },
+    { n: stats.goals, dec: 0, l: dict.home.stamps.goals, icon: "⚽" },
+    { n: stats.avgGoals, dec: 2, l: dict.home.stamps.perMatch, icon: "🎯" },
+    { n: stats.cleanSheets, dec: 0, l: dict.home.stamps.cleanSheets, icon: "🧤" },
   ];
 
   const fHome = featured ? side(featured.home, featured.homeName) : null;
@@ -85,7 +86,7 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
         </div>
 
         {featured && fHome && fAway && (
-          <div className="al-shiny al-reveal" style={{ animationDelay: "120ms" }}>
+          <div className={`al-shiny al-reveal ${live[0] ? "is-live" : ""}`} style={{ animationDelay: "120ms" }}>
             <span className="ribbon">{live[0] ? dict.home.featuredLive : dict.home.featuredNext}</span>
             <div className="row">
               <span className="side">
@@ -120,7 +121,7 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
       </section>
 
       {/* ---------- up next (top of page — no scrolling needed) ---------- */}
-      <section className="al-sec">
+      <Reveal as="section" className="al-sec">
         <div className="al-sec-head">
           <div>
             <span className="scribble">{dict.home.upNextKicker}</span>
@@ -135,14 +136,16 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
         ) : (
           <p className="al-empty">{dict.home.upNextEmpty}</p>
         )}
-      </section>
+      </Reveal>
 
       {/* ---------- my teams (favourites) ---------- */}
-      <MyTeams matches={matches} locale={l} dict={dict} />
+      <Reveal>
+        <MyTeams matches={matches} locale={l} dict={dict} />
+      </Reveal>
 
       {/* ---------- pre-match expert preview ---------- */}
       {preview && nextMatch && pHome && pAway && (
-        <section className="al-sec">
+        <Reveal as="section" className="al-sec">
           <div className="al-sec-head">
             <div>
               <span className="scribble">{dict.previews.homeKicker}</span>
@@ -169,11 +172,11 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
               </p>
             )}
           </Link>
-        </section>
+        </Reveal>
       )}
 
       {/* ---------- the album: 48 nations ---------- */}
-      <section className="al-sec">
+      <Reveal as="section" className="al-sec">
         <div className="al-sec-head">
           <div>
             <span className="scribble">{dict.home.albumKicker}</span>
@@ -181,7 +184,7 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
           </div>
           <div className="al-progress">
             <span>{collected} / 48 {dict.home.collected}</span>
-            <span className="al-meter"><i style={{ width: `${Math.max(pct, 3)}%` }} /></span>
+            <MeterFill pct={pct} />
             <Link className="more" href={`/${l}/teams`}>{dict.teamsIndex.browseAll}</Link>
           </div>
         </div>
@@ -209,10 +212,10 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
           closeAll={dict.home.packCloseAll}
           justIn={dict.home.justIn}
         />
-      </section>
+      </Reveal>
 
       {/* ---------- pulse stamps ---------- */}
-      <section className="al-sec">
+      <Reveal as="section" className="al-sec">
         <div className="al-sec-head">
           <div>
             <span className="scribble">{dict.home.pulseKicker}</span>
@@ -225,16 +228,16 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
             <div key={s.l} className="al-stamp">
               <span className="ic">{s.icon}</span>
               <div className="v">
-                {s.v}{s.frac && <span className="frac">{s.frac}</span>}
+                <CountUp value={s.n} decimals={s.dec} />{s.frac && <span className="frac">{s.frac}</span>}
               </div>
               <div className="l">{s.l}</div>
             </div>
           ))}
         </div>
-      </section>
+      </Reveal>
 
       {/* ---------- mascots ---------- */}
-      <section className="al-sec">
+      <Reveal as="section" className="al-sec">
         <div className="al-sec-head">
           <div>
             <span className="scribble">{dict.home.mascotsKicker}</span>
@@ -265,7 +268,7 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
             </Link>
           ))}
         </div>
-      </section>
+      </Reveal>
 
       {/* ---------- sticker-tape parade ---------- */}
       <div className="al-parade" aria-hidden>
@@ -277,7 +280,7 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
       </div>
 
       {/* ---------- recent results ---------- */}
-      <section className="al-sec">
+      <Reveal as="section" className="al-sec">
         <div className="al-sec-head">
           <div>
             <span className="scribble">{dict.home.resultsKicker}</span>
@@ -291,7 +294,7 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
         ) : (
           <p className="al-empty">{dict.home.resultsEmpty}</p>
         )}
-      </section>
+      </Reveal>
     </>
   );
 }
