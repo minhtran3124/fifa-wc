@@ -96,6 +96,10 @@ export default function StickerPacks({
 
               {isOpen && (
                 <div className="pk-strip">
+                  <span className="pk-film" aria-hidden>
+                    <span className="pk-face pk-face-back" />
+                    <span className="pk-face pk-face-front" />
+                  </span>
                   {p.teams.map((t) => (
                     <Link
                       key={t.id}

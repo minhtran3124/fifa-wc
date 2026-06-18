@@ -174,8 +174,7 @@
 .pk-top::before { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(33, 25, 14, 0.62), rgba(33, 25, 14, 0.3) 55%, rgba(33, 25, 14, 0.5)); }
 .pk-top > * { position: relative; z-index: 1; }
 .pk-top:hover { background-position: 100% 100%; }
-.al-pack.open .pk-top { padding-bottom: 16px; animation: pk-snap 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
-.al-pack.open .pk-lip { display: none; }
+.al-pack.open .pk-top { padding-bottom: 16px; }
 .pk-tab { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 9px; background: #fff; color: var(--al-ink); font-family: var(--font-anton); font-size: 20px; transform: rotate(-3deg); box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.28); }
 .pk-brand { display: flex; flex-direction: column; line-height: 1.15; font-family: var(--font-anton); font-size: 12px; letter-spacing: 0.6px; text-transform: uppercase; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); min-width: 0; }
 .pk-brand small { margin-top: 3px; font-family: inherit; font-weight: 800; font-size: 12.5px; letter-spacing: 0; text-transform: none; opacity: 0.95; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -186,13 +185,40 @@
 .pk-dots i.on { background: #fff; box-shadow: 0 0 6px rgba(255, 255, 255, 0.85); }
 .pk-lip { position: absolute; left: 0; right: 0; bottom: -1px; height: 9px; z-index: 1; background: var(--al-paper2); -webkit-mask: radial-gradient(5.5px at 50% 0, transparent 96%, #000) repeat-x 0 / 13px 9px; mask: radial-gradient(5.5px at 50% 0, transparent 96%, #000) repeat-x 0 / 13px 9px; }
 
-.pk-strip { position: relative; display: flex; gap: 6px; justify-content: space-around; padding: 16px 12px 16px; transform-origin: top center; animation: pk-tear 0.55s cubic-bezier(0.34, 1.32, 0.5, 1) both; }
-/* ragged paper edge left behind where the foil flap was torn off */
-.pk-strip::before {
-  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; z-index: 1;
-  background: var(--al-paper2);
-  -webkit-mask: conic-gradient(from -45deg at bottom, #0000 25%, #000 0) repeat-x 0 0 / 9px 6px;
-          mask: conic-gradient(from -45deg at bottom, #0000 25%, #000 0) repeat-x 0 0 / 9px 6px;
+.pk-strip { position: relative; perspective: 850px; display: flex; gap: 6px; justify-content: space-around; padding: 15px 12px 16px; }
+
+/* foil seal that peels off the crests when the pack opens (header stays put) */
+.pk-film {
+  position: absolute; inset: 0; z-index: 4; border-radius: 0 0 15px 15px;
+  transform-origin: top center; transform-style: preserve-3d; pointer-events: none;
+  animation: pk-peel 0.72s cubic-bezier(0.5, 0, 0.18, 1) both;
+  filter: drop-shadow(0 7px 9px rgba(43, 33, 20, 0.32));
+}
+.pk-film .pk-face {
+  position: absolute; inset: 0; border-radius: inherit; overflow: hidden;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+}
+.pk-film .pk-face-front {
+  background-color: var(--al-ink); background-image: var(--al-foil);
+  background-size: 220% 220%; background-position: 100% 0%;
+}
+.pk-film .pk-face-front::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(33, 25, 14, 0.6), rgba(33, 25, 14, 0.28) 55%, rgba(33, 25, 14, 0.46));
+}
+.pk-film .pk-face-front::after {
+  content: "✂ peel"; position: absolute; inset: 0; display: grid; place-items: center;
+  color: rgba(255, 255, 255, 0.82); font-family: var(--font-caveat), cursive;
+  font-size: 16px; letter-spacing: 0.04em;
+}
+/* matte adhesive underside, revealed as the seal folds back */
+.pk-film .pk-face-back {
+  transform: rotateX(180deg);
+  background: linear-gradient(200deg, #6f6657, #b8ad97 58%, #877d68);
+}
+.pk-film .pk-face-back::after {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(120% 80% at 50% 0%, rgba(255, 255, 255, 0.26), transparent 60%);
 }
 .pk-strip .al-disc { flex: 1 1 0; min-width: 0; }
 .pk-strip .al-disc .ring { width: 54px; height: 54px; font-size: 25px; }
@@ -201,22 +227,13 @@
 .al-disc .ring .crestimg { width: 46px; height: 46px; object-fit: cover; border-radius: 50%; }
 .al-disc.todo .ring .crestimg { filter: grayscale(1); opacity: 0.4; }
 .al-disc .fl-badge { position: absolute; bottom: -5px; left: -4px; font-size: 13px; line-height: 1; background: var(--al-card); border-radius: 6px; padding: 1px 3px; box-shadow: 0 1px 3px rgba(43, 33, 20, 0.25); }
-/* tear the pack open: a paper rip that snaps down from the seam */
-@keyframes pk-tear {
-  0%   { opacity: 0; clip-path: inset(0 0 100% 0); transform: translateY(-6px) rotate(-1.2deg); }
-  30%  { opacity: 1; }
-  62%  { clip-path: inset(0 0 0 0); transform: translateY(2px) rotate(0.8deg); }
-  80%  { transform: translateY(0) rotate(-0.4deg); }
-  100% { opacity: 1; clip-path: inset(0 0 0 0); transform: translateY(0) rotate(0); }
+/* peel the foil seal back to reveal the crests */
+@keyframes pk-peel {
+  0%   { transform: rotateX(0deg) translateY(0); opacity: 1; }
+  68%  { opacity: 1; }
+  100% { transform: rotateX(-126deg) translateY(-7px); opacity: 0; }
 }
-/* the flap recoils as the seam gives way */
-@keyframes pk-snap {
-  0%   { transform: translateY(0) rotate(0); }
-  22%  { transform: translateY(-2px) rotate(-0.5deg); }
-  48%  { transform: translateY(1px) rotate(0.4deg); }
-  100% { transform: translateY(0) rotate(0); }
-}
-@media (prefers-reduced-motion: reduce) { .pk-strip { animation: none; } .al-pack.open .pk-top { animation: none; } .pk-top { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .pk-film { display: none; } .pk-top { transition: none; } }
 .al-disc { text-decoration: none; color: inherit; text-align: center; display: block; }
 .al-disc .ring { position: relative; width: 76px; height: 76px; margin: 0 auto; border-radius: 50%; display: grid; place-items: center; font-size: 36px; background: var(--al-card); transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s; }
 .al-disc.got .ring { border: 5px solid transparent; background-image: linear-gradient(var(--al-card), var(--al-card)), var(--al-foil); background-origin: border-box; background-clip: padding-box, border-box; box-shadow: 0 6px 14px rgba(43, 33, 20, 0.2); }
@@ -240,7 +257,7 @@
 .al-mascots { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(18px, 2.6vw, 28px); }
 @media (max-width: 760px) { .al-mascots { grid-template-columns: 1fr; } }
 .al-mascot {
-  position: relative; display: block; text-decoration: none; overflow: hidden;
+  position: relative; display: block; text-decoration: none; overflow: visible;
   background: var(--al-card); border: 6px solid transparent; border-radius: 18px;
   padding: 24px 20px 20px;
   background-image: linear-gradient(var(--al-card), var(--al-card)), var(--al-foil);
@@ -252,6 +269,8 @@
 .al-mascot:nth-child(2) { transform: rotate(1.2deg); }
 .al-mascot:nth-child(3) { transform: rotate(-1deg); }
 .al-mascot:hover { transform: translateY(-6px) rotate(0deg); box-shadow: 0 22px 42px rgba(43, 33, 20, 0.28); }
+/* clips the blurred glow to the card so the role badge can poke out above */
+.al-mascot .glow-wrap { position: absolute; inset: 0; z-index: 0; border-radius: 12px; overflow: hidden; pointer-events: none; }
 .al-mascot .glow { position: absolute; top: 6px; left: 12px; width: 96px; height: 96px; border-radius: 50%; opacity: 0.2; filter: blur(28px); pointer-events: none; }
 .al-mascot .role {
   position: absolute; top: -12px; right: 16px; color: #fff;

@@ -250,7 +250,9 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
               className="al-mascot al-reveal"
               style={{ animationDelay: `${i * 90}ms` }}
             >
-              <span className="glow" style={{ background: m.accent }} aria-hidden />
+              <span className="glow-wrap" aria-hidden>
+                <span className="glow" style={{ background: m.accent }} />
+              </span>
               <span className="role" style={{ background: m.accent }}>{m.role[l]}</span>
               <span className="crest">{m.emoji}</span>
               <h3>{m.name}</h3>
