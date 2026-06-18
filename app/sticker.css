@@ -246,6 +246,85 @@
 .al-disc.todo .nm { color: var(--al-ink-soft); }
 .al-disc .got-tab { position: absolute; top: -8px; right: -6px; background: var(--al-green); color: #fff; font-family: var(--font-caveat), cursive; font-size: 14px; line-height: 1; padding: 3px 6px; border-radius: 7px; }
 
+/* ---- sticker-slap reveal: as the foil seal peels, crests get pressed onto the page one by one ---- */
+.pk-strip .al-disc { animation: al-slap 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.pk-strip .al-disc:nth-of-type(1) { animation-delay: 0.14s; }
+.pk-strip .al-disc:nth-of-type(2) { animation-delay: 0.22s; }
+.pk-strip .al-disc:nth-of-type(3) { animation-delay: 0.30s; }
+.pk-strip .al-disc:nth-of-type(4) { animation-delay: 0.38s; }
+.pk-strip .al-disc:nth-of-type(n+5) { animation-delay: 0.46s; }
+@keyframes al-slap {
+  0%   { opacity: 0; transform: translateY(-18px) scale(1.2); }
+  55%  { opacity: 1; transform: translateY(3px) scale(0.94); }
+  78%  { transform: translateY(-1px) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* the ✓ "got it!" tab stamps on once the sticker has landed */
+.pk-strip .al-disc.got .got-tab { animation: al-stampin 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.pk-strip .al-disc.got:nth-of-type(1) .got-tab { animation-delay: 0.42s; }
+.pk-strip .al-disc.got:nth-of-type(2) .got-tab { animation-delay: 0.50s; }
+.pk-strip .al-disc.got:nth-of-type(3) .got-tab { animation-delay: 0.58s; }
+.pk-strip .al-disc.got:nth-of-type(4) .got-tab { animation-delay: 0.66s; }
+.pk-strip .al-disc.got:nth-of-type(n+5) .got-tab { animation-delay: 0.74s; }
+@keyframes al-stampin {
+  0%   { opacity: 0; transform: scale(0) rotate(-20deg); }
+  100% { opacity: 1; transform: scale(1) rotate(-4deg); }
+}
+
+/* foil catches the light — a single sheen sweeps across each collected crest, and again on hover */
+.al-disc.got .ring::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, 0.7) 49%, rgba(255, 255, 255, 0.18) 56%, transparent 66%);
+  background-size: 250% 250%; background-position: 130% 130%; opacity: 0;
+}
+.pk-strip .al-disc.got .ring::after { animation: al-glint 0.95s ease-out both; }
+.pk-strip .al-disc.got:nth-of-type(1) .ring::after { animation-delay: 0.40s; }
+.pk-strip .al-disc.got:nth-of-type(2) .ring::after { animation-delay: 0.48s; }
+.pk-strip .al-disc.got:nth-of-type(3) .ring::after { animation-delay: 0.56s; }
+.pk-strip .al-disc.got:nth-of-type(4) .ring::after { animation-delay: 0.64s; }
+.pk-strip .al-disc.got:nth-of-type(n+5) .ring::after { animation-delay: 0.72s; }
+.al-disc.got:hover .ring::after { animation: al-glint 0.7s ease-out; }
+@keyframes al-glint {
+  0%   { opacity: 0; background-position: 130% 130%; }
+  20%  { opacity: 0.85; }
+  100% { opacity: 0; background-position: -50% -50%; }
+}
+
+/* ---- "just stuck in!" — a crest collected since your last visit gets a louder welcome ---- */
+.al-disc .fresh-tag {
+  position: absolute; top: -20px; left: 50%; z-index: 3; white-space: nowrap;
+  transform: translateX(-50%) rotate(-4deg);
+  background: var(--al-red); color: #fff; font-family: var(--font-caveat), cursive;
+  font-size: 13px; line-height: 1; padding: 3px 8px; border-radius: 8px;
+  box-shadow: 2px 2px 0 rgba(43, 33, 20, 0.25);
+}
+/* the foil ring pulses a gold halo a couple of times when it lands */
+.pk-strip .al-disc.fresh .ring { animation: al-fresh-glow 0.9s ease-out 0.45s 2 both; }
+/* and the welcome ribbon stamps on after the sticker has settled */
+.pk-strip .al-disc.fresh .fresh-tag { animation: al-stampin-c 0.46s cubic-bezier(0.34, 1.56, 0.64, 1) 0.52s both; }
+/* a double glint instead of the single one collected crests get */
+.pk-strip .al-disc.fresh .ring::after { animation: al-glint 0.9s ease-out 0.4s 2 both; }
+@keyframes al-fresh-glow {
+  0%, 100% { box-shadow: 0 6px 14px rgba(43, 33, 20, 0.2); }
+  50%      { box-shadow: 0 0 0 4px rgba(217, 178, 74, 0.55), 0 8px 20px rgba(43, 33, 20, 0.3); }
+}
+@keyframes al-stampin-c {
+  0%   { opacity: 0; transform: translateX(-50%) scale(0) rotate(-22deg); }
+  100% { opacity: 1; transform: translateX(-50%) scale(1) rotate(-4deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pk-strip .al-disc,
+  .pk-strip .al-disc.got .got-tab,
+  .pk-strip .al-disc.got .ring::after,
+  .pk-strip .al-disc.fresh .ring,
+  .pk-strip .al-disc.fresh .fresh-tag,
+  .al-disc.got:hover .ring::after { animation: none; }
+  .al-disc.got .ring::after { display: none; }
+  .pk-strip .al-disc.got .got-tab { transform: rotate(-4deg); }
+}
+
 /* ---------- pulse stamps ---------- */
 .al-stamps { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
 .al-stamp { background: var(--al-card); border: 2px dashed var(--al-line); border-radius: 14px; padding: 18px 16px; text-align: center; }

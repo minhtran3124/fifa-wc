@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+const COLLECTED_KEY = "wc26-collected";
 
 export interface PackTeam {
   id: string;
@@ -34,15 +36,41 @@ export default function StickerPacks({
   hint,
   openAll,
   closeAll,
+  justIn,
 }: {
   packs: Pack[];
   locale: string;
   hint: string;
   openAll: string;
   closeAll: string;
+  justIn: string;
 }) {
   const [open, setOpen] = useState<Set<string>>(new Set());
   const allOpen = open.size === packs.length;
+
+  // crests collected since the visitor's last visit get a "just stuck in!" celebration.
+  // First visit stores a silent baseline; only later visits light up the new arrivals.
+  const [fresh, setFresh] = useState<Set<string>>(new Set());
+  useEffect(() => {
+    const collected = packs.flatMap((p) => p.teams.filter((t) => t.has).map((t) => t.id));
+    let prev: Set<string> | null = null;
+    try {
+      const raw = localStorage.getItem(COLLECTED_KEY);
+      if (raw) prev = new Set(JSON.parse(raw) as string[]);
+    } catch {
+      /* private mode / disabled storage — skip celebration, never throw */
+    }
+    if (prev) {
+      const newly = collected.filter((id) => !prev!.has(id));
+      if (newly.length) setFresh(new Set(newly));
+    }
+    try {
+      localStorage.setItem(COLLECTED_KEY, JSON.stringify(collected));
+    } catch {
+      /* ignore */
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const toggle = (g: string) =>
     setOpen((prev) => {
@@ -100,25 +128,32 @@ export default function StickerPacks({
                     <span className="pk-face pk-face-back" />
                     <span className="pk-face pk-face-front" />
                   </span>
-                  {p.teams.map((t) => (
-                    <Link
-                      key={t.id}
-                      href={`/${locale}/teams/${t.id}`}
-                      className={`al-disc ${t.has ? "got" : "todo"}`}
-                      aria-label={t.name}
-                    >
-                      <span className="ring">
-                        {t.crest ? (
-                          <Image className="crestimg" src={t.crest} alt="" width={40} height={40} />
-                        ) : (
-                          <span className="fl">{t.flag}</span>
-                        )}
-                        {t.crest && <span className="fl-badge" aria-hidden>{t.flag}</span>}
-                        {t.has && <span className="got-tab">✓</span>}
-                      </span>
-                      <span className="nm">{t.name}</span>
-                    </Link>
-                  ))}
+                  {p.teams.map((t) => {
+                    const isFresh = t.has && fresh.has(t.id);
+                    return (
+                      <Link
+                        key={t.id}
+                        href={`/${locale}/teams/${t.id}`}
+                        className={`al-disc ${t.has ? "got" : "todo"}${isFresh ? " fresh" : ""}`}
+                        aria-label={t.name}
+                      >
+                        <span className="ring">
+                          {t.crest ? (
+                            <Image className="crestimg" src={t.crest} alt="" width={40} height={40} />
+                          ) : (
+                            <span className="fl">{t.flag}</span>
+                          )}
+                          {t.crest && <span className="fl-badge" aria-hidden>{t.flag}</span>}
+                          {isFresh ? (
+                            <span className="fresh-tag">{justIn}</span>
+                          ) : t.has ? (
+                            <span className="got-tab">✓</span>
+                          ) : null}
+                        </span>
+                        <span className="nm">{t.name}</span>
+                      </Link>
+                    );
+                  })}
                 </div>
               )}
             </div>

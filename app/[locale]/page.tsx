@@ -207,6 +207,7 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
           hint={dict.home.packHint}
           openAll={dict.home.packOpenAll}
           closeAll={dict.home.packCloseAll}
+          justIn={dict.home.justIn}
         />
       </section>
 

@@ -64,6 +64,7 @@ const vi: Dictionary = {
     featuredLive: "trực tiếp",
     featuredNext: "sắp tới",
     kickOff: "Khởi tranh",
+    justIn: "Đã có!",
   },
   teamsIndex: {
     title: "48 Đội Tuyển",

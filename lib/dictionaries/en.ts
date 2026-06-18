@@ -62,6 +62,7 @@ const en = {
     featuredLive: "live now",
     featuredNext: "next up",
     kickOff: "Kick-off", // "Kick-off {time}"
+    justIn: "Got it!", // stamped on a sticker newly collected since your last visit
   },
   teamsIndex: {
     title: "The 48 Nations",
