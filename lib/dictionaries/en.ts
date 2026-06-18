@@ -90,6 +90,20 @@ const en = {
     finalScribble: "The Final!",
     pens: "Pens",
   },
+  qualif: {
+    winnerOf: "Winners", // "{Winners} A" → winners of Group A
+    runnerOf: "Runners-up",
+    thirdLabel: "3rd place",
+    projected: "as it stands",
+    seedNote: "Slots fill from the live group tables — winners and runners-up are set, the eight best third-placed teams are still racing.",
+    thirdScribble: "Still up for grabs",
+    thirdTitle: "Best third-placed race",
+    thirdSub: "Twelve groups, eight tickets. The third-placed teams are ranked against each other; the top eight reach the Round of 32.",
+    in: "In",
+    out: "Out",
+    cut: "Top 8 qualify",
+    eligibleFrom: "3rd from",
+  },
   stats: {
     title: "Tournament Stats",
     sub: "Aggregates and scorer leaderboards from live match data.",

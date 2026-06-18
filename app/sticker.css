@@ -691,6 +691,31 @@
 .al-wc-row.win .cd { color: var(--al-ink); }
 .al-wc-row.win .sc, .al-wc-row.win .sc sup { color: var(--al-red); }
 .al-wc-row.lose { opacity: 0.5; }
+/* live seed token on a provisionally-filled bracket slot (e.g. current "1A") */
+.al-wc-row .cd .seed { font-style: normal; font-weight: 700; font-size: 9px; letter-spacing: 0.03em; color: var(--al-ink-soft); border: 1px solid var(--al-line); border-radius: 4px; padding: 0 3px; margin-left: 5px; vertical-align: 1px; }
+.al-wc-card.proj { border-style: dotted; }
+
+/* ---------- knockout: live seeding note + best third-placed race ---------- */
+.al-ko-seednote { margin: 12px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--al-ink-soft); max-width: 72ch; }
+.al-ko-seed { display: inline-block; margin-left: 8px; font-size: 11.5px; font-weight: 700; color: var(--al-ink-soft); white-space: nowrap; }
+
+.al-thirds { margin-top: clamp(30px, 5vw, 48px); }
+.al-thirds-sub { margin: 12px 0 16px; font-size: 13.5px; line-height: 1.55; color: var(--al-ink-soft); max-width: 64ch; }
+.al-thirds-list { list-style: none; margin: 0; padding: 0; background: var(--al-card); border: 1px solid var(--al-line); border-radius: 16px; overflow: hidden; }
+.al-thirds-list li { display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-top: 1px solid var(--al-line); }
+.al-thirds-list li:first-child { border-top: none; }
+.al-thirds-list li .rk { font-family: var(--font-anton), sans-serif; font-size: 16px; color: var(--al-ink-soft); width: 22px; text-align: center; font-variant-numeric: tabular-nums; flex-shrink: 0; }
+.al-thirds-list li .fl { font-size: 20px; line-height: 1; flex-shrink: 0; }
+.al-thirds-list li .nm { font-weight: 700; font-size: 14px; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.al-thirds-list li .nm em { font-style: normal; font-weight: 600; color: var(--al-ink-soft); font-size: 12px; margin-left: 7px; }
+.al-thirds-list li .num { font-family: var(--font-anton), sans-serif; font-variant-numeric: tabular-nums; font-size: 15px; color: var(--al-ink-soft); width: 30px; text-align: right; flex-shrink: 0; }
+.al-thirds-list li .num.pts { color: var(--al-ink); }
+.al-thirds-list li .tag { font-family: var(--font-caveat), cursive; font-size: 15px; width: 48px; text-align: right; flex-shrink: 0; color: var(--al-ink-soft); }
+.al-thirds-list li.in { background: rgba(28, 122, 71, 0.08); }
+.al-thirds-list li.in .rk, .al-thirds-list li.in .tag { color: var(--al-green); }
+.al-thirds-list li.out { opacity: 0.66; }
+.al-thirds-list li.cutline { padding: 5px 14px; background: var(--al-paper); border-top: 2px dashed var(--al-red); justify-content: center; }
+.al-thirds-list li.cutline span { font-family: var(--font-caveat), cursive; font-size: 14px; color: var(--al-red); transform: rotate(-1deg); }
 
 /* connectors — left half flows right, right half flows left.
    Each card draws an elbow toward the centre; pairs meet on a vertical bus. */
