@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import LoadingBall from "./LoadingBall";
 
 // Keep the indicator on screen at least this long so it's always visible, even
 // when navigating to a prefetched static page (which is near-instant).
@@ -67,12 +68,5 @@ export default function NavLoader() {
 
   if (!loading) return null;
 
-  return (
-    <div className="al-loading" role="status" aria-live="polite">
-      <span className="ball" aria-hidden>
-        ⚽
-      </span>
-      <span className="sr-only">Loading…</span>
-    </div>
-  );
+  return <LoadingBall />;
 }

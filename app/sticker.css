@@ -284,12 +284,15 @@
 .al-loading {
   position: fixed; inset: 0; z-index: 200;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 16px; text-align: center;
+  gap: 12px; text-align: center;
   background: rgba(231, 220, 196, 0.72);
   backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
   animation: al-fade-in 0.15s ease;
 }
-.al-loading .ball { font-size: 60px; line-height: 1; animation: al-spin 0.7s linear infinite; transform-origin: 50% 50%; }
+.al-loading .ball { font-size: 42px; line-height: 1; animation: al-spin 0.7s linear infinite; transform-origin: 50% 50%; }
+.al-load-mascot { display: flex; flex-direction: column; align-items: center; gap: 1px; animation: al-bounce 1.3s ease-in-out infinite; }
+.al-load-mascot .em { font-size: 30px; line-height: 1; }
+.al-load-mascot .nm { font-family: var(--font-caveat), cursive; font-size: 17px; color: var(--al-ink-soft); }
 @keyframes al-fade-in { from { opacity: 0; } to { opacity: 1; } }
 
 /* ---------- match stickers ---------- */
