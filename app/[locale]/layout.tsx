@@ -18,6 +18,11 @@ const headline = Big_Shoulders({
   weight: ["600", "700", "800", "900"],
   variable: "--font-headline",
   display: "swap",
+  // next/font has no fallback-metric override for "Big Shoulders" (renamed from
+  // "Big Shoulders Display"), which throws "Failed to find font override values".
+  // Disable the auto-generated fallback and supply an explicit condensed stack.
+  adjustFontFallback: false,
+  fallback: ["Arial Narrow", "Inter", "system-ui", "sans-serif"],
 });
 const anton = Anton({ weight: "400", subsets: ["latin", "vietnamese"], variable: "--font-anton", display: "swap" });
 const inter = Inter({ subsets: ["latin", "vietnamese"], variable: "--font-inter", display: "swap" });
