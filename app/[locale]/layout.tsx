@@ -7,6 +7,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import { isLocale, locales } from "@/lib/i18n";
 import AlbumNav from "@/components/AlbumNav";
 import LangSwitch from "@/components/LangSwitch";
+import ScrollTopButton from "@/components/ScrollTopButton";
 import "../globals.css";
 import "../sticker.css";
 
@@ -80,6 +81,8 @@ export default async function LocaleLayout({
               <p>{dict.footer.tagline}</p>
             </div>
           </footer>
+
+          <ScrollTopButton label={dict.common.toTop} />
         </div>
       </body>
     </html>
