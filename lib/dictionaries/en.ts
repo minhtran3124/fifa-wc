@@ -162,6 +162,22 @@ const en = {
     fixturesEmpty: "Fixtures will appear once the schedule is confirmed.",
     rivalsKicker: "Same group",
     rivalsWord: "rivals",
+    wc: {
+      kicker: "Pedigree",
+      last: "Last World Cup",
+      finished: "finished",
+      debut: "First appearance — 2026 debut",
+      results: {
+        Champions: "Champions",
+        RunnersUp: "Runners-up",
+        ThirdPlace: "Third place",
+        FourthPlace: "Fourth place",
+        QuarterFinals: "Quarter-finals",
+        RoundOf16: "Round of 16",
+        GroupStage: "Group stage",
+        Debut: "Debut",
+      },
+    },
     regions: {
       UEFA: "Europe",
       CONMEBOL: "South America",
