@@ -36,6 +36,9 @@ const en = {
     albumKicker: "Gotta collect ’em all",
     albumTitle: "The album · 48 nations",
     collected: "collected", // "{n} / 48 collected"
+    packHint: "Tap a pack to rip it open",
+    packOpenAll: "Open all",
+    packCloseAll: "Close all",
     pulseKicker: "Album stats",
     pulseTitle: "By the numbers",
     allStats: "All stats →",

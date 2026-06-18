@@ -1,0 +1,4 @@
+{
+  "_comment": "Ảnh chụp cả đội (squad/lineup) theo mã đội viết thường (lib/teamMeta.ts). Giá trị: URL ảnh đầy đủ HOẶC đường dẫn nội bộ /teams/<mã>.jpg (đặt file trong public/teams/). Ảnh cố định nên sưu tầm từ nhiều nguồn rồi gắn ở đây; đội nào chưa có sẽ tự fallback về cờ/huy hiệu. Lưu ý tôn trọng giấy phép ảnh (vd CC BY cần ghi nguồn). mex: ảnh đội hình Mexico, Wikimedia Commons, CC BY 4.0.",
+  "mex": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Argentina_vs_mexico_mexico_lineup.jpg"
+}

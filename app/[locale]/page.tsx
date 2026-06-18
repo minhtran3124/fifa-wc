@@ -10,9 +10,11 @@ import type { Locale } from "@/lib/i18n";
 import MatchSticker, { side } from "@/components/MatchSticker";
 import AlbumRefresh from "@/components/AlbumRefresh";
 import MyTeams from "@/components/MyTeams";
+import StickerPacks, { type Pack } from "@/components/StickerPacks";
+import { crestUrl } from "@/lib/crests";
 
-// festive sticker-tape band (decorative)
-const PARADE = ["⚽", "🏆", "🥅", "🎉", "🎺", "🔥", "🌎", "🙌", "🥇", "📣", "🇺🇸", "🇨🇦", "🇲🇽", "🫎", "🐆", "🦅"];
+// festive sticker-tape band — every nation in the tournament (decorative)
+const PARADE = TEAMS.map((t) => t.flag);
 
 export default async function AlbumHome({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -183,40 +185,28 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
           </div>
         </div>
 
-        <div className="al-pages">
-          {GROUPS.map((g) => {
+        <StickerPacks
+          packs={GROUPS.map((g): Pack => {
             const teams = teamsByGroup(g);
-            const got = teams.filter((t) => playedIds.has(t.id)).length;
-            return (
-              <div key={g} className="al-page">
-                <div className="pg-head">
-                  <span className="pg-tab">{g}</span>
-                  <span className="pg-ttl">{dict.team.groupLabel} {g}</span>
-                  <span className="pg-ct">{got}/{teams.length}</span>
-                </div>
-                <div className="al-discs">
-                  {teams.map((t) => {
-                    const has = playedIds.has(t.id);
-                    return (
-                      <Link
-                        key={t.id}
-                        href={`/${l}/teams/${t.id}`}
-                        className={`al-disc ${has ? "got" : "todo"}`}
-                        aria-label={t.name}
-                      >
-                        <span className="ring">
-                          <span className="fl">{t.flag}</span>
-                          {has && <span className="got-tab">✓</span>}
-                        </span>
-                        <span className="nm">{t.name}</span>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-            );
+            return {
+              group: g,
+              title: `${dict.team.groupLabel} ${g}`,
+              got: teams.filter((t) => playedIds.has(t.id)).length,
+              total: teams.length,
+              teams: teams.map((t) => ({
+                id: t.id,
+                name: t.name,
+                flag: t.flag,
+                has: playedIds.has(t.id),
+                crest: crestUrl(t.id),
+              })),
+            };
           })}
-        </div>
+          locale={l}
+          hint={dict.home.packHint}
+          openAll={dict.home.packOpenAll}
+          closeAll={dict.home.packCloseAll}
+        />
       </section>
 
       {/* ---------- pulse stamps ---------- */}
@@ -260,7 +250,9 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
               className="al-mascot al-reveal"
               style={{ animationDelay: `${i * 90}ms` }}
             >
-              <span className="glow" style={{ background: m.accent }} aria-hidden />
+              <span className="glow-wrap" aria-hidden>
+                <span className="glow" style={{ background: m.accent }} />
+              </span>
               <span className="role" style={{ background: m.accent }}>{m.role[l]}</span>
               <span className="crest">{m.emoji}</span>
               <h3>{m.name}</h3>
