@@ -219,6 +219,8 @@ const en = {
     halfTime: "Half-time",
     penaltyShort: "P",
     ownGoalShort: "OG",
+    fetchStats: "Fetch latest stats",
+    fetchStatsBusy: "Fetching…",
     statsKicker: "By the numbers",
     statsTitle: "Team stats",
     cardsKicker: "Discipline",

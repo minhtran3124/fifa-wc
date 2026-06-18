@@ -8,6 +8,7 @@ import { groupStandings } from "@/lib/standings";
 import { getWcData } from "@/lib/footballData";
 import { getSquad } from "@/lib/squads";
 import { getMatchStats } from "@/lib/matchStats";
+import StatsRefresh from "@/components/StatsRefresh";
 import { fmtDate, fmtTime } from "@/lib/format";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/i18n";
@@ -60,8 +61,10 @@ export default async function MatchDetail({ params }: { params: Promise<{ locale
   const rows = m.group ? groupStandings(m.group, matches) : [];
   const th = dict.groups.th;
 
-  // post-match metrics (team stats, cards, starting XI) for finished matches
-  const stats = getMatchStats(m.home, m.away);
+  // post-match metrics (team stats, cards, starting XI) — fetched live from
+  // ESPN (cached 1 day), with the bundled snapshot as fallback.
+  const finished = m.status === "finished";
+  const stats = finished ? await getMatchStats(m.home, m.away, m.date) : null;
   const statRows = stats
     ? (["possession", "shots", "shotsOnTarget", "corners", "fouls", "offsides", "saves"] as const)
         .map((k) => ({ k, h: stats.home[k], a: stats.away[k] }))
@@ -84,6 +87,9 @@ export default async function MatchDetail({ params }: { params: Promise<{ locale
     <>
       <div className="al-page-head" style={{ borderBottom: "none", marginBottom: 12 }}>
         <Link href={`/${l}/matches`} className="al-back">{dict.common.back}</Link>
+        {finished && (
+          <StatsRefresh label={dict.matchPage.fetchStats} busyLabel={dict.matchPage.fetchStatsBusy} />
+        )}
       </div>
 
       {/* match header */}

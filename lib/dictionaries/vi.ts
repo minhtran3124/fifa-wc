@@ -221,6 +221,8 @@ const vi: Dictionary = {
     halfTime: "Hiệp một",
     penaltyShort: "P",
     ownGoalShort: "OG",
+    fetchStats: "Cập nhật số liệu",
+    fetchStatsBusy: "Đang tải…",
     statsKicker: "Thông số",
     statsTitle: "Chỉ số đội",
     cardsKicker: "Thẻ phạt",
