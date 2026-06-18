@@ -885,11 +885,19 @@ button.al-hl-row { font: inherit; color: inherit; text-align: left; width: 100%;
   font-size: 1.05rem; letter-spacing: 0.02em; color: var(--al-ink-soft);
   margin: 0 0 10px; padding-bottom: 6px; border-bottom: 2px dashed var(--al-line);
 }
+.al-squad-hint {
+  font-size: 12px; color: var(--al-ink-soft); margin: 2px 0 0; display: flex; align-items: center; gap: 6px;
+}
+.al-squad-hint::before { content: "👆"; }
 .al-squad { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
 .al-player {
-  display: flex; align-items: center; gap: 10px;
+  display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
+  font: inherit; color: inherit; cursor: pointer; -webkit-appearance: none; appearance: none;
   background: var(--al-card); border: 1px solid var(--al-line); border-radius: 12px; padding: 8px 12px;
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
 }
+button.al-player:hover { transform: translateY(-2px); box-shadow: 0 10px 18px rgba(43, 33, 20, 0.16); border-color: var(--al-red); }
+button.al-player:focus-visible { outline: 2px solid var(--al-red); outline-offset: 2px; }
 .al-player .num {
   flex-shrink: 0; width: 22px; text-align: center;
   font-family: var(--font-anton), sans-serif; font-size: 15px; color: var(--al-red);
@@ -902,6 +910,57 @@ button.al-hl-row { font: inherit; color: inherit; text-align: left; width: 100%;
 .al-player .bd { min-width: 0; display: flex; flex-direction: column; }
 .al-player .nm { font-weight: 700; font-size: 13.5px; line-height: 1.25; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .al-player .age { font-size: 11.5px; color: var(--al-ink-soft); }
+
+/* ---------- player detail modal ---------- */
+.al-modal-backdrop {
+  position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center;
+  padding: 18px; background: rgba(28, 21, 12, 0.55); backdrop-filter: blur(3px);
+  animation: alFade 0.18s ease;
+}
+@keyframes alFade { from { opacity: 0; } to { opacity: 1; } }
+.al-modal {
+  position: relative; width: 100%; max-width: 440px; max-height: calc(100vh - 36px); overflow-y: auto;
+  background: var(--al-paper2); border: 1px solid var(--al-line); border-radius: 18px;
+  padding: 22px; box-shadow: 0 26px 60px rgba(28, 21, 12, 0.4);
+  animation: alPop 0.2s cubic-bezier(0.2, 0.8, 0.3, 1.2);
+}
+@keyframes alPop { from { transform: translateY(12px) scale(0.97); opacity: 0; } to { transform: none; opacity: 1; } }
+.al-modal-x {
+  position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid var(--al-line); background: var(--al-card); color: var(--al-ink-soft);
+  font-size: 14px; cursor: pointer; line-height: 1; display: flex; align-items: center; justify-content: center;
+}
+.al-modal-x:hover { background: var(--al-red); color: #fff; border-color: var(--al-red); }
+.pm-head { display: flex; align-items: center; gap: 14px; padding-right: 32px; }
+.pm-photo {
+  width: 72px; height: 72px; border-radius: 50%; object-fit: cover; object-position: top center;
+  border: 2px solid var(--al-line); background: var(--al-card); flex-shrink: 0;
+}
+.pm-photo-empty {
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-anton), sans-serif; font-size: 28px; color: var(--al-red);
+}
+.pm-id { min-width: 0; }
+.pm-pos { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em; color: var(--al-red); }
+.pm-name { font-family: var(--font-anton), sans-serif; font-weight: 400; font-size: 1.6rem; line-height: 1.05; margin: 4px 0 0; }
+.pm-club { display: inline-flex; align-items: center; gap: 5px; font-size: 13.5px; color: var(--al-ink-soft); font-weight: 800; }
+.pm-club span { font-size: 14px; }
+.pm-chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 0; }
+.pm-chip {
+  display: flex; align-items: center; gap: 9px;
+  background: var(--al-card); border: 1px solid var(--al-line); border-radius: 13px; padding: 9px 13px 9px 11px;
+}
+.pm-chip .ic { font-size: 20px; line-height: 1; }
+.pm-chip .tx { display: flex; flex-direction: column; line-height: 1.15; }
+.pm-chip .tx b { font-size: 14px; font-weight: 800; }
+.pm-chip .tx i { font-size: 10px; font-style: normal; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--al-ink-soft); margin-top: 2px; }
+.pm-bio {
+  font-size: 13.5px; line-height: 1.65; color: var(--al-ink); margin: 18px 0 0;
+  padding: 14px 16px; background: var(--al-card); border: 1px solid var(--al-line);
+  border-left: 3px solid var(--al-red); border-radius: 10px;
+}
+.pm-wiki { display: inline-block; margin: 16px 0 0; font-weight: 800; font-size: 13px; color: var(--al-red); text-decoration: none; }
+.pm-wiki:hover { text-decoration: underline; }
 
 /* ---------- favourite / follow button ---------- */
 .al-fav {
