@@ -7,6 +7,16 @@ export interface SquadPlayer {
   number: number | null;
   position: string; // "Goalkeeper" | "Defender" | "Midfielder" | "Attacker"
   photo: string | null;
+  // Enriched detail (data/squads.json, sourced from Wikipedia/Wikidata).
+  // All optional — older entries and unmatched players omit them.
+  club?: string | null;
+  birthDate?: string | null; // ISO "YYYY-MM-DD" or "YYYY"
+  heightCm?: number | null;
+  caps?: number | null;
+  goals?: number | null;
+  bio?: string | null;
+  wikipedia?: string | null;
+  enriched?: boolean;
 }
 
 /** Display order for position groups. */

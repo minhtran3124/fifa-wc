@@ -305,7 +305,7 @@ export default async function AlbumTeam({ params }: { params: Promise<{ locale: 
             </span>
           )}
         </div>
-        <SquadList squad={squad} dict={dict} />
+        <SquadList squad={squad} labels={dict.team.squad} locale={l} />
       </section>
 
       {/* fixtures */}

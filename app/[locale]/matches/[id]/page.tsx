@@ -317,11 +317,11 @@ export default async function MatchDetail({ params }: { params: Promise<{ locale
           <div className="al-mh-squads">
             <div>
               <h3 className="al-mh-sqttl"><span>{home.flag}</span> {home.name}</h3>
-              <SquadList squad={homeSquad} dict={dict} />
+              <SquadList squad={homeSquad} labels={dict.team.squad} locale={l} />
             </div>
             <div>
               <h3 className="al-mh-sqttl"><span>{away.flag}</span> {away.name}</h3>
-              <SquadList squad={awaySquad} dict={dict} />
+              <SquadList squad={awaySquad} labels={dict.team.squad} locale={l} />
             </div>
           </div>
         </section>
