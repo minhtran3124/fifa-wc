@@ -12,16 +12,16 @@ import NavLoader from "@/components/NavLoader";
 import "../globals.css";
 import "../sticker.css";
 
-const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
+const manrope = Manrope({ subsets: ["latin", "vietnamese"], variable: "--font-manrope", display: "swap" });
 const headline = Big_Shoulders({
-  subsets: ["latin"],
+  subsets: ["latin", "vietnamese"],
   weight: ["600", "700", "800", "900"],
   variable: "--font-headline",
   display: "swap",
 });
-const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton", display: "swap" });
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-const caveat = Caveat({ weight: "700", subsets: ["latin"], variable: "--font-caveat", display: "swap" });
+const anton = Anton({ weight: "400", subsets: ["latin", "vietnamese"], variable: "--font-anton", display: "swap" });
+const inter = Inter({ subsets: ["latin", "vietnamese"], variable: "--font-inter", display: "swap" });
+const caveat = Caveat({ weight: "700", subsets: ["latin", "latin-ext"], variable: "--font-caveat", display: "swap" });
 
 export const metadata: Metadata = {
   title: {
