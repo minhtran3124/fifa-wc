@@ -10,6 +10,7 @@ const vi: Dictionary = {
     toTop: "Lên đầu trang",
     nav: {
       home: "Trang chủ",
+      teams: "Đội tuyển",
       groups: "Bảng đấu",
       matches: "Trận đấu",
       previews: "Nhận định",
@@ -63,6 +64,12 @@ const vi: Dictionary = {
     featuredLive: "trực tiếp",
     featuredNext: "sắp tới",
     kickOff: "Khởi tranh",
+  },
+  teamsIndex: {
+    title: "48 Đội Tuyển",
+    sub: "Toàn bộ các đội tại giải, chia theo bảng đấu. Chạm vào một đội để mở trang riêng — đội hình, thành tích, lịch thi đấu và các đối thủ cùng bảng.",
+    browseAll: "Xem tất cả đội tuyển →",
+    rankSuffix: "FIFA",
   },
   groups: {
     title: "Bảng xếp hạng",

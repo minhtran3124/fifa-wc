@@ -8,6 +8,7 @@ const en = {
     toTop: "Back to top",
     nav: {
       home: "Home",
+      teams: "Teams",
       groups: "Tables",
       matches: "Matches",
       previews: "Previews",
@@ -61,6 +62,12 @@ const en = {
     featuredLive: "live now",
     featuredNext: "next up",
     kickOff: "Kick-off", // "Kick-off {time}"
+  },
+  teamsIndex: {
+    title: "The 48 Nations",
+    sub: "Every team in the tournament, sorted into their groups. Tap a nation to open its page — squad, record, fixtures and group rivals.",
+    browseAll: "Browse all teams →",
+    rankSuffix: "FIFA",
   },
   groups: {
     title: "Group Tables",
