@@ -122,9 +122,9 @@ const vi: Dictionary = {
     highlights: {
       kicker: "Xem lại",
       title: "Xem highlights",
-      sub: "Kết quả gần đây — chạm để xem lại trên kênh YouTube chính thức của FIFA.",
+      sub: "Kết quả gần đây — chạm để xem highlights ngay tại đây.",
       watch: "Xem highlights",
-      via: "qua YouTube",
+      via: "qua VTV Thể Thao",
       empty: "Highlights sẽ xuất hiện khi các trận khởi tranh.",
     },
   },

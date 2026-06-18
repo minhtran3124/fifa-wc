@@ -678,6 +678,10 @@
 .al-hl-row .play .yt { display: grid; place-items: center; width: 34px; height: 24px; background: var(--al-red); color: #fff; border-radius: 6px; font-size: 11px; }
 .al-hl-row .play .tx { display: flex; flex-direction: column; line-height: 1.15; font-weight: 800; font-size: 12.5px; color: var(--al-red); }
 .al-hl-row .play .tx small { font-weight: 600; font-size: 10px; color: var(--al-ink-soft); }
+button.al-hl-row { font: inherit; color: inherit; text-align: left; width: 100%; cursor: pointer; }
+.al-hl-item { display: flex; flex-direction: column; gap: 10px; }
+.al-hl-vid { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; border: 1px solid var(--al-line); background: #000; box-shadow: 0 12px 20px rgba(43, 33, 20, 0.16); }
+.al-hl-vid iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 @media (max-width: 620px) {
   .al-hl-row { grid-template-columns: 1fr auto; }
   .al-hl-row .dt { display: none; }
