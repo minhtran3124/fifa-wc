@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Match } from "@/lib/types";
 import { fmtDayKey } from "@/lib/format";
 import type { Locale } from "@/lib/i18n";
@@ -32,6 +32,24 @@ export default function AlbumSchedule({
   dict: Dictionary;
 }) {
   const [filter, setFilter] = useState<FilterKey>("all");
+
+  // The latest finished match (max date) — days are ascending and within-day
+  // ascending, so it's the last finished match in document order.
+  const latestFinishedId = useMemo(() => {
+    let id: string | undefined;
+    for (const d of days) for (const m of d.matches) if (m.status === "finished") id = m.id;
+    return id;
+  }, [days]);
+  const ANCHOR = "latest-finished";
+
+  // On entry, jump to the latest finished match so the user lands on what just
+  // happened without scrolling. Runs once on mount (not on filter changes).
+  useEffect(() => {
+    if (!latestFinishedId) return;
+    const el = document.getElementById(ANCHOR);
+    if (el) el.scrollIntoView({ block: "center" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const labels: Record<FilterKey, string> = {
     all: dict.schedule.filters.all,
@@ -74,7 +92,13 @@ export default function AlbumSchedule({
           </div>
           <div className="al-matches">
             {day.matches.map((m) => (
-              <MatchSticker key={m.id} m={m} locale={locale} dict={dict} />
+              <MatchSticker
+                key={m.id}
+                m={m}
+                locale={locale}
+                dict={dict}
+                id={m.id === latestFinishedId ? ANCHOR : undefined}
+              />
             ))}
           </div>
         </section>
