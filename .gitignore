@@ -14,3 +14,6 @@ next-env.d.ts
 
 # Local Claude Code harness files
 .claude/
+
+# Local data-prep script (not part of the app/CI)
+scripts/enrich_squads.py
