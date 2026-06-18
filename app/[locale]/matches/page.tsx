@@ -5,6 +5,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/i18n";
 import AlbumSchedule from "@/components/AlbumSchedule";
 import AlbumRefresh from "@/components/AlbumRefresh";
+import ScrollTopButton from "@/components/ScrollTopButton";
 
 export default async function AlbumMatches({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -25,6 +26,7 @@ export default async function AlbumMatches({ params }: { params: Promise<{ local
       </div>
 
       <AlbumSchedule days={days} locale={l} dict={dict} />
+      <ScrollTopButton label={dict.common.toTop} />
     </>
   );
 }

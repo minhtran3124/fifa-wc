@@ -15,10 +15,13 @@ export default function MatchSticker({
   m,
   locale,
   dict,
+  id,
 }: {
   m: Match;
   locale: Locale;
   dict: Dictionary;
+  /** optional DOM id — used as a scroll anchor (e.g. latest finished match) */
+  id?: string;
 }) {
   const home = side(m.home, m.homeName);
   const away = side(m.away, m.awayName);
@@ -31,7 +34,7 @@ export default function MatchSticker({
   const awayWin = finished && (m.awayScore ?? 0) > (m.homeScore ?? 0);
 
   return (
-    <Link href={`/${locale}/matches/${m.id}`} className="al-match">
+    <Link href={`/${locale}/matches/${m.id}`} className="al-match" id={id}>
       <div className="top">
         <span>
           {dict.stage[m.stage]}

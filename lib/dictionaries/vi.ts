@@ -7,6 +7,7 @@ const vi: Dictionary = {
     badge: "Bộ sưu tập chính thức",
     brand: "World Cup 2026 · Album Sticker",
     back: "← Trang chủ album",
+    toTop: "Lên đầu trang",
     nav: {
       home: "Trang chủ",
       groups: "Bảng đấu",

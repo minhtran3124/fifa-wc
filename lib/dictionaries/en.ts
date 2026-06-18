@@ -5,6 +5,7 @@ const en = {
     badge: "Official Collection",
     brand: "World Cup 2026 · Sticker Album",
     back: "← Album home",
+    toTop: "Back to top",
     nav: {
       home: "Home",
       groups: "Tables",
