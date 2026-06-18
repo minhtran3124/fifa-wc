@@ -15,6 +15,7 @@ export default function AlbumNav({ locale, labels }: { locale: Locale; labels: N
   const base = `/${locale}`;
   const links = [
     { path: "", label: labels.home },
+    { path: "/teams", label: labels.teams },
     { path: "/groups", label: labels.groups },
     { path: "/matches", label: labels.matches },
     { path: "/previews", label: labels.previews },

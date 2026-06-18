@@ -182,6 +182,7 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
           <div className="al-progress">
             <span>{collected} / 48 {dict.home.collected}</span>
             <span className="al-meter"><i style={{ width: `${Math.max(pct, 3)}%` }} /></span>
+            <Link className="more" href={`/${l}/teams`}>{dict.teamsIndex.browseAll}</Link>
           </div>
         </div>
 
