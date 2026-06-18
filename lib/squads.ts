@@ -1,4 +1,4 @@
-import { NATIONAL_TEAM_IDS } from "./nationalTeamIds";
+import squadsData from "@/data/squads.json";
 
 export interface SquadPlayer {
   id: number;
@@ -13,42 +13,20 @@ export interface SquadPlayer {
 export const POSITION_ORDER = ["Goalkeeper", "Defender", "Midfielder", "Attacker"] as const;
 export type Position = (typeof POSITION_ORDER)[number];
 
+const SQUADS = squadsData as unknown as Record<string, SquadPlayer[]>;
+
 /**
- * Current national-team squad from API-Football (/players/squads). Real data:
- * name, age, shirt number, position, photo. Cached 12h (squads change rarely)
- * and tagged "squad". Returns [] when there's no key, no mapping, or on error —
- * the team page shows an empty state rather than any placeholder.
+ * Current 26-player World Cup 2026 squad for a team. Curated from the official
+ * squad lists (Wikipedia "2026 FIFA World Cup squads"; ages as of 11 Jun 2026,
+ * the first tournament day) into data/squads.json — name, age, shirt number and
+ * position, keyed by our team id. Returns [] for an unknown team.
  *
- * Club history and per-player goals/assists need per-player calls that exceed
- * the free-tier daily quota, so they are intentionally omitted for now.
+ * Player photos are not included (the UI shows a placeholder), and club history
+ * / per-player stats are intentionally omitted. This is a point-in-time snapshot
+ * rather than a live feed, so it does not change once the tournament squads lock.
  */
 export async function getSquad(teamCode: string): Promise<SquadPlayer[]> {
-  const key = process.env.API_FOOTBALL_KEY?.trim();
-  const teamId = NATIONAL_TEAM_IDS[teamCode];
-  if (!key || !teamId) return [];
-
-  try {
-    const res = await fetch(`https://v3.football.api-sports.io/players/squads?team=${teamId}`, {
-      headers: { "x-apisports-key": key },
-      next: { revalidate: 43200, tags: ["squad"] },
-    });
-    if (!res.ok) return [];
-    const json = await res.json();
-    const players = json?.response?.[0]?.players;
-    if (!Array.isArray(players)) return [];
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    return players.map((p: any): SquadPlayer => ({
-      id: p.id,
-      name: p.name ?? "—",
-      age: typeof p.age === "number" ? p.age : null,
-      number: typeof p.number === "number" ? p.number : null,
-      position: p.position ?? "",
-      photo: p.photo ?? null,
-    }));
-    /* eslint-enable @typescript-eslint/no-explicit-any */
-  } catch {
-    return [];
-  }
+  return SQUADS[teamCode] ?? [];
 }
 
 /** Group a flat squad into position buckets in display order. */
