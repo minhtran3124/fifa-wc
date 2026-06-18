@@ -3,7 +3,8 @@ import type { Match, PlayerStat } from "@/lib/types";
 import { tournamentStats, detailedStats } from "@/lib/standings";
 import { getTeam, getVenue } from "@/lib/teams";
 import { getWcData, getWcScorers } from "@/lib/footballData";
-import { highlightsSearchUrl } from "@/lib/highlights";
+import { highlightVideoId, vtvSearchUrl } from "@/lib/highlights";
+import HighlightReel, { type HighlightRow } from "@/components/HighlightReel";
 import { getDictionary, type Dictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/i18n";
 import { side } from "@/components/MatchSticker";
@@ -94,11 +95,28 @@ export default async function AlbumStats({ params }: { params: Promise<{ locale:
     .sort((a, b) => b.assists - a.assists)
     .slice(0, 10);
 
-  // Recent finished matches, most recent first — each gets a highlights link.
+  // Recent finished matches, most recent first — each gets an inline highlight.
   const recentFinished = matches
     .filter((m) => m.status === "finished" && m.homeScore != null && m.awayScore != null)
     .slice(-12)
     .reverse();
+
+  const highlightRows: HighlightRow[] = recentFinished.map((m) => {
+    const home = side(m.home, m.homeName);
+    const away = side(m.away, m.awayName);
+    return {
+      id: m.id,
+      dt: fmtDate(m.date, l),
+      homeName: home.name,
+      homeFlag: home.flag,
+      awayName: away.name,
+      awayFlag: away.flag,
+      homeScore: m.homeScore ?? 0,
+      awayScore: m.awayScore ?? 0,
+      videoId: highlightVideoId(m.home, m.away, m.date),
+      fallbackUrl: vtvSearchUrl(home.name, away.name),
+    };
+  });
 
   const topTeam = d.topScoringTeam;
   const topTeamSide = topTeam ? side(topTeam.teamId) : null;
@@ -279,42 +297,12 @@ export default async function AlbumStats({ params }: { params: Promise<{ locale:
         <p className="al-page-sub" style={{ marginTop: -4, marginBottom: 14 }}>
           {dict.stats.highlights.sub}
         </p>
-        {recentFinished.length > 0 ? (
-          <div className="al-hl">
-            {recentFinished.map((m) => {
-              const home = side(m.home, m.homeName);
-              const away = side(m.away, m.awayName);
-              return (
-                <a
-                  key={m.id}
-                  className="al-hl-row"
-                  href={highlightsSearchUrl(home.name, away.name)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span className="dt">{fmtDate(m.date, l)}</span>
-                  <span className="mt">
-                    <span className="sd">
-                      <span className="fl">{home.flag}</span>
-                      <span className="nm">{home.name}</span>
-                    </span>
-                    <span className="sc">{m.homeScore}–{m.awayScore}</span>
-                    <span className="sd r">
-                      <span className="nm">{away.name}</span>
-                      <span className="fl">{away.flag}</span>
-                    </span>
-                  </span>
-                  <span className="play">
-                    <span className="yt" aria-hidden>▶</span>
-                    <span className="tx">
-                      {dict.stats.highlights.watch}
-                      <small>{dict.stats.highlights.via}</small>
-                    </span>
-                  </span>
-                </a>
-              );
-            })}
-          </div>
+        {highlightRows.length > 0 ? (
+          <HighlightReel
+            rows={highlightRows}
+            watch={dict.stats.highlights.watch}
+            via={dict.stats.highlights.via}
+          />
         ) : (
           <p className="al-empty">{dict.stats.highlights.empty}</p>
         )}

@@ -120,9 +120,9 @@ const en = {
     highlights: {
       kicker: "Replay it",
       title: "Watch highlights",
-      sub: "Recent results — tap to rewatch on FIFA’s official YouTube channel.",
+      sub: "Recent results — tap to play the highlights right here.",
       watch: "Watch highlights",
-      via: "via YouTube",
+      via: "via VTV Thể Thao",
       empty: "Highlights appear here once matches kick off.",
     },
   },

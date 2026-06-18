@@ -1,0 +1,4 @@
+{
+  "_comment": "Official VTV Thể Thao (FIFA WC 2026 Vietnamese rights-holder) YouTube highlight per match. Key: <homeCode>-<awayCode>-<YYYY-MM-DD> (UTC kickoff date, team codes from lib/teamMeta.ts lowercased). Value: the YouTube video id. Matches with no entry fall back to a VTV Thể Thao channel search.",
+  "arg-alg-2026-06-17": "_AXFbJHw0y8"
+}
