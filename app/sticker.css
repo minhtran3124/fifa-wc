@@ -161,14 +161,62 @@
 .al-meter { width: 140px; height: 11px; border-radius: 99px; background: #d6c8a5; overflow: hidden; border: 1px solid rgba(43, 33, 20, 0.16); }
 .al-meter > i { display: block; height: 100%; background: var(--al-green); border-radius: 99px; }
 
-/* ---------- album group pages + sticker discs ---------- */
-.al-pages { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 16px; }
-.al-page { background: var(--al-paper2); border: 1px solid var(--al-line); border-radius: 16px; padding: 16px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5); }
-.al-page .pg-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-.al-page .pg-tab { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: var(--al-ink); color: #fff; font-family: var(--font-anton); font-size: 18px; transform: rotate(-3deg); box-shadow: 2px 2px 0 rgba(43, 33, 20, 0.22); }
-.al-page .pg-ttl { font-weight: 800; font-size: 14px; }
-.al-page .pg-ct { margin-left: auto; font-size: 11px; font-weight: 700; color: var(--al-ink-soft); }
-.al-discs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 6px; }
+/* ---------- album sticker packs + sticker discs ---------- */
+.al-packs-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.al-packs-bar .pk-hint { font-family: var(--font-caveat), cursive; font-size: 17px; color: var(--al-ink-soft); }
+.al-packs-bar .pk-allbtn { font: inherit; font-weight: 800; font-size: 12.5px; cursor: pointer; color: var(--al-ink); background: var(--al-paper2); border: 1px solid var(--al-line); border-radius: 999px; padding: 7px 16px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6); transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s; }
+.al-packs-bar .pk-allbtn:hover { transform: translateY(-1px); border-color: var(--al-red); box-shadow: 0 6px 14px rgba(43, 33, 20, 0.16); }
+
+.al-packs { display: grid; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); gap: 16px; align-items: start; }
+.al-pack { border-radius: 16px; background: var(--al-paper2); border: 1px solid var(--al-line); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 6px 16px rgba(43, 33, 20, 0.1); overflow: hidden; }
+
+.pk-top { position: relative; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; width: 100%; text-align: left; cursor: pointer; border: 0; padding: 16px 16px 22px; color: #fff; font: inherit; background-color: var(--al-ink); background-image: var(--al-foil); background-size: 220% 220%; background-position: 0% 0%; transition: background-position 0.5s ease; }
+.pk-top::before { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(33, 25, 14, 0.62), rgba(33, 25, 14, 0.3) 55%, rgba(33, 25, 14, 0.5)); }
+.pk-top > * { position: relative; z-index: 1; }
+.pk-top:hover { background-position: 100% 100%; }
+.al-pack.open .pk-top { padding-bottom: 16px; animation: pk-snap 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.al-pack.open .pk-lip { display: none; }
+.pk-tab { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 9px; background: #fff; color: var(--al-ink); font-family: var(--font-anton); font-size: 20px; transform: rotate(-3deg); box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.28); }
+.pk-brand { display: flex; flex-direction: column; line-height: 1.15; font-family: var(--font-anton); font-size: 12px; letter-spacing: 0.6px; text-transform: uppercase; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); min-width: 0; }
+.pk-brand small { margin-top: 3px; font-family: inherit; font-weight: 800; font-size: 12.5px; letter-spacing: 0; text-transform: none; opacity: 0.95; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pk-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 7px; }
+.pk-ct { font-family: var(--font-anton); font-size: 16px; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); }
+.pk-dots { display: flex; gap: 4px; }
+.pk-dots i { width: 7px; height: 7px; border-radius: 50%; background: rgba(255, 255, 255, 0.38); }
+.pk-dots i.on { background: #fff; box-shadow: 0 0 6px rgba(255, 255, 255, 0.85); }
+.pk-lip { position: absolute; left: 0; right: 0; bottom: -1px; height: 9px; z-index: 1; background: var(--al-paper2); -webkit-mask: radial-gradient(5.5px at 50% 0, transparent 96%, #000) repeat-x 0 / 13px 9px; mask: radial-gradient(5.5px at 50% 0, transparent 96%, #000) repeat-x 0 / 13px 9px; }
+
+.pk-strip { position: relative; display: flex; gap: 6px; justify-content: space-around; padding: 16px 12px 16px; transform-origin: top center; animation: pk-tear 0.55s cubic-bezier(0.34, 1.32, 0.5, 1) both; }
+/* ragged paper edge left behind where the foil flap was torn off */
+.pk-strip::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; z-index: 1;
+  background: var(--al-paper2);
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000 25%, #000 0) repeat-x 0 0 / 9px 6px;
+          mask: conic-gradient(from -45deg at bottom, #0000 25%, #000 0) repeat-x 0 0 / 9px 6px;
+}
+.pk-strip .al-disc { flex: 1 1 0; min-width: 0; }
+.pk-strip .al-disc .ring { width: 54px; height: 54px; font-size: 25px; }
+.pk-strip .al-disc .nm { margin-top: 6px; font-size: 10.5px; }
+.pk-strip .al-disc .got-tab { font-size: 12px; padding: 2px 5px; }
+.al-disc .ring .crestimg { width: 46px; height: 46px; object-fit: cover; border-radius: 50%; }
+.al-disc.todo .ring .crestimg { filter: grayscale(1); opacity: 0.4; }
+.al-disc .fl-badge { position: absolute; bottom: -5px; left: -4px; font-size: 13px; line-height: 1; background: var(--al-card); border-radius: 6px; padding: 1px 3px; box-shadow: 0 1px 3px rgba(43, 33, 20, 0.25); }
+/* tear the pack open: a paper rip that snaps down from the seam */
+@keyframes pk-tear {
+  0%   { opacity: 0; clip-path: inset(0 0 100% 0); transform: translateY(-6px) rotate(-1.2deg); }
+  30%  { opacity: 1; }
+  62%  { clip-path: inset(0 0 0 0); transform: translateY(2px) rotate(0.8deg); }
+  80%  { transform: translateY(0) rotate(-0.4deg); }
+  100% { opacity: 1; clip-path: inset(0 0 0 0); transform: translateY(0) rotate(0); }
+}
+/* the flap recoils as the seam gives way */
+@keyframes pk-snap {
+  0%   { transform: translateY(0) rotate(0); }
+  22%  { transform: translateY(-2px) rotate(-0.5deg); }
+  48%  { transform: translateY(1px) rotate(0.4deg); }
+  100% { transform: translateY(0) rotate(0); }
+}
+@media (prefers-reduced-motion: reduce) { .pk-strip { animation: none; } .al-pack.open .pk-top { animation: none; } .pk-top { transition: none; } }
 .al-disc { text-decoration: none; color: inherit; text-align: center; display: block; }
 .al-disc .ring { position: relative; width: 76px; height: 76px; margin: 0 auto; border-radius: 50%; display: grid; place-items: center; font-size: 36px; background: var(--al-card); transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s; }
 .al-disc.got .ring { border: 5px solid transparent; background-image: linear-gradient(var(--al-card), var(--al-card)), var(--al-foil); background-origin: border-box; background-clip: padding-box, border-box; box-shadow: 0 6px 14px rgba(43, 33, 20, 0.2); }
@@ -691,6 +739,8 @@ button.al-hl-row { font: inherit; color: inherit; text-align: left; width: 100%;
 /* ---------- team page hero ---------- */
 .al-thero { position: relative; background: var(--al-card); border: 6px solid transparent; border-radius: 22px; padding: clamp(20px, 4vw, 32px); background-image: linear-gradient(var(--al-card), var(--al-card)), var(--al-foil); background-origin: border-box; background-clip: padding-box, border-box; box-shadow: 0 18px 38px rgba(43, 33, 20, 0.18); display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
 @media (max-width: 760px) { .al-thero { grid-template-columns: 1fr; } }
+.al-thero .thero-photo { grid-column: 1 / -1; width: 100%; aspect-ratio: 16 / 6.5; border-radius: 14px; overflow: hidden; border: 1px solid var(--al-line); background: var(--al-paper2); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4); }
+.al-thero .thero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 28%; display: block; }
 .al-thero .id { display: flex; align-items: center; gap: clamp(16px, 3vw, 26px); min-width: 0; }
 .al-thero .crest { font-size: clamp(64px, 12vw, 92px); line-height: 1; filter: drop-shadow(0 6px 10px rgba(43, 33, 20, 0.25)); }
 .al-thero .meta-top { display: flex; align-items: center; gap: 8px; }

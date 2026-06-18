@@ -6,6 +6,7 @@ import { getTeam, TEAMS } from "@/lib/teams";
 import { groupStandings } from "@/lib/standings";
 import { getWcData } from "@/lib/footballData";
 import { getSquad } from "@/lib/squads";
+import { teamPhotoUrl } from "@/lib/teamPhotos";
 import SquadList from "@/components/SquadList";
 import FavoriteButton from "@/components/FavoriteButton";
 import { slotLabel } from "@/lib/matches";
@@ -55,6 +56,7 @@ export default async function AlbumTeam({ params }: { params: Promise<{ locale: 
   ]);
   const id = team.id;
   const th = dict.groups.th;
+  const photo = teamPhotoUrl(id);
 
   const teamMatches = matches
     .filter((m) => m.home === id || m.away === id)
@@ -123,6 +125,13 @@ export default async function AlbumTeam({ params }: { params: Promise<{ locale: 
 
       {/* hero */}
       <section className="al-thero al-reveal">
+        {photo && (
+          <div className="thero-photo">
+            {/* Curated squad photo (data/teamPhotos.json); host-agnostic so a plain img fits. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={photo} alt={`${team.name} squad`} loading="lazy" />
+          </div>
+        )}
         <div className="id">
           <span className="crest">{team.flag}</span>
           <div style={{ minWidth: 0 }}>
