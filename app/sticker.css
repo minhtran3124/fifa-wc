@@ -778,6 +778,27 @@ button.al-hl-row { font: inherit; color: inherit; text-align: left; width: 100%;
 .al-thero .status .when { margin-top: 9px; display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--al-ink-soft); }
 .al-thero .status .sc { font-family: var(--font-anton); font-size: 26px; color: var(--al-red); font-variant-numeric: tabular-nums; }
 
+/* most recent World Cup pedigree — a stamped strip under the hero
+   (note: .al-wc is taken by the knockout wall-chart; this uses .al-pedigree) */
+.al-pedigree {
+  margin: 14px 0 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  background: var(--al-paper2); border: 2px dashed var(--al-line); border-radius: 12px;
+  padding: 10px 14px; font-size: 13.5px; color: var(--al-ink-soft);
+}
+.al-pedigree .ic { font-size: 18px; line-height: 1; }
+.al-pedigree .lbl {
+  font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--al-ink-soft);
+}
+.al-pedigree .val { font-weight: 600; color: var(--al-ink); }
+.al-pedigree .val b { font-family: var(--font-anton), sans-serif; font-weight: 400; font-size: 16px; }
+.al-pedigree .val .rk { color: var(--al-ink-soft); font-weight: 600; }
+.al-pedigree.champ { border-style: solid; border-color: transparent;
+  background-image: linear-gradient(var(--al-paper2), var(--al-paper2)), var(--al-foil);
+  background-origin: border-box; background-clip: padding-box, border-box; }
+.al-pedigree.champ .val, .al-pedigree.champ .lbl { color: var(--al-ink); }
+.al-pedigree.debut .val { color: var(--al-red); font-weight: 800; }
+
 /* record stamps + form */
 .al-rec { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
 @media (min-width: 640px) { .al-rec { grid-template-columns: repeat(8, 1fr); } }

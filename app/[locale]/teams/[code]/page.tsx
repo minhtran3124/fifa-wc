@@ -6,6 +6,7 @@ import { getTeam, TEAMS } from "@/lib/teams";
 import { groupStandings } from "@/lib/standings";
 import { getWcData } from "@/lib/footballData";
 import { getSquad } from "@/lib/squads";
+import { getWorldCup } from "@/lib/worldCup";
 import { teamPhotoUrl } from "@/lib/teamPhotos";
 import SquadList from "@/components/SquadList";
 import FavoriteButton from "@/components/FavoriteButton";
@@ -57,6 +58,7 @@ export default async function AlbumTeam({ params }: { params: Promise<{ locale: 
   const id = team.id;
   const th = dict.groups.th;
   const photo = teamPhotoUrl(id);
+  const wc = getWorldCup(id);
 
   const teamMatches = matches
     .filter((m) => m.home === id || m.away === id)
@@ -180,6 +182,26 @@ export default async function AlbumTeam({ params }: { params: Promise<{ locale: 
           </div>
         )}
       </section>
+
+      {/* most recent World Cup pedigree */}
+      {wc && (
+        <p className={`al-pedigree ${wc.result === "Champions" ? "champ" : ""} ${wc.result === "Debut" ? "debut" : ""}`}>
+          <span className="ic" aria-hidden>
+            {wc.result === "Champions" ? "🏆" : wc.result === "Debut" ? "✨" : "🌍"}
+          </span>
+          <span className="lbl">{wc.result === "Debut" ? dict.team.wc.kicker : dict.team.wc.last}</span>
+          <span className="val">
+            {wc.result === "Debut" ? (
+              dict.team.wc.debut
+            ) : (
+              <>
+                <b>{wc.year}</b> · {dict.team.wc.results[wc.result]}
+                {wc.rank ? <span className="rk"> · {dict.team.wc.finished} {ord(wc.rank)}</span> : null}
+              </>
+            )}
+          </span>
+        </p>
+      )}
 
       {/* record + form */}
       <section className="al-sec">

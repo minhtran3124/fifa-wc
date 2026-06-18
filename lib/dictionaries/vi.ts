@@ -164,6 +164,22 @@ const vi: Dictionary = {
     fixturesEmpty: "Lịch thi đấu sẽ xuất hiện khi được xác nhận.",
     rivalsKicker: "Cùng bảng",
     rivalsWord: "Đối thủ",
+    wc: {
+      kicker: "Bề dày",
+      last: "World Cup gần nhất",
+      finished: "xếp",
+      debut: "Lần đầu góp mặt — 2026",
+      results: {
+        Champions: "Vô địch",
+        RunnersUp: "Á quân",
+        ThirdPlace: "Hạng ba",
+        FourthPlace: "Hạng tư",
+        QuarterFinals: "Tứ kết",
+        RoundOf16: "Vòng 1/8",
+        GroupStage: "Vòng bảng",
+        Debut: "Lần đầu",
+      },
+    },
     regions: {
       UEFA: "Châu Âu",
       CONMEBOL: "Nam Mỹ",
