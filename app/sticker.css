@@ -153,8 +153,8 @@
 /* ---------- section headers (no uppercase-eyebrow tell) ---------- */
 .al-sec { margin-top: clamp(40px, 6vw, 64px); }
 .al-sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
-.al-sec-head .scribble { font-family: var(--font-caveat), cursive; font-size: 22px; color: var(--al-red); display: block; line-height: 1; transform: rotate(-1.5deg); }
-.al-sec-head h2 { font-family: var(--font-anton), sans-serif; font-weight: 400; text-transform: uppercase; font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1; margin: 4px 0 0; letter-spacing: 0.01em; }
+.al-sec-head .scribble { font-family: var(--font-caveat), cursive; font-size: 22px; color: var(--al-red); display: block; line-height: 1.15; transform: rotate(-1.5deg); }
+.al-sec-head h2 { font-family: var(--font-anton), sans-serif; font-weight: 400; text-transform: uppercase; font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1; margin: 14px 0 0; letter-spacing: 0.01em; }
 .al-sec-head .more { font-weight: 800; font-size: 13px; color: var(--al-red); text-decoration: none; }
 .al-sec-head .more:hover { text-decoration: underline; }
 .al-progress { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 13px; color: var(--al-ink-soft); }
