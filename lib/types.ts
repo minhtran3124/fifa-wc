@@ -60,6 +60,37 @@ export interface Match {
   goals?: GoalEvent[];
 }
 
+/** Post-match team statistics (from ESPN; strings as reported, % are 0-100). */
+export interface TeamStat {
+  possession?: string;
+  shots?: string;
+  shotsOnTarget?: string;
+  corners?: string;
+  fouls?: string;
+  offsides?: string;
+  saves?: string;
+  passes?: string;
+}
+
+/** A yellow/red card on the match timeline. */
+export interface MatchCard {
+  side: "home" | "away";
+  player: string;
+  minute: string;
+  type: "yellow" | "red";
+}
+
+export interface LineupPlayer {
+  n: string;   // shirt number
+  name: string;
+  pos: string; // position abbreviation (G/D/M/F)
+}
+
+export interface TeamLineup {
+  formation: string;
+  starters: LineupPlayer[];
+}
+
 /** A single goal event on the match timeline. */
 export interface GoalEvent {
   /** which side the goal counts for */

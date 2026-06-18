@@ -7,6 +7,7 @@ import { getTeam, getVenue } from "@/lib/teams";
 import { groupStandings } from "@/lib/standings";
 import { getWcData } from "@/lib/footballData";
 import { getSquad } from "@/lib/squads";
+import { getMatchStats } from "@/lib/matchStats";
 import { fmtDate, fmtTime } from "@/lib/format";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/i18n";
@@ -58,6 +59,19 @@ export default async function MatchDetail({ params }: { params: Promise<{ locale
   const awayForm = formFor(m.away, matches);
   const rows = m.group ? groupStandings(m.group, matches) : [];
   const th = dict.groups.th;
+
+  // post-match metrics (team stats, cards, starting XI) for finished matches
+  const stats = getMatchStats(m.home, m.away);
+  const statRows = stats
+    ? (["possession", "shots", "shotsOnTarget", "corners", "fouls", "offsides", "saves"] as const)
+        .map((k) => ({ k, h: stats.home[k], a: stats.away[k] }))
+        .filter((r) => r.h != null || r.a != null)
+    : [];
+  const homeBarPct = (h?: string, a?: string): number => {
+    const hv = Number(h ?? 0);
+    const av = Number(a ?? 0);
+    return hv + av > 0 ? Math.round((hv / (hv + av)) * 100) : 50;
+  };
 
   const TeamLink = ({ code, children }: { code: string; children: ReactNode }) =>
     getTeam(code) ? (
@@ -136,6 +150,56 @@ export default async function MatchDetail({ params }: { params: Promise<{ locale
         </section>
       )}
 
+      {/* team stats */}
+      {statRows.length > 0 && (
+        <section className="al-sec">
+          <div className="al-sec-head"><div>
+            <span className="scribble">{dict.matchPage.statsKicker}</span>
+            <h2>{dict.matchPage.statsTitle}</h2>
+          </div></div>
+          <div className="al-stats">
+            <div className="al-stats-head">
+              <span><span className="fl">{home.flag}</span> {home.name}</span>
+              <span><span className="fl">{away.flag}</span> {away.name}</span>
+            </div>
+            {statRows.map((r) => (
+              <div key={r.k} className="al-statrow">
+                <span className="hv">{r.h ?? "–"}{r.k === "possession" && r.h ? "%" : ""}</span>
+                <span className="lbl">{dict.matchPage.stat[r.k]}</span>
+                <span className="av">{r.a ?? "–"}{r.k === "possession" && r.a ? "%" : ""}</span>
+                <span className="bar"><i style={{ width: `${homeBarPct(r.h, r.a)}%` }} /></span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* cards */}
+      {stats && stats.cards.length > 0 && (
+        <section className="al-sec">
+          <div className="al-sec-head"><div>
+            <span className="scribble">{dict.matchPage.cardsKicker}</span>
+            <h2>{dict.matchPage.cardsTitle}</h2>
+          </div></div>
+          <ul className="al-goals">
+            {stats.cards.map((c, i) => {
+              const isHome = c.side === "home";
+              const s = isHome ? home : away;
+              return (
+                <li key={`${c.minute}-${c.player}-${i}`} className={`al-goal ${isHome ? "h" : "a"}`}>
+                  <span className="min">{c.minute}&rsquo;</span>
+                  <span className="who">
+                    <span className="fl">{s.flag}</span>
+                    <span className="nm">{c.player}</span>
+                    <span className={`al-cardchip ${c.type}`} aria-hidden />
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
+
       {/* recent form */}
       {(homeForm.length > 0 || awayForm.length > 0) && (
         <section className="al-sec">
@@ -201,8 +265,44 @@ export default async function MatchDetail({ params }: { params: Promise<{ locale
         </section>
       )}
 
-      {/* squads */}
-      {(homeSquad.length > 0 || awaySquad.length > 0) && (
+      {/* starting XI (real line-ups when available) */}
+      {stats && (stats.homeLineup || stats.awayLineup) && (
+        <section className="al-sec">
+          <div className="al-sec-head"><div>
+            <span className="scribble">{dict.team.squad.kicker}</span>
+            <h2>{dict.matchPage.lineupTitle}</h2>
+          </div></div>
+          <div className="al-mh-squads">
+            {[
+              { flag: home.flag, name: home.name, lu: stats.homeLineup },
+              { flag: away.flag, name: away.name, lu: stats.awayLineup },
+            ].map((x, i) => (
+              <div key={i}>
+                <h3 className="al-mh-sqttl">
+                  <span>{x.flag}</span> {x.name}
+                  {x.lu?.formation && <span className="al-formation">{x.lu.formation}</span>}
+                </h3>
+                {x.lu && x.lu.starters.length > 0 ? (
+                  <ul className="al-xi">
+                    {x.lu.starters.map((p, j) => (
+                      <li key={`${p.n}-${j}`}>
+                        <span className="num">{p.n}</span>
+                        <span className="nm">{p.name}</span>
+                        <span className="pos">{p.pos}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="al-empty">—</p>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* squads (full squad fallback when no line-up data) */}
+      {!stats?.homeLineup && !stats?.awayLineup && (homeSquad.length > 0 || awaySquad.length > 0) && (
         <section className="al-sec">
           <div className="al-sec-head"><div>
             <span className="scribble">{dict.team.squad.kicker}</span>
