@@ -25,17 +25,6 @@ export function r32SlotMap(matches: Match[]): Map<string, { home: string; away: 
   return map;
 }
 
-export type SlotKind = "winner" | "runner" | "third" | "other";
-
-export interface ResolvedSlot {
-  /** team currently occupying this seed, or null if not a group-position slot */
-  teamId: string | null;
-  /** compact seed token: "1A", "2B", "3rd", or null */
-  seed: string | null;
-  group?: GroupName;
-  kind: SlotKind;
-}
-
 export interface ThirdRow {
   standing: Standing;
   group: GroupName;
@@ -49,33 +38,6 @@ function compareStandings(a: Standing, b: Standing): number {
   if (b.points !== a.points) return b.points - a.points;
   if (b.gd !== a.gd) return b.gd - a.gd;
   return b.gf - a.gf;
-}
-
-/**
- * Build a live seeding resolver from the current group tables. Resolves the
- * R32 placeholder labels the feed uses ("Group A winners", "Group B
- * runners-up") to whichever team currently holds that position. Third-place
- * and "Winner Match N" slots are left unresolved (returned with a null team).
- * Group tables are computed once and cached in the closure.
- */
-export function seedingResolver(matches: Match[]): (label: string) => ResolvedSlot {
-  const tables = new Map<GroupName, Standing[]>();
-  for (const g of GROUPS) tables.set(g, groupStandings(g, matches));
-
-  return (label: string): ResolvedSlot => {
-    const s = (label || "").trim();
-    let m: RegExpMatchArray | null;
-    if ((m = s.match(/group\s+([a-l]).*winner/i))) {
-      const g = m[1].toUpperCase() as GroupName;
-      return { teamId: tables.get(g)?.[0]?.teamId ?? null, seed: `1${g}`, group: g, kind: "winner" };
-    }
-    if ((m = s.match(/group\s+([a-l]).*runner/i))) {
-      const g = m[1].toUpperCase() as GroupName;
-      return { teamId: tables.get(g)?.[1]?.teamId ?? null, seed: `2${g}`, group: g, kind: "runner" };
-    }
-    if (/third[\s-]*place/i.test(s)) return { teamId: null, seed: "3rd", kind: "third" };
-    return { teamId: null, seed: null, kind: "other" };
-  };
 }
 
 /**

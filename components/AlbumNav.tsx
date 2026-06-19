@@ -20,6 +20,7 @@ export default function AlbumNav({ locale, labels }: { locale: Locale; labels: N
     { path: "/matches", label: labels.matches },
     { path: "/previews", label: labels.previews },
     { path: "/knockout", label: labels.knockout },
+    { path: "/venues", label: labels.cities },
     { path: "/stats", label: labels.stats },
     { path: "/rules", label: labels.rules },
   ];

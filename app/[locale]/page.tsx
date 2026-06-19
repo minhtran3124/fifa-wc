@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { TEAMS, GROUPS, teamsByGroup } from "@/lib/teams";
+import { TEAMS, GROUPS, teamsByGroup, VENUES } from "@/lib/teams";
 import { tournamentStats } from "@/lib/standings";
 import { getWcData } from "@/lib/footballData";
 import { previewForMatch } from "@/lib/previews";
@@ -45,6 +45,15 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
     { n: stats.goals, dec: 0, l: dict.home.stamps.goals, icon: "⚽" },
     { n: stats.avgGoals, dec: 2, l: dict.home.stamps.perMatch, icon: "🎯" },
     { n: stats.cleanSheets, dec: 0, l: dict.home.stamps.cleanSheets, icon: "🧤" },
+  ];
+
+  // static tournament format facts (infographic-style KPI strip)
+  const facts = [
+    { n: TEAMS.length, l: dict.home.facts.teams, icon: "👥" },
+    { n: VENUES.length, l: dict.home.facts.cities, icon: "🏟️" },
+    { n: 3, l: dict.home.facts.countries, icon: "🌎" },
+    { n: stats.totalMatches, l: dict.home.facts.matches, icon: "📅" },
+    { n: 39, l: dict.home.facts.days, icon: "⏱️" },
   ];
 
   const fHome = featured ? side(featured.home, featured.homeName) : null;
@@ -119,6 +128,17 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
           </div>
         )}
       </section>
+
+      {/* ---------- format facts: KPI strip ---------- */}
+      <Reveal as="section" className="al-kpi al-reveal">
+        {facts.map((f) => (
+          <div className="al-kpi-item" key={f.l}>
+            <span className="al-kpi-ic" aria-hidden>{f.icon}</span>
+            <span className="al-kpi-n"><CountUp value={f.n} decimals={0} /></span>
+            <span className="al-kpi-l">{f.l}</span>
+          </div>
+        ))}
+      </Reveal>
 
       {/* ---------- up next (top of page — no scrolling needed) ---------- */}
       <Reveal as="section" className="al-sec">

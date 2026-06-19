@@ -150,6 +150,33 @@
 .al-shiny .live { color: var(--al-red); font-weight: 800; display: inline-flex; align-items: center; gap: 6px; }
 .al-shiny .live .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--al-red); display: inline-block; }
 
+/* ---------- format-facts KPI strip ---------- */
+.al-kpi {
+  margin-top: clamp(28px, 4vw, 40px);
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  background: var(--al-card); border: 1px solid var(--al-line); border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(43, 33, 20, 0.1); overflow: hidden;
+}
+.al-kpi-item {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 16px 10px; text-align: center; position: relative;
+}
+.al-kpi-item + .al-kpi-item::before {
+  content: ""; position: absolute; left: 0; top: 18%; bottom: 18%; width: 1px; background: var(--al-line);
+}
+.al-kpi-ic { font-size: 20px; line-height: 1; }
+.al-kpi-n { font-family: var(--font-anton), sans-serif; font-size: clamp(26px, 4vw, 34px); line-height: 1; color: var(--al-ink); font-variant-numeric: tabular-nums; }
+.al-kpi-l { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--al-ink-soft); }
+@media (max-width: 640px) {
+  .al-kpi { grid-template-columns: repeat(2, 1fr); }
+  /* re-draw separators as a grid: vertical between cols, horizontal between rows */
+  .al-kpi-item + .al-kpi-item::before { display: none; }
+  .al-kpi-item { border-top: 1px solid var(--al-line); }
+  .al-kpi-item:nth-child(odd) { border-right: 1px solid var(--al-line); }
+  .al-kpi-item:nth-child(1), .al-kpi-item:nth-child(2) { border-top: none; }
+  .al-kpi-item:nth-child(5) { grid-column: 1 / -1; border-right: none; }
+}
+
 /* ---------- section headers (no uppercase-eyebrow tell) ---------- */
 .al-sec { margin-top: clamp(40px, 6vw, 64px); }
 .al-sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
@@ -578,6 +605,7 @@
 
 /* team rows */
 .al-ko-row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 9px; padding: 6px 0; }
+.al-ko-row.tbd { grid-template-columns: 1fr auto; }
 .al-ko-row .fl { font-size: 19px; line-height: 1; }
 .al-ko-row .nm { font-weight: 700; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .al-ko-row .sc { font-family: var(--font-anton), sans-serif; font-size: 19px; line-height: 1; color: var(--al-ink-soft); font-variant-numeric: tabular-nums; }
@@ -637,8 +665,40 @@
 /* ---------- knockout: wide vs narrow switch ---------- */
 .al-ko-wide { display: none; }
 @media (min-width: 1000px) {
-  .al-ko-wide { display: block; }
+  /* break the wall-chart out of the 1180px content column so the full
+     bracket (both R32 wings) fits without horizontal clipping */
+  .al-ko-wide {
+    display: block;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding: 0 clamp(16px, 4vw, 48px);
+  }
   .al-ko-narrow { display: none; }
+}
+
+/* ---------- knockout "arena": dark + gold stage for the bracket ----------
+   Overriding the theme vars in this scope re-themes every card / connector /
+   final that already reads var(--al-card / --al-ink / --al-line / --al-foil). */
+.al-arena {
+  --al-card: #1e1913;
+  --al-paper2: #241d12;
+  --al-ink: #f5e7b6;
+  --al-ink-soft: #b3a173;
+  --al-line: #6a5832;
+  --al-red: #e3604a;
+  color: var(--al-ink);
+}
+.al-ko-wide.al-arena {
+  padding-top: 30px; padding-bottom: 30px;
+  background: radial-gradient(135% 115% at 50% -12%, #332b18 0%, #18130b 68%, #100c07 100%);
+  border-block: 1px solid rgba(246, 231, 176, 0.16);
+  box-shadow: inset 0 22px 60px rgba(0, 0, 0, 0.45);
+}
+.al-ko-narrow.al-arena {
+  margin-top: 18px; padding: 22px clamp(14px, 4vw, 22px) 26px; border-radius: 18px;
+  background: radial-gradient(120% 60% at 50% 0%, #2c2515 0%, #16120b 70%);
+  border: 1px solid rgba(246, 231, 176, 0.16);
 }
 
 /* ---------- mirrored wall-chart bracket ---------- */
@@ -648,12 +708,20 @@
   display: flex; align-items: stretch; gap: calc(var(--cw) * 2);
   overflow-x: auto; padding: 6px 2px 18px; min-height: 560px;
 }
-.al-wc-round { flex: 1 1 0; min-width: 84px; display: flex; flex-direction: column; }
+.al-wc-round { flex: 1 1 0; min-width: 96px; display: flex; flex-direction: column; }
 .al-wc-round.final { flex: 0 0 var(--final-w); }
 .al-wc-round > .hd {
-  height: 18px; margin-bottom: 12px; text-align: center;
+  margin-bottom: 14px; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+}
+.al-wc-round > .hd .rd {
   font-family: var(--font-anton), sans-serif; font-weight: 400; text-transform: uppercase;
-  font-size: 12px; letter-spacing: 0.05em; color: var(--al-ink-soft);
+  font-size: 12px; letter-spacing: 0.05em; color: var(--al-ink-soft); line-height: 1;
+}
+.al-wc-round > .hd .ct {
+  font-weight: 800; font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--al-ink); background: color-mix(in srgb, var(--al-ink) 11%, transparent);
+  border: 1px solid var(--al-line); border-radius: 999px; padding: 2px 8px; line-height: 1.2;
 }
 .al-wc-matches { flex: 1; display: flex; flex-direction: column; }
 .al-wc-match { flex: 1 1 0; display: flex; align-items: center; position: relative; }
@@ -682,22 +750,21 @@
 }
 .al-wc-live { position: absolute; top: 4px; right: 4px; width: 7px; height: 7px; border-radius: 50%; background: var(--al-red); z-index: 3; }
 .al-wc-row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 6px; padding: 4px 0; }
+/* an undecided side has no flag — let the group-position label take the row */
+.al-wc-row.tbd { grid-template-columns: 1fr auto; }
 .al-wc-row + .al-wc-row { border-top: 1px solid var(--al-line); }
 .al-wc-card.todo .al-wc-row + .al-wc-row { border-top-style: dashed; }
 .al-wc-row .fl { font-size: 14px; line-height: 1; }
-.al-wc-row .cd { font-weight: 800; font-size: 12px; letter-spacing: 0.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.al-wc-row .cd { font-weight: 800; font-size: 12px; letter-spacing: 0.02em; line-height: 1.2; overflow-wrap: anywhere; }
+.al-wc-row.tbd .cd { font-weight: 700; }
 .al-wc-row .sc { font-family: var(--font-anton), sans-serif; font-size: 14px; line-height: 1; color: var(--al-ink-soft); font-variant-numeric: tabular-nums; }
 .al-wc-row .sc sup { font-size: 0.55em; margin-left: 1px; }
 .al-wc-row.win .cd { color: var(--al-ink); }
 .al-wc-row.win .sc, .al-wc-row.win .sc sup { color: var(--al-red); }
 .al-wc-row.lose { opacity: 0.5; }
-/* live seed token on a provisionally-filled bracket slot (e.g. current "1A") */
-.al-wc-row .cd .seed { font-style: normal; font-weight: 700; font-size: 9px; letter-spacing: 0.03em; color: var(--al-ink-soft); border: 1px solid var(--al-line); border-radius: 4px; padding: 0 3px; margin-left: 5px; vertical-align: 1px; }
-.al-wc-card.proj { border-style: dotted; }
 
 /* ---------- knockout: live seeding note + best third-placed race ---------- */
 .al-ko-seednote { margin: 12px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--al-ink-soft); max-width: 72ch; }
-.al-ko-seed { display: inline-block; margin-left: 8px; font-size: 11.5px; font-weight: 700; color: var(--al-ink-soft); white-space: nowrap; }
 
 .al-thirds { margin-top: clamp(30px, 5vw, 48px); }
 .al-thirds-sub { margin: 12px 0 16px; font-size: 13.5px; line-height: 1.55; color: var(--al-ink-soft); max-width: 64ch; }
@@ -783,6 +850,7 @@
 }
 .al-wc-third .ttl { display: block; font-family: var(--font-anton), sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--al-ink-soft); text-align: center; margin-bottom: 4px; }
 .al-wc-third .tr { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 6px; padding: 2px 0; }
+.al-wc-third .tr.tbd { grid-template-columns: 1fr auto; }
 .al-wc-third .tr .fl { font-size: 14px; }
 .al-wc-third .tr .cd { font-weight: 800; font-size: 11px; }
 .al-wc-third .tr .sc { font-family: var(--font-anton), sans-serif; font-size: 13px; color: var(--al-ink-soft); font-variant-numeric: tabular-nums; }
@@ -1168,13 +1236,8 @@ button.al-player:focus-visible { outline: 2px solid var(--al-red); outline-offse
 .al-statrow .bar { grid-column: 1 / -1; height: 6px; border-radius: 999px; background: var(--al-line); overflow: hidden; }
 .al-statrow .bar i { display: block; height: 100%; background: var(--al-green); border-radius: 999px; }
 
-/* starting XI list */
-.al-xi { list-style: none; margin: 0; padding: 0; }
+/* starting XI — formation badge in the section title (pitch renders the XI) */
 .al-formation { margin-left: auto; font-size: 12px; font-weight: 700; color: var(--al-ink-soft); }
-.al-xi li { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px dashed var(--al-line); }
-.al-xi .num { width: 24px; text-align: center; font-family: var(--font-anton), sans-serif; font-size: 14px; color: var(--al-ink-soft); }
-.al-xi .nm { font-weight: 700; font-size: 14px; }
-.al-xi .pos { margin-left: auto; font-size: 10.5px; font-weight: 800; color: var(--al-ink-soft); background: var(--al-paper2); border: 1px solid var(--al-line); border-radius: 6px; padding: 2px 6px; }
 
 /* scroll-to-top floating button */
 .al-totop {
@@ -1192,3 +1255,134 @@ button.al-player:focus-visible { outline: 2px solid var(--al-red); outline-offse
 .al-totop:focus-visible { outline: 3px solid var(--al-green); outline-offset: 2px; }
 @keyframes al-totop-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 @media (max-width: 600px) { .al-totop { right: 14px; bottom: 14px; width: 42px; height: 42px; } }
+
+/* ============================================================
+   Host-cities map (/venues) — dark "constellation" of host cities
+   ============================================================ */
+.al-vmap-wrap { display: grid; grid-template-columns: 1.6fr 1fr; gap: 18px; align-items: start; margin-top: 4px; }
+@media (max-width: 860px) { .al-vmap-wrap { grid-template-columns: 1fr; } }
+
+.al-vmap {
+  position: relative; aspect-ratio: 1.55 / 1; border-radius: 18px; overflow: hidden;
+  background: radial-gradient(125% 120% at 32% 8%, #2c2516 0%, #16110a 70%, #100c07 100%);
+  border: 1px solid rgba(246, 231, 176, 0.16);
+  box-shadow: inset 0 12px 44px rgba(0, 0, 0, 0.5);
+}
+.al-vmap-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(246, 231, 176, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(246, 231, 176, 0.045) 1px, transparent 1px);
+  background-size: 9% 11%;
+  mask-image: radial-gradient(120% 120% at 50% 40%, #000 55%, transparent 100%);
+}
+.al-vmap-country {
+  position: absolute; transform: translate(-50%, -50%); pointer-events: none;
+  font-family: var(--font-anton), sans-serif; text-transform: uppercase; letter-spacing: 0.16em;
+  font-size: clamp(11px, 1.7vw, 18px); white-space: nowrap;
+}
+.al-vmap-country.usa { color: rgba(236, 194, 79, 0.16); }
+.al-vmap-country.canada { color: rgba(231, 96, 76, 0.18); }
+.al-vmap-country.mexico { color: rgba(68, 176, 111, 0.18); }
+
+.al-vmap-pin {
+  position: absolute; transform: translate(-50%, -50%); z-index: 2;
+  background: none; border: 0; padding: 6px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+}
+.al-vmap-pin.usa { --pc: #ecc24f; }
+.al-vmap-pin.canada { --pc: #ec6a54; }
+.al-vmap-pin.mexico { --pc: #46b673; }
+.al-vmap-pin .dot {
+  width: calc(11px * var(--s, 1)); height: calc(11px * var(--s, 1)); border-radius: 50%;
+  background: var(--pc);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pc) 22%, transparent),
+              0 0 12px 2px color-mix(in srgb, var(--pc) 55%, transparent);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.al-vmap-pin .lbl {
+  font-size: 9.5px; font-weight: 700; letter-spacing: 0.01em; white-space: nowrap;
+  color: rgba(246, 231, 176, 0.72); text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+  transition: color 0.15s, transform 0.15s;
+}
+.al-vmap-pin:hover { z-index: 3; }
+.al-vmap-pin:hover .dot, .al-vmap-pin.active .dot { transform: scale(1.4); }
+.al-vmap-pin:hover .lbl, .al-vmap-pin.active .lbl { color: #fff; transform: scale(1.05); }
+.al-vmap-pin.active .dot {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--pc) 32%, transparent),
+              0 0 20px 6px color-mix(in srgb, var(--pc) 75%, transparent);
+}
+.al-vmap-pin:focus-visible { outline: 2px solid #fff; outline-offset: 2px; border-radius: 8px; }
+
+/* detail side */
+.al-vmap-hint {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  min-height: 220px; padding: 30px; text-align: center; color: var(--al-ink-soft);
+  background: var(--al-card); border: 1px dashed var(--al-line); border-radius: 16px;
+}
+.al-vmap-hint .pin { font-size: 34px; }
+.al-vmap-hint p { margin: 0; font-size: 13.5px; line-height: 1.5; max-width: 26ch; }
+
+.al-vmap-detail { background: var(--al-card); border: 1px solid var(--al-line); border-radius: 16px; overflow: hidden; box-shadow: 0 8px 20px rgba(43, 33, 20, 0.1); }
+.al-vmap-detail-hd { padding: 16px 16px 14px; border-bottom: 1px solid var(--al-line); }
+.al-vmap-detail-hd .tag { display: inline-block; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #fff; padding: 3px 9px; border-radius: 999px; }
+.al-vmap-detail-hd .tag.usa { background: #cf9f2e; }
+.al-vmap-detail-hd .tag.canada { background: #c0432f; }
+.al-vmap-detail-hd .tag.mexico { background: #2e8c54; }
+.al-vmap-detail-hd h2 { font-family: var(--font-anton), sans-serif; font-weight: 400; text-transform: uppercase; font-size: clamp(1.3rem, 3vw, 1.7rem); line-height: 1; margin: 9px 0 5px; }
+.al-vmap-detail-hd .stad { font-size: 13px; color: var(--al-ink-soft); margin: 0; }
+.al-vmap-detail-hd .ct { font-size: 12px; font-weight: 700; color: var(--al-ink-soft); margin: 7px 0 0; }
+
+.al-vmap-matches { list-style: none; margin: 0; padding: 0; max-height: 440px; overflow-y: auto; }
+.al-vmap-matches li + li { border-top: 1px solid var(--al-line); }
+.al-vmap-matches a {
+  display: grid; grid-template-columns: 58px 1fr; grid-template-rows: auto auto; gap: 3px 10px;
+  padding: 9px 14px; text-decoration: none; color: inherit; transition: background 0.15s;
+}
+.al-vmap-matches a:hover { background: rgba(43, 33, 20, 0.05); }
+.al-vmap-matches .stg { grid-column: 1; grid-row: 1 / 3; align-self: center; font-family: var(--font-anton), sans-serif; font-size: 10.5px; text-transform: uppercase; color: var(--al-ink-soft); }
+.al-vmap-matches .ln { grid-column: 2; grid-row: 1; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; }
+.al-vmap-matches .ln .tm { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.al-vmap-matches .ln .tm.r { justify-content: flex-end; }
+.al-vmap-matches .ln .fl { font-size: 16px; line-height: 1; flex-shrink: 0; }
+.al-vmap-matches .ln .nm { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.al-vmap-matches .ln .mid .sc { font-family: var(--font-anton), sans-serif; font-variant-numeric: tabular-nums; }
+.al-vmap-matches .ln .mid .vs { color: var(--al-line); font-weight: 800; }
+.al-vmap-matches .dt { grid-column: 2; grid-row: 2; font-size: 11px; color: var(--al-ink-soft); }
+.al-vmap-matches .dt .live { color: var(--al-red); font-weight: 800; }
+.al-vmap-matches .dt .live i { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--al-red); margin-right: 3px; vertical-align: 1px; }
+
+/* ============================================================
+   FormationPitch — starting XI laid out on a pitch (match page)
+   ============================================================ */
+.al-pitch {
+  position: relative; width: 100%; aspect-ratio: 2 / 3; border-radius: 14px; overflow: hidden;
+  background:
+    repeating-linear-gradient(0deg, #2f8a4e 0 12.5%, #2c8149 12.5% 25%);
+  border: 1px solid var(--al-line);
+  box-shadow: inset 0 0 44px rgba(0, 0, 0, 0.28);
+}
+.al-pitch-lines { position: absolute; inset: 0; width: 100%; height: 100%; }
+.al-pitch-lines rect,
+.al-pitch-lines line,
+.al-pitch-lines circle { fill: none; stroke: rgba(255, 255, 255, 0.5); stroke-width: 1.1; vector-effect: non-scaling-stroke; }
+.al-pitch-lines .spot { fill: rgba(255, 255, 255, 0.5); stroke: none; }
+.al-pitch-pl {
+  position: absolute; transform: translate(-50%, -50%); z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 3px; width: 64px;
+}
+.al-pitch-pl .disc {
+  width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--al-card); color: var(--al-ink);
+  font-family: var(--font-anton), sans-serif; font-size: 14px; line-height: 1; font-variant-numeric: tabular-nums;
+  border: 2px solid rgba(255, 255, 255, 0.92); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+.al-pitch-pl .nm {
+  font-size: 10px; font-weight: 800; color: #fff; letter-spacing: 0.01em; white-space: nowrap;
+  max-width: 74px; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+}
+@media (max-width: 420px) {
+  .al-pitch-pl { width: 52px; }
+  .al-pitch-pl .disc { width: 26px; height: 26px; font-size: 12px; }
+  .al-pitch-pl .nm { font-size: 9px; max-width: 58px; }
+}

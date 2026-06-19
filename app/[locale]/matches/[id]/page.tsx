@@ -14,6 +14,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/i18n";
 import { side } from "@/components/MatchSticker";
 import SquadList from "@/components/SquadList";
+import FormationPitch from "@/components/FormationPitch";
 
 function formFor(teamId: string, matches: Match[]): ("w" | "d" | "l")[] {
   return matches
@@ -289,15 +290,7 @@ export default async function MatchDetail({ params }: { params: Promise<{ locale
                   {x.lu?.formation && <span className="al-formation">{x.lu.formation}</span>}
                 </h3>
                 {x.lu && x.lu.starters.length > 0 ? (
-                  <ul className="al-xi">
-                    {x.lu.starters.map((p, j) => (
-                      <li key={`${p.n}-${j}`}>
-                        <span className="num">{p.n}</span>
-                        <span className="nm">{p.name}</span>
-                        <span className="pos">{p.pos}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <FormationPitch lineup={x.lu} />
                 ) : (
                   <p className="al-empty">—</p>
                 )}
