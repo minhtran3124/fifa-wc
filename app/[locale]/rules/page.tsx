@@ -20,7 +20,7 @@ export default async function AlbumRules({ params }: { params: Promise<{ locale:
 
       <div className="al-rules">
         {RULE_CHANGES.map((r) => (
-          <div key={r.title.en} className="al-rule">
+          <div key={r.title.en} className={`al-rule tag-${r.tag}`}>
             <span className="ic" aria-hidden>{r.emoji}</span>
             <div className="bd">
               <div className="top">

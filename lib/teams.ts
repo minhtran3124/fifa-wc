@@ -37,6 +37,7 @@ function buildTeams(): Team[] {
         flag: meta?.flag ?? "⬜",
         confederation: meta?.confederation ?? "UEFA",
         fifaRank: meta?.fifaRank ?? 99,
+        coach: meta?.coach,
         group: f.group as GroupName,
       });
     }

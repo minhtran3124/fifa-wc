@@ -54,11 +54,34 @@ export default function VenueMap({
   const selected = venues.find((v) => v.id === selectedId) ?? null;
   const maxMatches = Math.max(...venues.map((v) => v.matches.length), 1);
 
+  // A west→east sweep of bowed arcs linking the host cities — a flight-route
+  // network drawn behind the pins for depth and motion.
+  const ordered = [...venues].sort((a, b) => a.lng - b.lng);
+  const routeD = ordered
+    .slice(1)
+    .map((v, i) => {
+      const p0 = ordered[i];
+      const x0 = projX(p0.lng), y0 = projY(p0.lat);
+      const x1 = projX(v.lng), y1 = projY(v.lat);
+      const mx = (x0 + x1) / 2, my = (y0 + y1) / 2;
+      const lift = Math.min(16, Math.hypot(x1 - x0, y1 - y0) * 0.4);
+      return `M${x0} ${y0} Q${mx} ${my - lift} ${x1} ${y1}`;
+    })
+    .join(" ");
+
   return (
     <div className="al-vmap-wrap">
       <div className="al-vmap" role="group" aria-label={dict.venues.title}>
         {/* faint graticule */}
         <div className="al-vmap-grid" aria-hidden />
+
+        {/* flight-route network linking the venues */}
+        {routeD && (
+          <svg className="al-vmap-routes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+            <path className="route-glow" d={routeD} />
+            <path className="route" d={routeD} />
+          </svg>
+        )}
 
         {COUNTRY_LABELS.map((c) => (
           <span
@@ -71,15 +94,16 @@ export default function VenueMap({
           </span>
         ))}
 
-        {venues.map((v) => {
+        {venues.map((v, i) => {
           const active = v.id === selectedId;
+          const isLive = v.matches.some((m) => m.live);
           const scale = 0.7 + (v.matches.length / maxMatches) * 0.6;
           return (
             <button
               type="button"
               key={v.id}
-              className={`al-vmap-pin ${v.country.toLowerCase()} ${active ? "active" : ""}`}
-              style={{ left: `${projX(v.lng)}%`, top: `${projY(v.lat)}%` }}
+              className={`al-vmap-pin ${v.country.toLowerCase()} ${active ? "active" : ""} ${isLive ? "live" : ""}`}
+              style={{ left: `${projX(v.lng)}%`, top: `${projY(v.lat)}%`, ["--i" as string]: i }}
               onClick={() => setSelectedId(active ? null : v.id)}
               aria-pressed={active}
               aria-label={`${v.city} — ${v.matches.length} ${dict.venues.matchesHere}`}

@@ -1,4 +1,23 @@
 {
-  "_comment": "Ảnh chụp cả đội (squad/lineup) theo mã đội viết thường (lib/teamMeta.ts). Giá trị: URL ảnh đầy đủ HOẶC đường dẫn nội bộ /teams/<mã>.jpg (đặt file trong public/teams/). Ảnh cố định nên sưu tầm từ nhiều nguồn rồi gắn ở đây; đội nào chưa có sẽ tự fallback về cờ/huy hiệu. Lưu ý tôn trọng giấy phép ảnh (vd CC BY cần ghi nguồn). mex: ảnh đội hình Mexico, Wikimedia Commons, CC BY 4.0.",
-  "mex": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Argentina_vs_mexico_mexico_lineup.jpg"
+  "_comment": "Ảnh chụp cả đội (squad/lineup) theo mã đội viết thường (lib/teamMeta.ts). Giá trị: URL ảnh đầy đủ HOẶC đường dẫn nội bộ /teams/<mã>.jpg (đặt file trong public/teams/). Ảnh cố định nên sưu tầm từ nhiều nguồn rồi gắn ở đây; đội nào chưa có sẽ tự fallback về cờ/huy hiệu. Lưu ý tôn trọng giấy phép ảnh (vd CC BY cần ghi nguồn). Các URL bên dưới là ảnh đội hình / cả đội từ Wikimedia Commons, đã được kiểm tra trực quan đúng đội & còn tải được (xem scripts/find_team_photos.py). Đội nào không tìm được ảnh đội hình đúng (sen, fra, por, cro, mar, col, sui, aus, ecu, pan, tun, rsa, uzb, cod, qat, par, civ, alg, cpv, bih, hai, nzl, cuw, usa) tạm để trống và fallback về cờ.",
+  "arg": "https://upload.wikimedia.org/wikipedia/commons/1/1e/Argentina_NT_team_line-up_against_Uruguay.jpg",
+  "esp": "https://upload.wikimedia.org/wikipedia/commons/4/45/Spain_national_football_team_Euro_2012_final.jpg",
+  "eng": "https://upload.wikimedia.org/wikipedia/commons/4/49/England_line-up_before_game_v_Belgium.jpg",
+  "bra": "https://upload.wikimedia.org/wikipedia/commons/e/ec/Brazil_vs_Serbia_World_Cup_2022_match_Brazil_line-up.jpg",
+  "ned": "https://upload.wikimedia.org/wikipedia/commons/1/16/Netherlands_starting_XI_%2826047000842%29.jpg",
+  "bel": "https://upload.wikimedia.org/wikipedia/commons/5/54/Belgium_2-0_England%2C_BEL_line-up.jpg",
+  "mex": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Argentina_vs_mexico_mexico_lineup.jpg",
+  "uru": "https://upload.wikimedia.org/wikipedia/commons/9/9c/Seleccion_Uruguaya_con_su_tradicional_indumentaria.jpg",
+  "jpn": "https://upload.wikimedia.org/wikipedia/commons/0/0a/Fumio_Kishida_with_Japan_National_Football_Team_after_Qatar_World_Cup_%281%29.jpg",
+  "aut": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Austrian_starting_team_for_match_against_Wales_2016-10-06.jpg",
+  "kor": "https://upload.wikimedia.org/wikipedia/commons/7/7f/Lebanon_v_South_Korea%2C_14_November_2019_20.jpg",
+  "nor": "https://upload.wikimedia.org/wikipedia/commons/5/54/Norway_starting_XI_vs_England_May_2012.jpg",
+  "can": "https://upload.wikimedia.org/wikipedia/commons/2/20/Canada_national_football_team_WC2022.jpg",
+  "egy": "https://upload.wikimedia.org/wikipedia/commons/b/b0/Egypt_national_football_team_line_up%2C_2012.jpg",
+  "sco": "https://upload.wikimedia.org/wikipedia/commons/7/78/First_Minister_meets_with_Scottish_National_Football_Team_11Jun.jpg",
+  "cze": "https://upload.wikimedia.org/wikipedia/commons/6/61/14-06-03-%C4%8Cesko-Rakousko-Olomouc-053.jpg",
+  "irq": "https://upload.wikimedia.org/wikipedia/commons/5/56/Iran_%26_Iraq_match_by_Amir_Ostovari%2C_2019_AFC_Asian_Cup_3.jpg",
+  "ksa": "https://upload.wikimedia.org/wikipedia/commons/5/55/Saudi_National_Team_at_the_World_Cup_%282022%29.jpg",
+  "jor": "https://upload.wikimedia.org/wikipedia/commons/6/6e/Asian_Nations_Cup_-_Jordan_and_South_Korea_%2867%29.jpg",
+  "gha": "https://upload.wikimedia.org/wikipedia/commons/1/14/Ghana_national_football_team.jpg"
 }

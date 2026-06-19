@@ -21,6 +21,7 @@ export interface Team {
   flag: string;        // emoji
   confederation: Confederation;
   fifaRank: number;
+  coach?: string;      // current head coach
   pot?: 1 | 2 | 3 | 4;
   group: GroupName;
 }

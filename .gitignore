@@ -17,3 +17,4 @@ next-env.d.ts
 
 # Local data-prep script (not part of the app/CI)
 scripts/enrich_squads.py
+scripts/find_team_photos.py

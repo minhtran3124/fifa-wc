@@ -77,6 +77,18 @@ const en = {
     sub: "Every team in the tournament, sorted into their groups. Tap a nation to open its page — squad, record, fixtures and group rivals.",
     browseAll: "Browse all teams →",
     rankSuffix: "FIFA",
+    wallSub: "48 stickers. Filter by confederation, sort by rank — tap to open a team. ★ = past World Cup winner.",
+    search: "Search teams…",
+    all: "All",
+    sortLabel: "Sort by",
+    sortRank: "FIFA rank",
+    sortGroup: "Group",
+    sortName: "Name",
+    sortPot: "Seeding pot",
+    pot: "Pot",
+    titles: "titles",
+    noResults: "No teams match.",
+    count: "teams",
   },
   groups: {
     title: "Group Tables",
@@ -175,6 +187,7 @@ const en = {
   team: {
     groupLabel: "Group", // "Group A"
     fifaRanking: "FIFA ranking",
+    headCoach: "Head coach",
     liveNow: "Live now",
     upNext: "Up next",
     groupStage: "Group stage",
@@ -263,12 +276,14 @@ const en = {
     },
   },
   previews: {
-    title: "Match preview",
-    sub: "Expert reads and big-paper build-up for the next match on the calendar — the verdict, the key battle, a predicted scoreline and what the press is saying.",
+    title: "Match previews",
+    sub: "Expert reads and big-paper build-up for the next matches on the calendar — the verdict, the key battle, a predicted scoreline and what the press is saying.",
     nextUp: "Next up",
     verdict: "The verdict",
     keyBattle: "Key battle",
     prediction: "Predicted score",
+    projection: "Win projection",
+    draw: "Draw",
     press: "What the press says",
     disclaimer:
       "Editorial previews written for this fan album — paraphrased build-up in the spirit of each outlet, not verbatim quotes.",

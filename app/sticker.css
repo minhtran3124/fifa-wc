@@ -432,24 +432,81 @@
 @keyframes al-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
 /* ---------- new rules ---------- */
-.al-rules { display: grid; gap: 14px; }
+.al-rules { display: grid; gap: 16px; counter-reset: rule; }
 @media (min-width: 720px) { .al-rules { grid-template-columns: 1fr 1fr; } }
+
+/* category accent colour per rule tag — the rulebook gets its own palette */
+.al-rule { --rc: var(--al-ink-soft); }
+.al-rule.tag-time { --rc: #1f6fb0; }
+.al-rule.tag-var { --rc: #2a9d8f; }
+.al-rule.tag-conduct { --rc: #bb3829; }
+.al-rule.tag-welfare { --rc: #1c7a47; }
+
 .al-rule {
-  display: flex; gap: 14px; align-items: flex-start;
-  background: var(--al-card); border: 2px dashed var(--al-line);
-  border-radius: 14px; padding: 16px 18px;
+  position: relative; overflow: hidden; counter-increment: rule;
+  display: flex; gap: 15px; align-items: flex-start;
+  background: var(--al-card); border: 1px solid var(--al-line);
+  border-radius: 16px; padding: 18px 20px 18px 22px;
+  box-shadow: 0 4px 12px rgba(43, 33, 20, 0.07);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s, border-color 0.3s;
+  animation: al-rule-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
-.al-rule .ic { font-size: 30px; line-height: 1; flex-shrink: 0; }
-.al-rule .bd { min-width: 0; }
-.al-rule .top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+/* staggered reveal on load */
+.al-rule:nth-child(1) { animation-delay: 0.04s; }
+.al-rule:nth-child(2) { animation-delay: 0.10s; }
+.al-rule:nth-child(3) { animation-delay: 0.16s; }
+.al-rule:nth-child(4) { animation-delay: 0.22s; }
+.al-rule:nth-child(5) { animation-delay: 0.28s; }
+.al-rule:nth-child(6) { animation-delay: 0.34s; }
+.al-rule:nth-child(7) { animation-delay: 0.40s; }
+.al-rule:nth-child(8) { animation-delay: 0.46s; }
+@keyframes al-rule-in { from { opacity: 0; transform: translateY(16px); } }
+/* coloured category spine down the left edge — widens on hover */
+.al-rule::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
+  background: var(--rc); transition: width 0.3s;
+}
+.al-rule:hover { transform: translateY(-4px); box-shadow: 0 18px 34px rgba(43, 33, 20, 0.16); border-color: var(--rc); }
+.al-rule:hover::before { width: 8px; }
+/* faint giant ordinal watermark — editorial "Law 0N" feel */
+.al-rule::after {
+  content: counter(rule, decimal-leading-zero); position: absolute; right: 10px; bottom: -14px;
+  font-family: var(--font-anton), sans-serif; font-size: 78px; line-height: 1; font-weight: 400;
+  color: color-mix(in srgb, var(--rc) 12%, transparent); pointer-events: none;
+  transition: color 0.3s, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.al-rule:hover::after { color: color-mix(in srgb, var(--rc) 22%, transparent); transform: translateY(-3px); }
+
+/* emoji sits in a tinted badge with a halo that pings on hover */
+.al-rule .ic {
+  position: relative; flex-shrink: 0; width: 52px; height: 52px; display: grid; place-items: center;
+  font-size: 27px; line-height: 1; border-radius: 14px;
+  background: color-mix(in srgb, var(--rc) 14%, var(--al-card));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--rc) 32%, transparent);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.al-rule .ic::after {
+  content: ""; position: absolute; inset: 0; border-radius: 14px;
+  border: 2px solid var(--rc); opacity: 0; pointer-events: none;
+}
+.al-rule:hover .ic { transform: scale(1.08) rotate(-5deg); }
+.al-rule:hover .ic::after { animation: al-rule-ping 0.7s ease-out; }
+@keyframes al-rule-ping {
+  0%   { opacity: 0.6; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.5); }
+}
+
+.al-rule .bd { min-width: 0; position: relative; z-index: 1; }
+.al-rule .top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 7px; }
 .al-rule h3 {
   font-family: var(--font-anton), sans-serif; font-weight: 400; text-transform: uppercase;
-  font-size: 1.1rem; line-height: 1; letter-spacing: 0.01em; margin: 0;
+  font-size: 1.12rem; line-height: 1; letter-spacing: 0.01em; margin: 0;
 }
 .al-rule .tag {
   font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
-  color: var(--al-red); background: rgba(187, 56, 41, 0.1);
-  border: 1px solid rgba(187, 56, 41, 0.3); border-radius: 999px; padding: 2px 8px; white-space: nowrap;
+  color: var(--rc); background: color-mix(in srgb, var(--rc) 11%, transparent);
+  border: 1px solid color-mix(in srgb, var(--rc) 34%, transparent);
+  border-radius: 999px; padding: 2px 9px; white-space: nowrap;
 }
 .al-rule p { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--al-ink-soft); }
 
@@ -522,8 +579,42 @@
 
 /* groups grid */
 .al-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 18px; }
-.al-group-card { background: var(--al-paper2); border: 1px solid var(--al-line); border-radius: 16px; padding: 16px; }
+.al-group-card {
+  position: relative; background: var(--al-paper2); border: 1px solid var(--al-line); border-radius: 16px; padding: 16px;
+  box-shadow: 0 4px 12px rgba(43, 33, 20, 0.07);
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.32s, border-color 0.32s;
+}
+.al-group-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(43, 33, 20, 0.18); border-color: var(--al-ink); }
+/* foil hairline that lights up the top edge on hover */
+.al-group-card::before {
+  content: ""; position: absolute; inset: -1px -1px auto -1px; height: 3px; border-radius: 16px 16px 0 0;
+  background: var(--al-foil); opacity: 0; transition: opacity 0.32s;
+}
+.al-group-card:hover::before { opacity: 1; }
 .al-group-card .gc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.al-group-card .pg-tab {
+  display: inline-grid; place-items: center; width: 34px; height: 34px; flex-shrink: 0;
+  border-radius: 10px; background: var(--al-ink); color: var(--al-card);
+  font-family: var(--font-anton), sans-serif; font-size: 18px; line-height: 1;
+  box-shadow: 0 3px 0 rgba(43, 33, 20, 0.18);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s;
+}
+.al-group-card:hover .pg-tab { transform: rotate(-5deg) scale(1.08); background: var(--al-red); box-shadow: 0 3px 0 rgba(187, 56, 41, 0.3); }
+.al-group-card .pg-ttl { font-family: var(--font-anton), sans-serif; font-size: 17px; letter-spacing: 0.02em; text-transform: uppercase; color: var(--al-ink); }
+/* standings rows react on hover */
+.al-stand tbody tr { transition: background 0.2s; }
+.al-stand tbody tr:hover td { background: rgba(43, 33, 20, 0.06); }
+.al-stand tbody tr.q:hover td { background: rgba(28, 122, 71, 0.18); }
+.al-stand tbody tr:hover .tm { color: var(--al-red); }
+.al-stand tbody tr:hover .rk { transform: scale(1.12); }
+.al-stand .rk { transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.al-stand .tm .fl { transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); display: inline-block; }
+.al-stand tbody tr:hover .tm .fl { transform: scale(1.22) rotate(-4deg); }
+@media (prefers-reduced-motion: reduce) {
+  .al-group-card, .al-group-card .pg-tab, .al-stand .rk, .al-stand .tm .fl { transition: background 0.2s, box-shadow 0.2s, border-color 0.2s; }
+  .al-group-card:hover { transform: none; }
+  .al-group-card:hover .pg-tab, .al-stand tbody tr:hover .rk, .al-stand tbody tr:hover .tm .fl { transform: none; }
+}
 
 /* ---------- knockout: "Road to the Final" ---------- */
 /* progress strip — how much of the bracket is filled in */
@@ -940,6 +1031,11 @@ button.al-hl-row { font: inherit; color: inherit; text-align: left; width: 100%;
 .al-thero h1 { font-family: var(--font-anton); font-weight: 400; text-transform: uppercase; font-size: clamp(2.2rem, 6vw, 3.6rem); line-height: 0.9; margin: 8px 0 0; text-wrap: balance; }
 .al-thero .facts { margin-top: 8px; font-size: 13.5px; color: var(--al-ink-soft); font-weight: 600; display: flex; flex-wrap: wrap; gap: 8px; }
 .al-thero .facts b { color: var(--al-ink); }
+.al-coach { margin: 0 0 16px; display: inline-flex; align-items: center; gap: 10px; background: var(--al-paper2); border: 1px solid var(--al-line); border-left: 4px solid var(--al-ink); border-radius: 12px; padding: 8px 14px 8px 11px; box-shadow: 0 4px 10px rgba(43, 33, 20, 0.08); }
+.al-coach .ic { font-size: 22px; line-height: 1; }
+.al-coach .tx { display: flex; flex-direction: column; line-height: 1.15; min-width: 0; }
+.al-coach .lbl { font-weight: 800; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--al-ink-soft); }
+.al-coach .nm { font-family: var(--font-anton); font-weight: 400; font-size: 19px; color: var(--al-ink); letter-spacing: 0.01em; }
 .al-thero .status { min-width: 220px; background: var(--al-paper2); border: 1px solid var(--al-line); border-radius: 14px; padding: 14px; }
 .al-thero .status .lbl { font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--al-ink-soft); margin-bottom: 8px; }
 .al-thero .status.live .lbl { color: var(--al-red); display: inline-flex; align-items: center; gap: 6px; }
@@ -1002,32 +1098,138 @@ button.al-hl-row { font: inherit; color: inherit; text-align: left; width: 100%;
 .al-foot a { color: var(--al-red); text-decoration: none; }
 .al-foot a:hover { text-decoration: underline; }
 
-/* ---------- pre-match preview (page + home card) ---------- */
-.al-preview { display: grid; gap: 18px; }
-.pv-fixture { background: var(--al-card); border: 6px solid transparent; border-radius: 18px; padding: clamp(18px, 3vw, 26px); background-image: linear-gradient(var(--al-card), var(--al-card)), var(--al-foil); background-origin: border-box; background-clip: padding-box, border-box; box-shadow: 0 16px 34px rgba(43, 33, 20, 0.18); }
-.pv-eyebrow { font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--al-ink-soft); }
-.pv-teams { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; }
-.pv-side { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; flex: 1; min-width: 0; }
-.pv-side .fl { font-size: clamp(40px, 8vw, 54px); line-height: 1; }
-.pv-side .nm { font-weight: 800; font-size: 14px; }
-.pv-pred { display: flex; flex-direction: column; align-items: center; gap: 4px; flex-shrink: 0; }
-.pv-pred .sc { font-family: var(--font-anton); font-size: clamp(34px, 8vw, 46px); line-height: 1; font-variant-numeric: tabular-nums; }
-.pv-pred .sc i { color: var(--al-line); font-style: normal; margin: 0 4px; }
-.pv-pred .lbl { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--al-ink-soft); }
-.pv-meta { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--al-line); display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 12px; color: var(--al-ink-soft); }
+/* ---------- pre-match preview — the matchday spread ---------- */
+/* stack of upcoming-fixture previews, separated by a torn-paper rule */
+.al-previews { display: grid; gap: clamp(28px, 5vw, 44px); }
+.al-previews .al-preview:not(:first-child) { padding-top: clamp(28px, 5vw, 44px); border-top: 2px dashed var(--al-line); }
+.al-preview { display: grid; gap: clamp(16px, 2.5vw, 22px); }
+
+/* hero "clash" — a foil showpiece (the next match earns the foil edge) */
+.pv-fixture {
+  position: relative; overflow: hidden;
+  background: var(--al-card); border: 6px solid transparent; border-radius: 20px;
+  padding: clamp(22px, 4vw, 34px) clamp(18px, 3vw, 30px) clamp(18px, 3vw, 24px);
+  background-image: linear-gradient(158deg, var(--al-card), var(--al-paper2)), var(--al-foil);
+  background-origin: border-box; background-clip: padding-box, border-box;
+  box-shadow: 0 18px 40px rgba(43, 33, 20, 0.2);
+}
+/* a single foil glint sweeps across the panel on load */
+.pv-fixture::before {
+  content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: linear-gradient(115deg, transparent 32%, rgba(255, 255, 255, 0.5) 48%, transparent 64%);
+  background-size: 250% 250%;
+  animation: pv-sweep 1.5s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
+}
+@keyframes pv-sweep {
+  0%   { opacity: 0; background-position: 130% 130%; }
+  25%  { opacity: 1; }
+  100% { opacity: 0; background-position: -40% -40%; }
+}
+
+.pv-stamp {
+  display: inline-block; font-family: var(--font-caveat), cursive; font-size: 20px; line-height: 1;
+  color: #fff; background: var(--al-red); padding: 5px 13px; border-radius: 9px;
+  transform: rotate(-2deg); box-shadow: 2px 2px 0 rgba(43, 33, 20, 0.25);
+}
+.pv-eyebrow { display: block; margin-top: 12px; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--al-ink-soft); }
+
+.pv-clash { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: clamp(8px, 2vw, 22px); margin-top: clamp(16px, 3vw, 22px); }
+.pv-side { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; min-width: 0; }
+.pv-crest { position: relative; width: clamp(62px, 16vw, 92px); height: clamp(62px, 16vw, 92px); display: grid; place-items: center; }
+.pv-crest .fl { font-size: clamp(34px, 9vw, 48px); line-height: 1; }
+.pv-crest img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 14px; box-shadow: 0 6px 16px rgba(43, 33, 20, 0.22); }
+.pv-side .nm { font-weight: 800; font-size: clamp(13px, 2.4vw, 16px); line-height: 1.15; text-wrap: balance; }
+.pv-side .rk { font-size: 11px; font-weight: 700; color: var(--al-ink-soft); font-variant-numeric: tabular-nums; }
+
+.pv-pred { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 0 clamp(2px, 1vw, 10px); }
+.pv-pred .sc { font-family: var(--font-anton); font-size: clamp(44px, 12vw, 66px); line-height: 0.9; color: var(--al-red); font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
+.pv-pred .sc i { color: var(--al-line); font-style: normal; margin: 0 clamp(2px, 1vw, 8px); }
+.pv-pred .lbl { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; color: var(--al-ink-soft); }
+
+/* win projection — a broadcast graphic (home green · draw · away blue) */
+.pv-odds { margin-top: clamp(18px, 3vw, 24px); }
+.pv-odds-cap { display: block; text-align: center; margin-bottom: 8px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--al-ink-soft); }
+.pv-odds-bar { display: flex; height: 30px; border-radius: 9px; overflow: hidden; border: 1px solid var(--al-line); background: var(--al-paper2); }
+.pv-odds-bar .seg { display: grid; place-items: center; min-width: 30px; font-family: var(--font-anton); font-size: 13px; color: #fff; font-variant-numeric: tabular-nums; }
+.pv-odds-bar .seg.home { background: var(--al-green); }
+.pv-odds-bar .seg.draw { background: var(--al-line); color: var(--al-ink); }
+.pv-odds-bar .seg.away { background: var(--al-blue); }
+.pv-odds-leg { display: flex; justify-content: space-between; gap: 8px; margin-top: 9px; font-size: 11.5px; color: var(--al-ink-soft); }
+.pv-odds-leg span { display: inline-flex; align-items: center; gap: 5px; min-width: 0; }
+.pv-odds-leg span:nth-child(2) { justify-content: center; }
+.pv-odds-leg span:last-child { justify-content: flex-end; }
+.pv-odds-leg .sw { width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; }
+.pv-odds-leg .sw.home { background: var(--al-green); }
+.pv-odds-leg .sw.draw { background: var(--al-line); }
+.pv-odds-leg .sw.away { background: var(--al-blue); }
+
+.pv-meta { position: relative; margin-top: clamp(18px, 3vw, 22px); padding-top: 14px; border-top: 1px dashed var(--al-line); display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: 12.5px; color: var(--al-ink-soft); }
+.pv-meta .pv-when { font-weight: 700; color: var(--al-ink); }
 .pv-meta .pv-venue { text-align: right; }
-.pv-block { background: var(--al-paper2); border: 1px solid var(--al-line); border-radius: 16px; padding: 18px 20px; }
-.pv-block .scribble { font-family: var(--font-caveat), cursive; font-size: 22px; color: var(--al-red); display: block; line-height: 1; transform: rotate(-1.5deg); margin-bottom: 10px; }
-.pv-verdict { margin: 0; font-size: 15.5px; line-height: 1.6; color: var(--al-ink); }
-.pv-battle { margin: 12px 0 0; font-size: 13.5px; line-height: 1.55; color: var(--al-ink-soft); }
-.pv-battle strong { color: var(--al-ink); }
-.pv-takes { display: grid; gap: 12px; }
+
+/* verdict + key battle */
+.pv-block { background: var(--al-paper2); border: 1px solid var(--al-line); border-radius: 16px; padding: clamp(18px, 3vw, 24px); }
+.pv-block .scribble { font-family: var(--font-caveat), cursive; font-size: 24px; color: var(--al-red); display: block; line-height: 1; transform: rotate(-1.5deg); margin-bottom: 12px; }
+.pv-verdict { margin: 0; max-width: 64ch; font-size: clamp(15.5px, 2.4vw, 17px); line-height: 1.6; color: var(--al-ink); text-wrap: pretty; }
+.pv-battle { margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--al-line); font-size: 14px; line-height: 1.55; color: var(--al-ink-soft); text-wrap: pretty; }
+.pv-battle-tag { display: inline-block; margin-right: 8px; font-weight: 800; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--al-red); }
+
+/* press wall — pinned newspaper clippings */
+.pv-press .scribble { font-family: var(--font-caveat), cursive; font-size: 24px; color: var(--al-red); display: block; line-height: 1; transform: rotate(-1.5deg); margin-bottom: 14px; }
+.pv-takes { display: grid; gap: 14px; }
 @media (min-width: 680px) { .pv-takes { grid-template-columns: 1fr 1fr; } }
-.pv-take { margin: 0; background: var(--al-card); border: 1px solid var(--al-line); border-left: 4px solid var(--al-red); border-radius: 12px; padding: 14px 16px; }
-.pv-take blockquote { margin: 0; font-size: 14px; line-height: 1.55; color: var(--al-ink); }
-.pv-take figcaption { margin-top: 10px; font-size: 12px; color: var(--al-ink-soft); }
-.pv-take figcaption .outlet { font-weight: 800; color: var(--al-ink); }
-.pv-disclaimer { font-size: 11.5px; line-height: 1.5; color: var(--al-ink-soft); font-style: italic; margin: 2px 0 0; }
+.pv-take { position: relative; margin: 0; background: var(--al-card); border: 1px solid var(--al-line); border-radius: 14px; padding: 22px 18px 16px; box-shadow: 2px 3px 0 rgba(43, 33, 20, 0.1); transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.18s; }
+.pv-take:nth-child(odd) { transform: rotate(-0.6deg); }
+.pv-take:nth-child(even) { transform: rotate(0.6deg); }
+.pv-take:hover { transform: rotate(0deg) translateY(-2px); box-shadow: 0 12px 22px rgba(43, 33, 20, 0.16); }
+.pv-take::before { content: "\201C"; position: absolute; top: 4px; left: 13px; font-family: var(--font-anton); font-size: 46px; line-height: 1; color: var(--al-line); pointer-events: none; }
+.pv-take blockquote { margin: 0; font-size: 14.5px; line-height: 1.58; color: var(--al-ink); }
+.pv-take figcaption { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--al-line); font-size: 12px; color: var(--al-ink-soft); }
+.pv-take figcaption .outlet { font-weight: 800; color: var(--al-ink); text-transform: uppercase; letter-spacing: 0.04em; }
+.pv-disclaimer { font-size: 11.5px; line-height: 1.5; color: var(--al-ink-soft); font-style: italic; margin: 2px 0 0; text-align: center; }
+
+/* ----- preview motion: entrances + hover life (reduced-motion killed globally) ----- */
+/* the hero panel breathes on hover */
+.pv-fixture { transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.32s; }
+.pv-fixture:hover { transform: translateY(-3px); box-shadow: 0 26px 52px rgba(43, 33, 20, 0.26); }
+/* "Next up" stamp drops in and settles */
+.pv-stamp { animation: pv-stamp-drop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both; }
+@keyframes pv-stamp-drop {
+  0%   { opacity: 0; transform: rotate(-2deg) translateY(-16px) scale(0.8); }
+  100% { opacity: 1; transform: rotate(-2deg) translateY(0) scale(1); }
+}
+/* predicted scoreline slams down like a stamp */
+.pv-pred .sc { animation: pv-score-stamp 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.34s both; }
+@keyframes pv-score-stamp {
+  0%   { opacity: 0; transform: scale(1.55) rotate(-5deg); }
+  55%  { opacity: 1; }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+/* crests lift and the badge glows when you mouse a side */
+.pv-side { cursor: default; }
+.pv-crest { transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1); }
+.pv-side:hover .pv-crest { transform: translateY(-6px) scale(1.06) rotate(-2deg); }
+.pv-crest img { transition: box-shadow 0.32s, transform 0.32s; }
+.pv-side:hover .pv-crest img { box-shadow: 0 14px 28px rgba(43, 33, 20, 0.34); }
+.pv-crest .fl { transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.pv-side:hover .pv-crest .fl { transform: scale(1.1); }
+/* projection bar wipes in from the left, then segments brighten on hover */
+.pv-odds-bar { animation: pv-bar-wipe 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both; }
+@keyframes pv-bar-wipe {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+.pv-odds-bar .seg { transition: filter 0.2s; }
+.pv-odds-bar:hover .seg { filter: saturate(1.15) brightness(1.04); }
+/* press clippings flutter in, staggered (backwards fill so :hover transform still works after) */
+.pv-take { animation: pv-take-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
+.pv-take:nth-child(1) { animation-delay: 0.2s; }
+.pv-take:nth-child(2) { animation-delay: 0.3s; }
+.pv-take:nth-child(3) { animation-delay: 0.4s; }
+.pv-take:nth-child(4) { animation-delay: 0.5s; }
+@keyframes pv-take-in {
+  from { opacity: 0; transform: translateY(14px) rotate(0deg); }
+}
 
 .al-preview-card { display: block; text-decoration: none; color: inherit; background: var(--al-card); border: 1px solid var(--al-line); border-radius: 16px; padding: 18px 20px; transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.18s, border-color 0.18s; }
 .al-preview-card:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(43, 33, 20, 0.16); border-color: var(--al-red); }
@@ -1268,14 +1470,44 @@ button.al-player:focus-visible { outline: 2px solid var(--al-red); outline-offse
   border: 1px solid rgba(246, 231, 176, 0.16);
   box-shadow: inset 0 12px 44px rgba(0, 0, 0, 0.5);
 }
+/* drifting aurora — the map quietly breathes colour from the three host nations */
+.al-vmap::before {
+  content: ""; position: absolute; inset: -25%; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(38% 48% at 24% 30%, rgba(236, 194, 79, 0.12), transparent 70%),
+    radial-gradient(40% 50% at 72% 62%, rgba(70, 182, 115, 0.12), transparent 70%),
+    radial-gradient(34% 44% at 56% 22%, rgba(236, 106, 84, 0.11), transparent 70%);
+  filter: blur(10px);
+  animation: al-vmap-aurora 20s ease-in-out infinite alternate;
+}
+@keyframes al-vmap-aurora {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(2.5%, -2%) scale(1.07); }
+  100% { transform: translate(-2.5%, 2%) scale(1.04); }
+}
 .al-vmap-grid {
-  position: absolute; inset: 0; pointer-events: none;
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
   background-image:
     linear-gradient(rgba(246, 231, 176, 0.045) 1px, transparent 1px),
     linear-gradient(90deg, rgba(246, 231, 176, 0.045) 1px, transparent 1px);
   background-size: 9% 11%;
   mask-image: radial-gradient(120% 120% at 50% 40%, #000 55%, transparent 100%);
 }
+/* flight-route network — a glow underlay plus a flowing dashed data-line */
+.al-vmap-routes { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.al-vmap-routes .route-glow {
+  fill: none; stroke: rgba(236, 194, 79, 0.16); stroke-width: 5; vector-effect: non-scaling-stroke;
+  stroke-linecap: round; filter: blur(2px);
+  animation: al-vmap-fade 1.4s ease-out 0.3s both;
+}
+.al-vmap-routes .route {
+  fill: none; stroke: rgba(246, 231, 176, 0.4); stroke-width: 1.3; vector-effect: non-scaling-stroke;
+  stroke-linecap: round; stroke-dasharray: 2 7;
+  filter: drop-shadow(0 0 3px rgba(236, 194, 79, 0.5));
+  animation: al-vmap-flow 1.6s linear infinite, al-vmap-fade 1.4s ease-out 0.3s both;
+}
+@keyframes al-vmap-flow { to { stroke-dashoffset: -9; } }
+@keyframes al-vmap-fade { from { opacity: 0; } to { opacity: 1; } }
 .al-vmap-country {
   position: absolute; transform: translate(-50%, -50%); pointer-events: none;
   font-family: var(--font-anton), sans-serif; text-transform: uppercase; letter-spacing: 0.16em;
@@ -1289,16 +1521,33 @@ button.al-player:focus-visible { outline: 2px solid var(--al-red); outline-offse
   position: absolute; transform: translate(-50%, -50%); z-index: 2;
   background: none; border: 0; padding: 6px; cursor: pointer;
   display: flex; flex-direction: column; align-items: center; gap: 3px;
+  animation: al-vmap-drop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i, 0) * 0.045s) backwards;
+}
+/* pins parachute onto the map, staggered west→east */
+@keyframes al-vmap-drop {
+  from { opacity: 0; transform: translate(-50%, calc(-50% - 24px)); }
 }
 .al-vmap-pin.usa { --pc: #ecc24f; }
 .al-vmap-pin.canada { --pc: #ec6a54; }
 .al-vmap-pin.mexico { --pc: #46b673; }
 .al-vmap-pin .dot {
+  position: relative;
   width: calc(11px * var(--s, 1)); height: calc(11px * var(--s, 1)); border-radius: 50%;
   background: var(--pc);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--pc) 22%, transparent),
               0 0 12px 2px color-mix(in srgb, var(--pc) 55%, transparent);
   transition: transform 0.15s, box-shadow 0.15s;
+}
+/* radar ping — two rings ripple out continuously, offset in phase */
+.al-vmap-pin .dot::before, .al-vmap-pin .dot::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  border: 1.5px solid var(--pc); pointer-events: none;
+  animation: al-vmap-ping 2.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.al-vmap-pin .dot::after { animation-delay: 1.3s; }
+@keyframes al-vmap-ping {
+  0%        { transform: scale(1); opacity: 0.7; }
+  80%, 100% { transform: scale(3.6); opacity: 0; }
 }
 .al-vmap-pin .lbl {
   font-size: 9.5px; font-weight: 700; letter-spacing: 0.01em; white-space: nowrap;
@@ -1312,7 +1561,23 @@ button.al-player:focus-visible { outline: 2px solid var(--al-red); outline-offse
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--pc) 32%, transparent),
               0 0 20px 6px color-mix(in srgb, var(--pc) 75%, transparent);
 }
+/* a venue hosting a live match flares red and pings faster */
+.al-vmap-pin.live { --pc: #ff5a5a; z-index: 4; }
+.al-vmap-pin.live .dot { background: #ff5a5a; }
+.al-vmap-pin.live .dot::before, .al-vmap-pin.live .dot::after { animation-duration: 1.4s; border-width: 2px; }
+.al-vmap-pin.live .lbl { color: #ff9a8f; }
 .al-vmap-pin:focus-visible { outline: 2px solid #fff; outline-offset: 2px; border-radius: 8px; }
+
+/* respect reduced-motion: drop the looping map ambience, keep it readable */
+@media (prefers-reduced-motion: reduce) {
+  .al-vmap::before,
+  .al-vmap-routes .route,
+  .al-vmap-routes .route-glow,
+  .al-vmap-pin,
+  .al-vmap-pin .dot::before,
+  .al-vmap-pin .dot::after { animation: none; }
+  .al-vmap-pin .dot::before, .al-vmap-pin .dot::after { display: none; }
+}
 
 /* detail side */
 .al-vmap-hint {
@@ -1385,4 +1650,104 @@ button.al-player:focus-visible { outline: 2px solid var(--al-red); outline-offse
   .al-pitch-pl { width: 52px; }
   .al-pitch-pl .disc { width: 26px; height: 26px; font-size: 12px; }
   .al-pitch-pl .nm { font-size: 9px; max-width: 58px; }
+}
+
+/* ============================================================
+   Teams "Collector's Wall" (/teams) — holographic foil cards
+   ============================================================ */
+.al-wall { margin-top: 4px; }
+.al-wall-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-bottom: 20px; }
+.al-wall-search {
+  flex: 1 1 200px; min-width: 150px; max-width: 320px; font: inherit; font-size: 14px;
+  padding: 9px 15px; color: var(--al-ink);
+  background: var(--al-card); border: 1px solid var(--al-line); border-radius: 999px;
+}
+.al-wall-search:focus { outline: 2px solid var(--al-red); outline-offset: 1px; }
+.al-wall-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.al-wall-chips .chip {
+  display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+  font: inherit; font-size: 12.5px; font-weight: 700; padding: 7px 12px; border-radius: 999px;
+  background: var(--al-card); color: var(--al-ink-soft); border: 1px solid var(--al-line);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.al-wall-chips .chip i { font-style: normal; font-size: 10px; font-weight: 800; opacity: 0.55; }
+.al-wall-chips .chip:hover { border-color: var(--al-ink-soft); color: var(--al-ink); }
+.al-wall-chips .chip.on { background: var(--al-ink); color: #fff; border-color: var(--al-ink); }
+.al-wall-chips .chip.on i { opacity: 0.85; }
+.al-wall-sort { margin-left: auto; display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 700; color: var(--al-ink-soft); }
+.al-wall-sort select {
+  font: inherit; font-size: 13px; font-weight: 700; padding: 7px 10px; border-radius: 10px; cursor: pointer;
+  color: var(--al-ink); background: var(--al-card); border: 1px solid var(--al-line);
+}
+
+.al-wall-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(152px, 1fr)); gap: 14px; }
+.al-wcard {
+  position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; overflow: hidden;
+  padding: 20px 12px 14px; text-align: center; text-decoration: none; color: inherit;
+  border-radius: 16px; border: 4px solid transparent; background: var(--al-card);
+  background-image: linear-gradient(var(--al-card), var(--al-card)), var(--al-foil);
+  background-origin: border-box; background-clip: padding-box, border-box;
+  box-shadow: 0 6px 16px rgba(43, 33, 20, 0.14);
+  transform: perspective(800px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(var(--s, 1));
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s, border-color 0.3s;
+  transform-style: preserve-3d; will-change: transform;
+}
+.al-wcard:hover { --s: 1.045; box-shadow: 0 22px 44px rgba(43, 33, 20, 0.28); border-color: rgba(255, 255, 255, 0.35); z-index: 2; }
+.al-wcard:active { --s: 1.015; transition-duration: 0.08s; }
+.al-wcard.champ { box-shadow: 0 6px 16px rgba(217, 165, 33, 0.3); }
+.al-wcard.champ:hover { box-shadow: 0 24px 48px rgba(217, 165, 33, 0.45); border-color: rgba(255, 224, 130, 0.55); }
+/* diagonal light sweep that wipes across the foil on hover */
+.al-wcard::after {
+  content: ""; position: absolute; inset: -40% -60%; pointer-events: none; z-index: 1;
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, 0.55) 50%, transparent 62%);
+  transform: translateX(-120%); opacity: 0;
+}
+.al-wcard:hover::after { animation: al-wcard-sweep 0.7s cubic-bezier(0.3, 0.7, 0.3, 1); }
+@keyframes al-wcard-sweep {
+  0% { transform: translateX(-120%); opacity: 0; }
+  18% { opacity: 1; }
+  100% { transform: translateX(120%); opacity: 0; }
+}
+/* holographic sheen that tracks the pointer */
+.al-wcard .holo {
+  position: absolute; inset: 0; border-radius: 12px; pointer-events: none; opacity: 0;
+  transition: opacity 0.25s; mix-blend-mode: overlay;
+  background:
+    radial-gradient(130px 130px at var(--mx, 50%) var(--my, 40%), rgba(255, 255, 255, 0.85), transparent 62%),
+    conic-gradient(from 210deg at var(--mx, 50%) var(--my, 40%),
+      rgba(255, 90, 90, 0.3), rgba(120, 200, 255, 0.3), rgba(120, 255, 170, 0.3), rgba(255, 220, 120, 0.34), rgba(255, 90, 90, 0.3));
+}
+.al-wcard:hover .holo { opacity: 0.78; }
+/* parallax depth — children float above the card surface on hover (preserve-3d) */
+.al-wcard .crest { position: relative; width: 56px; height: 56px; display: grid; place-items: center; margin-bottom: 2px; transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+.al-wcard:hover .crest { transform: translateZ(38px) scale(1.08); }
+.al-wcard .crest .emoji { font-size: 40px; line-height: 1; transition: filter 0.3s; }
+.al-wcard:hover .crest .emoji { filter: drop-shadow(0 6px 9px rgba(43, 33, 20, 0.32)); }
+.al-wcard .crest img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; border-radius: 4px; filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.28)); transition: filter 0.3s; }
+.al-wcard:hover .crest img { filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.4)); }
+.al-wcard .code { font-family: var(--font-anton), sans-serif; font-size: 20px; line-height: 1; letter-spacing: 0.03em; transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s; }
+.al-wcard:hover .code { transform: translateZ(20px); color: var(--al-red); }
+.al-wcard .name { font-weight: 800; font-size: 13px; line-height: 1.2; transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+.al-wcard:hover .name { transform: translateZ(14px); }
+.al-wcard .meta { font-size: 10.5px; color: var(--al-ink-soft); }
+.al-wcard .meta b { color: var(--al-ink); }
+.al-wcard .grp {
+  position: absolute; top: 8px; left: 8px; width: 22px; height: 22px; display: grid; place-items: center;
+  font-family: var(--font-anton), sans-serif; font-size: 12px; border-radius: 7px;
+  background: var(--al-paper2); color: var(--al-ink-soft); border: 1px solid var(--al-line);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s, color 0.3s;
+}
+.al-wcard:hover .grp { transform: translateZ(26px) scale(1.1); background: var(--al-ink); color: var(--al-card); border-color: transparent; }
+.al-wcard .star { position: absolute; top: 7px; right: 9px; display: inline-flex; align-items: center; gap: 1px; color: #d9a521; font-size: 14px; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25); transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); transform-origin: center; }
+.al-wcard:hover .star { transform: translateZ(30px) scale(1.18) rotate(-8deg); }
+.al-wcard .star i { font-style: normal; font-size: 10px; font-weight: 800; }
+@media (prefers-reduced-motion: reduce) {
+  .al-wcard, .al-wcard .crest, .al-wcard .code, .al-wcard .name, .al-wcard .grp, .al-wcard .star { transition: box-shadow 0.2s, border-color 0.2s; }
+  .al-wcard:hover { --s: 1; }
+  .al-wcard:hover .crest, .al-wcard:hover .code, .al-wcard:hover .name, .al-wcard:hover .grp, .al-wcard:hover .star { transform: none; }
+  .al-wcard:hover::after { animation: none; }
+}
+@media (max-width: 480px) {
+  .al-wall-grid { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 10px; }
+  .al-wall-sort { margin-left: 0; }
 }
