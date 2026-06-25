@@ -30,11 +30,11 @@ const caveat = Caveat({ weight: "700", subsets: ["latin", "latin-ext"], variable
 
 export const metadata: Metadata = {
   title: {
-    default: "World Cup 2026 — Sticker Album",
+    default: "World Cup 2026",
     template: "%s — World Cup 2026",
   },
   description:
-    "A sticker-album take on the 2026 FIFA World Cup: collect all 48 nations, follow live results, tables, the bracket and stats.",
+    "Your hub for the 2026 FIFA World Cup: all 48 nations, live results, group tables, the knockout bracket and stats.",
 };
 
 export const viewport: Viewport = {

@@ -29,7 +29,7 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
   const nextMatch = scheduled[0];
   const featured = live[0] ?? nextMatch;
   const recent = finished.slice(-6).reverse();
-  const upcoming = scheduled.slice(0, 3);
+  const upcoming = scheduled.slice(0, 6);
   const stats = tournamentStats(matches);
 
   const playedIds = new Set<string>();
@@ -129,15 +129,22 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
         )}
       </section>
 
-      {/* ---------- format facts: KPI strip ---------- */}
-      <Reveal as="section" className="al-kpi al-reveal">
-        {facts.map((f) => (
-          <div className="al-kpi-item" key={f.l}>
-            <span className="al-kpi-ic" aria-hidden>{f.icon}</span>
-            <span className="al-kpi-n"><CountUp value={f.n} decimals={0} /></span>
-            <span className="al-kpi-l">{f.l}</span>
+      {/* ---------- latest results (top of page) ---------- */}
+      <Reveal as="section" className="al-sec">
+        <div className="al-sec-head">
+          <div>
+            <span className="scribble">{dict.home.resultsKicker}</span>
+            <h2>{dict.home.resultsTitle}</h2>
           </div>
-        ))}
+          <Link className="more" href={`/${l}/matches`}>{dict.home.fullSchedule}</Link>
+        </div>
+        {recent.length ? (
+          <div className="al-matches">
+            {recent.map((m) => <MatchSticker key={m.id} m={m} locale={l} dict={dict} />)}
+          </div>
+        ) : (
+          <p className="al-empty">{dict.home.resultsEmpty}</p>
+        )}
       </Reveal>
 
       {/* ---------- up next (top of page — no scrolling needed) ---------- */}
@@ -156,6 +163,17 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
         ) : (
           <p className="al-empty">{dict.home.upNextEmpty}</p>
         )}
+      </Reveal>
+
+      {/* ---------- format facts: KPI strip ---------- */}
+      <Reveal as="section" className="al-kpi al-reveal">
+        {facts.map((f) => (
+          <div className="al-kpi-item" key={f.l}>
+            <span className="al-kpi-ic" aria-hidden>{f.icon}</span>
+            <span className="al-kpi-n"><CountUp value={f.n} decimals={0} /></span>
+            <span className="al-kpi-l">{f.l}</span>
+          </div>
+        ))}
       </Reveal>
 
       {/* ---------- my teams (favourites) ---------- */}
@@ -298,23 +316,6 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
           ))}
         </div>
       </div>
-
-      {/* ---------- recent results ---------- */}
-      <Reveal as="section" className="al-sec">
-        <div className="al-sec-head">
-          <div>
-            <span className="scribble">{dict.home.resultsKicker}</span>
-            <h2>{dict.home.resultsTitle}</h2>
-          </div>
-        </div>
-        {recent.length ? (
-          <div className="al-matches">
-            {recent.map((m) => <MatchSticker key={m.id} m={m} locale={l} dict={dict} />)}
-          </div>
-        ) : (
-          <p className="al-empty">{dict.home.resultsEmpty}</p>
-        )}
-      </Reveal>
     </>
   );
 }

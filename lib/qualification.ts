@@ -62,3 +62,102 @@ export function parseSeed(seed: string | null): { pos: 1 | 2; group: string } | 
   const m = seed.match(/^([12])([A-L])$/);
   return m ? { pos: Number(m[1]) as 1 | 2, group: m[2] } : null;
 }
+
+/* ── R32 field prediction (from the live group tables) ─────────────────── */
+
+/** Predicted team ids for one R32 tie, or null on a side we can't yet project. */
+export interface R32Prediction {
+  home: string | null;
+  away: string | null;
+}
+
+/** "Group A winners" → { pos: 1, group: "A" }; "Group B runners-up" → pos 2. */
+function parseWinRun(label: string): { pos: 1 | 2; group: GroupName } | null {
+  let m: RegExpMatchArray | null;
+  if ((m = label.match(/group\s+([a-l])\b.*winner/i))) {
+    return { pos: 1, group: m[1].toUpperCase() as GroupName };
+  }
+  if ((m = label.match(/group\s+([a-l])\b.*runner/i))) {
+    return { pos: 2, group: m[1].toUpperCase() as GroupName };
+  }
+  return null;
+}
+
+/** "Group A/B/C/D/F third place" → ["A","B","C","D","F"]; null if not a third slot. */
+function parseThirdSlot(label: string): GroupName[] | null {
+  const m = label.match(/group\s+([a-l/]+)\s+third/i);
+  if (!m) return null;
+  return m[1].toUpperCase().split("/").filter(Boolean) as GroupName[];
+}
+
+/**
+ * Project the 32 teams reaching the Round of 32 from the group tables *as they
+ * stand*: each group's current top two fill the winner/runner-up slots, and the
+ * eight best third-placed teams are matched to their eligible third-place slots
+ * (a group's third can only feed a slot whose candidate set lists that group).
+ * Returns a map keyed by R32 match id. Illustrative — not an official seeding.
+ */
+export function predictR32(matches: Match[]): Map<string, R32Prediction> {
+  // Current top two of every group.
+  const winner = new Map<GroupName, string>();
+  const runner = new Map<GroupName, string>();
+  for (const g of GROUPS) {
+    const table = groupStandings(g, matches);
+    if (table[0]) winner.set(g, table[0].teamId);
+    if (table[1]) runner.set(g, table[1].teamId);
+  }
+
+  // The eight qualifying thirds, by their group (ranked best-first).
+  const qualThirds = bestThirds(matches).filter((r) => r.qualifies);
+  const thirdTeam = new Map<GroupName, string>();
+  for (const r of qualThirds) thirdTeam.set(r.group, r.standing.teamId);
+
+  const slotMap = r32SlotMap(matches);
+
+  // Collect every third-place slot with its eligible groups, then match each to
+  // a distinct qualifying third (Kuhn's augmenting-path bipartite matching).
+  const thirdSlots: { matchId: string; side: "home" | "away"; candidates: GroupName[] }[] = [];
+  for (const [id, s] of slotMap) {
+    for (const side of ["home", "away"] as const) {
+      const cand = parseThirdSlot(s[side]);
+      if (cand) thirdSlots.push({ matchId: id, side, candidates: cand.filter((g) => thirdTeam.has(g)) });
+    }
+  }
+
+  const slotGroup = new Map<number, GroupName>(); // slot index → assigned group
+  const groupSlot = new Map<GroupName, number>(); // group → slot index
+  const augment = (si: number, seen: Set<GroupName>): boolean => {
+    for (const g of thirdSlots[si].candidates) {
+      if (seen.has(g)) continue;
+      seen.add(g);
+      const taken = groupSlot.get(g);
+      if (taken === undefined || augment(taken, seen)) {
+        slotGroup.set(si, g);
+        groupSlot.set(g, si);
+        return true;
+      }
+    }
+    return false;
+  };
+  // Most-constrained slots first → a complete assignment when one exists.
+  const order = thirdSlots.map((_, i) => i).sort((a, b) => thirdSlots[a].candidates.length - thirdSlots[b].candidates.length);
+  for (const si of order) augment(si, new Set());
+
+  const resolveWinRun = (label: string): string | null => {
+    const p = parseWinRun(label);
+    if (!p) return null;
+    return (p.pos === 1 ? winner.get(p.group) : runner.get(p.group)) ?? null;
+  };
+
+  const out = new Map<string, R32Prediction>();
+  for (const [id, s] of slotMap) {
+    out.set(id, { home: resolveWinRun(s.home), away: resolveWinRun(s.away) });
+  }
+  thirdSlots.forEach((slot, si) => {
+    const g = slotGroup.get(si);
+    const teamId = g ? thirdTeam.get(g) ?? null : null;
+    const cur = out.get(slot.matchId);
+    if (cur) out.set(slot.matchId, { ...cur, [slot.side]: teamId });
+  });
+  return out;
+}

@@ -5,7 +5,7 @@ import { getTeam, getVenue } from "@/lib/teams";
 import { slotLabel } from "@/lib/matches";
 import { fmtDate } from "@/lib/format";
 import { getWcData } from "@/lib/footballData";
-import { r32SlotMap, bestThirds } from "@/lib/qualification";
+import { r32SlotMap, bestThirds, predictR32 } from "@/lib/qualification";
 import { getDictionary, type Dictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/i18n";
 import AlbumRefresh from "@/components/AlbumRefresh";
@@ -38,9 +38,26 @@ function teamSide(code: string, name?: string) {
   return { known: false, flag: "⬜", name: label, code: shortSlot(label) };
 }
 
+/** A participant rendered three ways: `known` once officially advanced,
+ *  `pred` when only projected from the live tables, else an open `tbd` slot. */
+type SideState = "known" | "pred" | "tbd";
+function resolveSide(code: string, name: string | undefined, predictedId: string | null) {
+  const t = getTeam(code);
+  if (t) return { state: "known" as SideState, flag: t.flag, name: t.name, code: t.code };
+  if (predictedId) {
+    const p = getTeam(predictedId);
+    if (p) return { state: "pred" as SideState, flag: p.flag, name: p.name, code: p.code };
+  }
+  const label = name ?? slotLabel(code);
+  return { state: "tbd" as SideState, flag: "⬜", name: label, code: shortSlot(label) };
+}
+
 /** The fixed slot label for one side of a tie ("Group A winners", "Winner
  *  Match 74"), taken from the canonical R32 schedule — not from live tables. */
 type SeedFn = (matchId: string, side: "home" | "away") => string | null;
+
+/** Projected team id for one R32 side from the live group tables, or null. */
+type PredFn = (matchId: string, side: "home" | "away") => string | null;
 
 /** Turn a slot label into readable, localised text. `compact` = wall-chart
  *  ("Nhất A" / "1st A", "Hạng 3 ABCDF"); else the vertical road ("Nhất bảng A").
@@ -80,15 +97,16 @@ function outcome(m: Match) {
 
 /** Compact tie card used inside the mirrored bracket. Decided sides show flag +
  *  3-letter code; undecided sides show their localised group position. */
-function BracketCard({ m, locale, dict, seed }: { m: Match; locale: Locale; dict: Dictionary; seed?: SeedFn }) {
-  const home = teamSide(m.home, m.homeName);
-  const away = teamSide(m.away, m.awayName);
-  const homeLabel = home.known ? home.code : slotText(seed?.(m.id, "home") ?? home.name, dict, true);
-  const awayLabel = away.known ? away.code : slotText(seed?.(m.id, "away") ?? away.name, dict, true);
+function BracketCard({ m, locale, dict, seed, pred }: { m: Match; locale: Locale; dict: Dictionary; seed?: SeedFn; pred?: PredFn }) {
+  const home = resolveSide(m.home, m.homeName, pred?.(m.id, "home") ?? null);
+  const away = resolveSide(m.away, m.awayName, pred?.(m.id, "away") ?? null);
+  // Known/projected sides read as a team code; open slots read as a group position.
+  const homeLabel = home.state === "tbd" ? slotText(seed?.(m.id, "home") ?? home.name, dict, true) : home.code;
+  const awayLabel = away.state === "tbd" ? slotText(seed?.(m.id, "away") ?? away.name, dict, true) : away.code;
   const { scored, homeWin, awayWin } = outcome(m);
   const finished = m.status === "finished";
   const live = m.status === "live";
-  const decided = home.known && away.known;
+  const decided = home.state === "known" && away.state === "known";
   const pens = m.homePens != null && m.awayPens != null;
 
   const cls = ["al-wc-card", decided ? "" : "todo", finished ? "done" : "", live ? "live" : ""]
@@ -99,8 +117,8 @@ function BracketCard({ m, locale, dict, seed }: { m: Match; locale: Locale; dict
     <Link href={`/${locale}/matches/${m.id}`} className={cls} title={`${home.name} – ${away.name}`}>
       {finished && <span className="al-wc-got" aria-hidden>✓</span>}
       {live && <span className="al-wc-live" aria-hidden />}
-      <span className={`al-wc-row ${home.known ? "" : "tbd"} ${homeWin ? "win" : awayWin ? "lose" : ""}`}>
-        {home.known && <span className="fl">{home.flag}</span>}
+      <span className={`al-wc-row ${home.state} ${homeWin ? "win" : awayWin ? "lose" : ""}`}>
+        {home.state !== "tbd" && <span className="fl">{home.flag}</span>}
         <span className="cd">{homeLabel}</span>
         {scored && (
           <span className="sc">
@@ -109,8 +127,8 @@ function BracketCard({ m, locale, dict, seed }: { m: Match; locale: Locale; dict
           </span>
         )}
       </span>
-      <span className={`al-wc-row ${away.known ? "" : "tbd"} ${awayWin ? "win" : homeWin ? "lose" : ""}`}>
-        {away.known && <span className="fl">{away.flag}</span>}
+      <span className={`al-wc-row ${away.state} ${awayWin ? "win" : homeWin ? "lose" : ""}`}>
+        {away.state !== "tbd" && <span className="fl">{away.flag}</span>}
         <span className="cd">{awayLabel}</span>
         {scored && (
           <span className="sc">
@@ -132,6 +150,7 @@ function BracketRound({
   locale,
   dict,
   seed,
+  pred,
 }: {
   side: "l" | "r";
   position: "outer" | "mid" | "inner";
@@ -141,6 +160,7 @@ function BracketRound({
   locale: Locale;
   dict: Dictionary;
   seed?: SeedFn;
+  pred?: PredFn;
 }) {
   return (
     <div className={`al-wc-round ${side} ${position}`}>
@@ -151,7 +171,7 @@ function BracketRound({
       <div className="al-wc-matches">
         {ties.map((m) => (
           <div className="al-wc-match" key={m.id}>
-            <BracketCard m={m} locale={locale} dict={dict} seed={seed} />
+            <BracketCard m={m} locale={locale} dict={dict} seed={seed} pred={pred} />
           </div>
         ))}
       </div>
@@ -244,16 +264,16 @@ function FinalColumn({
 
 /* ── mobile: vertical "Road to the Final" ───────────────────────────── */
 
-function RoadTie({ m, locale, dict, seed }: { m: Match; locale: Locale; dict: Dictionary; seed?: SeedFn }) {
-  const home = teamSide(m.home, m.homeName);
-  const away = teamSide(m.away, m.awayName);
-  // Undecided slots read as their group position ("Nhất bảng A"), localised.
-  const homeName = home.known ? home.name : slotText(seed?.(m.id, "home") ?? home.name, dict, false);
-  const awayName = away.known ? away.name : slotText(seed?.(m.id, "away") ?? away.name, dict, false);
+function RoadTie({ m, locale, dict, seed, pred }: { m: Match; locale: Locale; dict: Dictionary; seed?: SeedFn; pred?: PredFn }) {
+  const home = resolveSide(m.home, m.homeName, pred?.(m.id, "home") ?? null);
+  const away = resolveSide(m.away, m.awayName, pred?.(m.id, "away") ?? null);
+  // Known/projected sides show the team name; open slots read as a group position.
+  const homeName = home.state === "tbd" ? slotText(seed?.(m.id, "home") ?? home.name, dict, false) : home.name;
+  const awayName = away.state === "tbd" ? slotText(seed?.(m.id, "away") ?? away.name, dict, false) : away.name;
   const { scored, homeWin, awayWin } = outcome(m);
   const live = m.status === "live";
   const finished = m.status === "finished";
-  const decided = home.known && away.known;
+  const decided = home.state === "known" && away.state === "known";
   const pens = m.homePens != null && m.awayPens != null;
   const venue = getVenue(m.venueId);
   const city = venue?.city ?? m.venueName ?? "";
@@ -270,8 +290,8 @@ function RoadTie({ m, locale, dict, seed }: { m: Match; locale: Locale; dict: Di
           <span className="dot" /> {dict.match.live}
         </span>
       )}
-      <div className={`al-ko-row ${home.known ? "" : "tbd"} ${homeWin ? "win" : awayWin ? "lose" : ""}`}>
-        {home.known && <span className="fl">{home.flag}</span>}
+      <div className={`al-ko-row ${home.state} ${homeWin ? "win" : awayWin ? "lose" : ""}`}>
+        {home.state !== "tbd" && <span className="fl">{home.flag}</span>}
         <span className="nm">{homeName}</span>
         {scored && (
           <span className="sc">
@@ -280,8 +300,8 @@ function RoadTie({ m, locale, dict, seed }: { m: Match; locale: Locale; dict: Di
           </span>
         )}
       </div>
-      <div className={`al-ko-row ${away.known ? "" : "tbd"} ${awayWin ? "win" : homeWin ? "lose" : ""}`}>
-        {away.known && <span className="fl">{away.flag}</span>}
+      <div className={`al-ko-row ${away.state} ${awayWin ? "win" : homeWin ? "lose" : ""}`}>
+        {away.state !== "tbd" && <span className="fl">{away.flag}</span>}
         <span className="nm">{awayName}</span>
         {scored && (
           <span className="sc">
@@ -305,6 +325,7 @@ function RoadStage({
   locale,
   dict,
   seed,
+  pred,
 }: {
   stage: Stage;
   node: string;
@@ -312,6 +333,7 @@ function RoadStage({
   locale: Locale;
   dict: Dictionary;
   seed?: SeedFn;
+  pred?: PredFn;
 }) {
   const collected = ties.filter((m) => m.status === "finished").length;
   const full = ties.length > 0 && collected === ties.length;
@@ -330,7 +352,7 @@ function RoadStage({
         </div>
         <div className="al-ties">
           {ties.map((m) => (
-            <RoadTie key={m.id} m={m} locale={locale} dict={dict} seed={seed} />
+            <RoadTie key={m.id} m={m} locale={locale} dict={dict} seed={seed} pred={pred} />
           ))}
         </div>
       </div>
@@ -422,6 +444,10 @@ export default async function AlbumKnockout({ params }: { params: Promise<{ loca
     const s = slots.get(id);
     return s ? s[side] : null;
   };
+  // Project the R32 field from the live group tables: each group's current top
+  // two plus the eight best thirds. Falls back to the seed label per side.
+  const predictions = predictR32(matches);
+  const pred: PredFn = (id, side) => predictions.get(id)?.[side] ?? null;
   const thirds = bestThirds(matches);
 
   const roadStages: { stage: Stage; node: string }[] = [
@@ -459,15 +485,15 @@ export default async function AlbumKnockout({ params }: { params: Promise<{ loca
       {/* desktop / wide: mirrored wall-chart converging on the Final */}
       <div className="al-ko-wide al-arena al-reveal">
         <div className="al-wc">
-          <BracketRound side="l" position="outer" label={dict.stage.R32} count={32} ties={half(r32, "l")} locale={l} dict={dict} seed={seed} />
-          <BracketRound side="l" position="mid" label={dict.stage.R16} count={16} ties={half(r16, "l")} locale={l} dict={dict} seed={seed} />
-          <BracketRound side="l" position="mid" label={dict.stage.QF} count={8} ties={half(qf, "l")} locale={l} dict={dict} seed={seed} />
-          <BracketRound side="l" position="inner" label={dict.stage.SF} count={4} ties={half(sf, "l")} locale={l} dict={dict} seed={seed} />
+          <BracketRound side="l" position="outer" label={dict.stage.R32} count={32} ties={half(r32, "l")} locale={l} dict={dict} seed={seed} pred={pred} />
+          <BracketRound side="l" position="mid" label={dict.stage.R16} count={16} ties={half(r16, "l")} locale={l} dict={dict} seed={seed} pred={pred} />
+          <BracketRound side="l" position="mid" label={dict.stage.QF} count={8} ties={half(qf, "l")} locale={l} dict={dict} seed={seed} pred={pred} />
+          <BracketRound side="l" position="inner" label={dict.stage.SF} count={4} ties={half(sf, "l")} locale={l} dict={dict} seed={seed} pred={pred} />
           <FinalColumn final={final} third={third} locale={l} dict={dict} />
-          <BracketRound side="r" position="inner" label={dict.stage.SF} count={4} ties={half(sf, "r")} locale={l} dict={dict} seed={seed} />
-          <BracketRound side="r" position="mid" label={dict.stage.QF} count={8} ties={half(qf, "r")} locale={l} dict={dict} seed={seed} />
-          <BracketRound side="r" position="mid" label={dict.stage.R16} count={16} ties={half(r16, "r")} locale={l} dict={dict} seed={seed} />
-          <BracketRound side="r" position="outer" label={dict.stage.R32} count={32} ties={half(r32, "r")} locale={l} dict={dict} seed={seed} />
+          <BracketRound side="r" position="inner" label={dict.stage.SF} count={4} ties={half(sf, "r")} locale={l} dict={dict} seed={seed} pred={pred} />
+          <BracketRound side="r" position="mid" label={dict.stage.QF} count={8} ties={half(qf, "r")} locale={l} dict={dict} seed={seed} pred={pred} />
+          <BracketRound side="r" position="mid" label={dict.stage.R16} count={16} ties={half(r16, "r")} locale={l} dict={dict} seed={seed} pred={pred} />
+          <BracketRound side="r" position="outer" label={dict.stage.R32} count={32} ties={half(r32, "r")} locale={l} dict={dict} seed={seed} pred={pred} />
         </div>
       </div>
 
@@ -475,7 +501,7 @@ export default async function AlbumKnockout({ params }: { params: Promise<{ loca
       <div className="al-ko-narrow al-arena">
         <div className="al-road">
           {roadStages.map(({ stage, node }) => (
-            <RoadStage key={stage} stage={stage} node={node} ties={byStage(stage)} locale={l} dict={dict} seed={seed} />
+            <RoadStage key={stage} stage={stage} node={node} ties={byStage(stage)} locale={l} dict={dict} seed={seed} pred={pred} />
           ))}
           <section className="al-stage al-stage-final al-reveal">
             <div className="al-rail">

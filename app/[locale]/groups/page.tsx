@@ -20,11 +20,16 @@ function GroupCard({
 }) {
   const rows = groupStandings(group, matches);
   const th = dict.groups.th;
+  // every team has played all three group games → qualifiers are locked in
+  const decided = rows.length > 0 && rows.every((r) => r.played >= 3);
   return (
-    <div className="al-group-card">
+    <div className={`al-group-card${decided ? " is-done" : ""}`}>
       <div className="gc-head">
         <span className="pg-tab">{group}</span>
         <span className="pg-ttl">{dict.team.groupLabel} {group}</span>
+        {decided && (
+          <span className="gc-seal">✓ {dict.groups.decided}</span>
+        )}
       </div>
       <div className="al-standwrap" style={{ background: "transparent", border: "none", padding: 0 }}>
         <table className="al-stand">

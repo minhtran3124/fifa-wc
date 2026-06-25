@@ -585,10 +585,14 @@
   transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.32s, border-color 0.32s;
 }
 .al-group-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(43, 33, 20, 0.18); border-color: var(--al-ink); }
-/* foil hairline that lights up the top edge on hover */
+/* foil frame that traces the whole card outline on hover */
 .al-group-card::before {
-  content: ""; position: absolute; inset: -1px -1px auto -1px; height: 3px; border-radius: 16px 16px 0 0;
-  background: var(--al-foil); opacity: 0; transition: opacity 0.32s;
+  content: ""; position: absolute; inset: -1px; border-radius: 16px; padding: 2px;
+  background: var(--al-foil); opacity: 0; transition: opacity 0.32s; pointer-events: none;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
 }
 .al-group-card:hover::before { opacity: 1; }
 .al-group-card .gc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
@@ -601,6 +605,27 @@
 }
 .al-group-card:hover .pg-tab { transform: rotate(-5deg) scale(1.08); background: var(--al-red); box-shadow: 0 3px 0 rgba(187, 56, 41, 0.3); }
 .al-group-card .pg-ttl { font-family: var(--font-anton), sans-serif; font-size: 17px; letter-spacing: 0.02em; text-transform: uppercase; color: var(--al-ink); }
+/* ---- a group whose three rounds are all played: settled, qualifiers locked in ---- */
+.al-group-card.is-done { box-shadow: 0 10px 26px rgba(176, 138, 40, 0.22); }
+/* permanent, slightly thicker foil frame around the whole card */
+.al-group-card.is-done::before { opacity: 1; padding: 2.5px; }
+/* foil seal stamped into the header corner */
+.al-group-card .gc-seal {
+  margin-left: auto; display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px; border-radius: 999px; transform: rotate(-3deg);
+  font-family: var(--font-anton), sans-serif; font-size: 11px; letter-spacing: 0.07em;
+  text-transform: uppercase; color: #5a4410; background: var(--al-foil);
+  box-shadow: 0 2px 0 rgba(43, 33, 20, 0.16);
+}
+.al-group-card.is-done .gc-seal { animation: al-stampin 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both; }
+/* a single sheen sweeps across the card once when it appears */
+.al-group-card.is-done::after {
+  content: ""; position: absolute; inset: 0; border-radius: 16px; pointer-events: none;
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 250, 224, 0.6) 50%, transparent 62%);
+  background-size: 220% 100%; background-repeat: no-repeat;
+  animation: al-group-sheen 2.2s ease-in-out 0.3s 1 both;
+}
+@keyframes al-group-sheen { from { background-position: 150% 0; } to { background-position: -60% 0; } }
 /* standings rows react on hover */
 .al-stand tbody tr { transition: background 0.2s; }
 .al-stand tbody tr:hover td { background: rgba(43, 33, 20, 0.06); }
@@ -614,6 +639,8 @@
   .al-group-card, .al-group-card .pg-tab, .al-stand .rk, .al-stand .tm .fl { transition: background 0.2s, box-shadow 0.2s, border-color 0.2s; }
   .al-group-card:hover { transform: none; }
   .al-group-card:hover .pg-tab, .al-stand tbody tr:hover .rk, .al-stand tbody tr:hover .tm .fl { transform: none; }
+  .al-group-card.is-done .gc-seal, .al-group-card.is-done::after { animation: none; }
+  .al-group-card.is-done::after { display: none; }
 }
 
 /* ---------- knockout: "Road to the Final" ---------- */
@@ -854,8 +881,30 @@
 .al-wc-row.win .sc, .al-wc-row.win .sc sup { color: var(--al-red); }
 .al-wc-row.lose { opacity: 0.5; }
 
+/* ---------- projected sides (R32 field forecast from the live tables) ----------
+   A side we can name from current standings but that isn't officially through:
+   keep its flag in colour (override the dashed-card grayscale), tint the code in
+   the projection blue, and stamp a small ○ so it never reads as confirmed. */
+.al-wc-card .al-wc-row.pred .fl,
+.al-ko-tie .al-ko-row.pred .fl { filter: none; opacity: 0.92; }
+.al-wc-card.todo .al-wc-row.pred .cd { color: var(--al-blue); font-weight: 800; }
+.al-wc-row.pred .cd { color: var(--al-blue); }
+.al-wc-row.pred .cd::after,
+.al-ko-row.pred .nm::after {
+  content: "○";
+  font-size: 0.62em;
+  vertical-align: super;
+  margin-left: 3px;
+  color: var(--al-blue);
+  opacity: 0.85;
+}
+.al-ko-tie.todo .al-ko-row.pred .nm { color: var(--al-blue); font-weight: 700; }
+.al-ko-row.pred .nm { color: var(--al-blue); }
+
 /* ---------- knockout: live seeding note + best third-placed race ---------- */
 .al-ko-seednote { margin: 12px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--al-ink-soft); max-width: 72ch; }
+.al-ko-seednote .proj { display: inline-flex; align-items: center; gap: 4px; color: var(--al-blue); font-weight: 700; }
+.al-ko-seednote .proj::before { content: "○"; font-size: 0.85em; }
 
 .al-thirds { margin-top: clamp(30px, 5vw, 48px); }
 .al-thirds-sub { margin: 12px 0 16px; font-size: 13.5px; line-height: 1.55; color: var(--al-ink-soft); max-width: 64ch; }
