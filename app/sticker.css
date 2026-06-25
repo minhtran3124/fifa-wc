@@ -2178,3 +2178,39 @@ button.al-player:focus-visible { outline: 2px solid var(--al-red); outline-offse
 .pred-stat.big .v { color: var(--al-red); }
 .pred-stat .l { display: block; margin-top: 6px; font-size: 11.5px; font-weight: 700; color: var(--al-ink-soft); }
 @media (prefers-reduced-motion: reduce) { .pred-save:hover, .pred-side button:active { transform: none; } }
+
+/* ---- FIFA-style results ribbon (home) ---- */
+.rib-wrap { position: relative; }
+.rib-track {
+  display: flex; gap: 16px; overflow-x: auto;
+  padding: 8px 48px 4px; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+}
+.rib-track::-webkit-scrollbar { display: none; }
+.rib-item { flex: 0 0 auto; width: 92px; text-decoration: none; text-align: center; }
+.rib-circle {
+  width: 84px; height: 84px; margin: 0 auto; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; gap: 2px;
+  border: 4px solid transparent;
+  background-image: linear-gradient(var(--al-paper2), var(--al-paper2)), var(--al-foil);
+  background-origin: border-box; background-clip: padding-box, border-box;
+  box-shadow: 0 6px 14px rgba(43, 33, 20, 0.16); transition: transform 0.2s;
+}
+.rib-item:hover .rib-circle { transform: translateY(-4px) scale(1.05); }
+.rib-circle .fl { font-size: 26px; line-height: 1; }
+.rib-cap { display: block; margin-top: 9px; font-size: 12px; font-weight: 800; color: var(--al-ink-soft); white-space: nowrap; }
+.rib-cap b { color: var(--al-ink); font-weight: 900; }
+.rib-cap b.win { color: var(--al-green); }
+.rib-arrow {
+  position: absolute; top: 50px; transform: translateY(-50%); z-index: 4;
+  width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+  display: grid; place-items: center; font-size: 26px; line-height: 1; padding-bottom: 3px;
+  color: var(--al-ink); background: var(--al-card); border: 2px solid var(--al-ink);
+  box-shadow: 0 4px 10px rgba(43, 33, 20, 0.2); transition: transform 0.15s, background 0.2s;
+}
+.rib-arrow:hover { background: #fff; transform: translateY(-50%) scale(1.08); }
+.rib-arrow.prev { left: -6px; }
+.rib-arrow.next { right: -6px; }
+@media (prefers-reduced-motion: reduce) {
+  .rib-item:hover .rib-circle { transform: none; }
+  .rib-arrow:hover { transform: translateY(-50%); }
+}

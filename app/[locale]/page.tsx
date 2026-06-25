@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { TEAMS, GROUPS, teamsByGroup, VENUES } from "@/lib/teams";
+import { TEAMS, GROUPS, teamsByGroup, VENUES, getTeam } from "@/lib/teams";
 import { tournamentStats } from "@/lib/standings";
 import { getWcData } from "@/lib/footballData";
 import { previewForMatch } from "@/lib/previews";
@@ -11,6 +11,7 @@ import MatchSticker, { side } from "@/components/MatchSticker";
 import AlbumRefresh from "@/components/AlbumRefresh";
 import MyTeams from "@/components/MyTeams";
 import PetWidget from "@/components/PetWidget";
+import ResultsRibbon, { type RibbonItem } from "@/components/ResultsRibbon";
 import StickerPacks, { type Pack } from "@/components/StickerPacks";
 import { Reveal, CountUp, MeterFill } from "@/components/motion";
 import { crestUrl } from "@/lib/crests";
@@ -30,6 +31,22 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
   const nextMatch = scheduled[0];
   const featured = live[0] ?? nextMatch;
   const recent = finished.slice(-6).reverse();
+  const ribbon: RibbonItem[] = finished
+    .slice(-16)
+    .reverse()
+    .map((m) => {
+      const h = getTeam(m.home);
+      const a = getTeam(m.away);
+      return {
+        id: m.id,
+        homeCode: h?.code ?? m.home.toUpperCase(),
+        awayCode: a?.code ?? m.away.toUpperCase(),
+        homeFlag: h?.flag ?? "⬜",
+        awayFlag: a?.flag ?? "⬜",
+        homeScore: m.homeScore ?? 0,
+        awayScore: m.awayScore ?? 0,
+      };
+    });
   const upcoming = scheduled.slice(0, 6);
   const stats = tournamentStats(matches);
 
@@ -143,9 +160,7 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
           <Link className="more" href={`/${l}/matches`}>{dict.home.fullSchedule}</Link>
         </div>
         {recent.length ? (
-          <div className="al-matches">
-            {recent.map((m) => <MatchSticker key={m.id} m={m} locale={l} dict={dict} />)}
-          </div>
+          <ResultsRibbon items={ribbon} locale={l} />
         ) : (
           <p className="al-empty">{dict.home.resultsEmpty}</p>
         )}
