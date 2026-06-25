@@ -17,6 +17,7 @@ import type { Locale } from "@/lib/i18n";
 import AlbumCountdown from "@/components/AlbumCountdown";
 import MatchSticker from "@/components/MatchSticker";
 import AlbumRefresh from "@/components/AlbumRefresh";
+import { teamMascot } from "@/lib/teamMascots";
 
 function ordinalEn(n: number): string {
   const s = ["th", "st", "nd", "rd"];
@@ -58,6 +59,7 @@ export default async function AlbumTeam({ params }: { params: Promise<{ locale: 
   const id = team.id;
   const th = dict.groups.th;
   const photo = teamPhotoUrl(id);
+  const mascot = teamMascot(team.name);
   const wc = getWorldCup(id);
 
   const teamMatches = matches
@@ -127,6 +129,12 @@ export default async function AlbumTeam({ params }: { params: Promise<{ locale: 
 
       {/* hero */}
       <section className="al-thero al-reveal">
+        {mascot && (
+          <span className="thero-mascot" title={mascot.nick} aria-label={`${team.name}: ${mascot.nick}`}>
+            <span className="em" aria-hidden>{mascot.emoji}</span>
+            <span className="nk">{mascot.nick}</span>
+          </span>
+        )}
         {photo && (
           <div className="thero-photo">
             {/* Curated squad photo (data/teamPhotos.json); host-agnostic so a plain img fits. */}
