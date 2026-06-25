@@ -18,6 +18,7 @@ import AlbumCountdown from "@/components/AlbumCountdown";
 import MatchSticker from "@/components/MatchSticker";
 import AlbumRefresh from "@/components/AlbumRefresh";
 import { teamMascot } from "@/lib/teamMascots";
+import ShareButton from "@/components/ShareButton";
 
 function ordinalEn(n: number): string {
   const s = ["th", "st", "nd", "rd"];
@@ -155,7 +156,14 @@ export default async function AlbumTeam({ params }: { params: Promise<{ locale: 
               <span>·</span>
               <span>{team.confederation} — {dict.team.regions[team.confederation]}</span>
             </div>
-            <FavoriteButton teamId={team.id} teamName={team.name} dict={dict} />
+            <div className="thero-actions">
+              <FavoriteButton teamId={team.id} teamName={team.name} dict={dict} />
+              <ShareButton
+                title={`${team.name} — World Cup 2026`}
+                label={dict.team.share}
+                copiedLabel={dict.team.shareCopied}
+              />
+            </div>
           </div>
         </div>
 

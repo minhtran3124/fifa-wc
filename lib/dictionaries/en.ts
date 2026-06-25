@@ -190,6 +190,8 @@ const en = {
     groupLabel: "Group", // "Group A"
     fifaRanking: "FIFA ranking",
     headCoach: "Head coach",
+    share: "Share",
+    shareCopied: "Link copied!",
     liveNow: "Live now",
     upNext: "Up next",
     groupStage: "Group stage",

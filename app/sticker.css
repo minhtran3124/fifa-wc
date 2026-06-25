@@ -2127,3 +2127,14 @@ button.al-player:focus-visible { outline: 2px solid var(--al-red); outline-offse
 .al-cal-btn:hover { transform: translateY(-2px); background: #fff; }
 .al-cal-btn:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(43, 33, 20, 0.16); }
 @media (prefers-reduced-motion: reduce) { .al-cal-btn:hover { transform: none; } }
+
+/* ---- share button + hero action row ---- */
+.al-thero .thero-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.al-share-btn {
+  display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font: inherit; font-weight: 800; font-size: 14px;
+  color: var(--al-ink); background: var(--al-card); border: 2px solid var(--al-ink); border-radius: 999px;
+  padding: 8px 15px; box-shadow: 0 3px 0 rgba(43, 33, 20, 0.16); transition: transform 0.16s, background 0.2s;
+}
+.al-share-btn:hover { transform: translateY(-2px); background: #fff; }
+.al-share-btn:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(43, 33, 20, 0.16); }
+@media (prefers-reduced-motion: reduce) { .al-share-btn:hover { transform: none; } }

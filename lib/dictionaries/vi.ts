@@ -192,6 +192,8 @@ const vi: Dictionary = {
     groupLabel: "Bảng",
     fifaRanking: "Hạng FIFA",
     headCoach: "Huấn luyện viên",
+    share: "Chia sẻ",
+    shareCopied: "Đã copy link!",
     liveNow: "Đang đá",
     upNext: "Sắp tới",
     groupStage: "Vòng bảng",
