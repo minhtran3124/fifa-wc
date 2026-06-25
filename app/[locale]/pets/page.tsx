@@ -4,6 +4,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/i18n";
 import AlbumRefresh from "@/components/AlbumRefresh";
 import PetCorner from "@/components/PetCorner";
+import TriviaCard from "@/components/TriviaCard";
 
 export default async function PetsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -30,6 +31,8 @@ export default async function PetsPage({ params }: { params: Promise<{ locale: s
         </div>
         <AlbumRefresh source={source} fetchedAt={fetchedAt} locale={l} dict={dict} />
       </div>
+
+      <TriviaCard locale={l} dict={dict} />
 
       <PetCorner locale={l} dict={dict} playedTeamIds={[...playedIds]} />
     </>

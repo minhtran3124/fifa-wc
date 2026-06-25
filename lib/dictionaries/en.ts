@@ -319,6 +319,15 @@ const en = {
       hungryNote: "Someone's hungry",
     },
   },
+  trivia: {
+    kicker: "Daily trivia",
+    title: "Quiz of the day",
+    sub: "One question a day — answer right to earn snacks for your pets.",
+    correct: "Correct! 🎉",
+    wrong: "Not quite!",
+    reward: "+{n} snacks",
+    comeBack: "Come back tomorrow for a new one.",
+  },
   match: { live: "Live", fullTime: "Full time", grp: "Grp" },
   fav: {
     follow: "Follow",

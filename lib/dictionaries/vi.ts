@@ -321,6 +321,15 @@ const vi: Dictionary = {
       hungryNote: "Có bạn đang đói",
     },
   },
+  trivia: {
+    kicker: "Đố vui",
+    title: "Câu hỏi hôm nay",
+    sub: "Mỗi ngày một câu — trả lời đúng để kiếm snack cho linh vật.",
+    correct: "Chính xác! 🎉",
+    wrong: "Chưa đúng!",
+    reward: "+{n} snack",
+    comeBack: "Mai quay lại có câu mới nhé.",
+  },
   match: { live: "Trực tiếp", fullTime: "Hết giờ", grp: "Bg" },
   fav: {
     follow: "Theo dõi",

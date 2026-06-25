@@ -2100,3 +2100,20 @@ button.al-player:focus-visible { outline: 2px solid var(--al-red); outline-offse
   .al-thero .thero-mascot { top: 8px; right: 8px; transform: rotate(3deg) scale(0.85); }
   .al-thero .thero-mascot .nk { display: none; }
 }
+
+/* ---- daily trivia card ---- */
+.trivia-card .trivia-sub { font-size: 13px; color: var(--al-ink-soft); margin: 2px 0 14px; }
+.trivia-q { font-weight: 800; font-size: 16px; color: var(--al-ink); margin: 0 0 12px; }
+.trivia-opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.trivia-opt {
+  text-align: left; cursor: pointer; font: inherit; font-weight: 700; color: var(--al-ink);
+  background: var(--al-paper2); border: 2px solid var(--al-line); border-radius: 12px; padding: 11px 14px;
+  transition: transform 0.16s, border-color 0.2s, background 0.2s;
+}
+.trivia-opt:hover:not(:disabled) { transform: translateY(-2px); border-color: var(--al-ink); }
+.trivia-opt:disabled { cursor: default; }
+.trivia-opt.right { border-color: var(--al-green); background: rgba(28, 122, 71, 0.12); color: #14542f; }
+.trivia-opt.wrong { border-color: var(--al-red); background: rgba(187, 56, 41, 0.1); }
+.trivia-opt.dim { opacity: 0.55; }
+.trivia-result { margin-top: 14px; font-weight: 800; color: var(--al-ink); }
+@media (prefers-reduced-motion: reduce) { .trivia-opt:hover:not(:disabled) { transform: none; } }

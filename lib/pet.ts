@@ -132,3 +132,15 @@ export function feedAll(s: PetState, now: number): PetState {
   }
   return { ...s, snacks, pets };
 }
+
+/**
+ * Grant snacks from outside the Pet Corner (e.g. trivia / predictions rewards).
+ * Loads the saved state (or a fresh one), adds the snacks and notifies the UI.
+ * Safe to call client-side only.
+ */
+export function grantSnacks(amount: number): void {
+  if (typeof window === "undefined" || amount <= 0) return;
+  const now = Date.now();
+  const s = readPetState() ?? freshState(now);
+  savePetState({ ...s, snacks: s.snacks + amount });
+}
