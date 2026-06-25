@@ -23,6 +23,7 @@ export default function AlbumNav({ locale, labels }: { locale: Locale; labels: N
     { path: "/venues", label: labels.cities },
     { path: "/stats", label: labels.stats },
     { path: "/rules", label: labels.rules },
+    { path: "/pets", label: labels.pets },
   ];
   const isActive = (path: string) =>
     path === "" ? pathname === base : pathname.startsWith(base + path);

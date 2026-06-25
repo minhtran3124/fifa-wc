@@ -10,6 +10,7 @@ import type { Locale } from "@/lib/i18n";
 import MatchSticker, { side } from "@/components/MatchSticker";
 import AlbumRefresh from "@/components/AlbumRefresh";
 import MyTeams from "@/components/MyTeams";
+import PetWidget from "@/components/PetWidget";
 import StickerPacks, { type Pack } from "@/components/StickerPacks";
 import { Reveal, CountUp, MeterFill } from "@/components/motion";
 import { crestUrl } from "@/lib/crests";
@@ -128,6 +129,9 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
           </div>
         )}
       </section>
+
+      {/* ---------- pet corner widget (daily hook) ---------- */}
+      <PetWidget locale={l} dict={dict} playedTeamIds={[...playedIds]} />
 
       {/* ---------- latest results (top of page) ---------- */}
       <Reveal as="section" className="al-sec">
