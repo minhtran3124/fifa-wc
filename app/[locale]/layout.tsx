@@ -9,6 +9,7 @@ import AlbumNav from "@/components/AlbumNav";
 import LangSwitch from "@/components/LangSwitch";
 import ScrollTopButton from "@/components/ScrollTopButton";
 import NavLoader from "@/components/NavLoader";
+import Pwa from "@/components/Pwa";
 import "../globals.css";
 import "../sticker.css";
 
@@ -90,6 +91,7 @@ export default async function LocaleLayout({
 
           <ScrollTopButton label={dict.common.toTop} />
           <NavLoader />
+          <Pwa />
         </div>
       </body>
     </html>

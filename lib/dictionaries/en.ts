@@ -348,6 +348,7 @@ const en = {
     halfTime: "Half-time",
     penaltyShort: "P",
     ownGoalShort: "OG",
+    addCalendar: "Add to calendar",
     fetchStats: "Fetch latest stats",
     fetchStatsBusy: "Fetching…",
     statsKicker: "By the numbers",

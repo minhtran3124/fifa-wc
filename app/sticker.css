@@ -2117,3 +2117,13 @@ button.al-player:focus-visible { outline: 2px solid var(--al-red); outline-offse
 .trivia-opt.dim { opacity: 0.55; }
 .trivia-result { margin-top: 14px; font-weight: 800; color: var(--al-ink); }
 @media (prefers-reduced-motion: reduce) { .trivia-opt:hover:not(:disabled) { transform: none; } }
+
+/* ---- add-to-calendar button (match page) ---- */
+.al-cal-btn {
+  display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font: inherit; font-weight: 800;
+  color: var(--al-ink); background: var(--al-card); border: 2px solid var(--al-ink); border-radius: 999px;
+  padding: 8px 16px; box-shadow: 0 3px 0 rgba(43, 33, 20, 0.16); transition: transform 0.16s, background 0.2s;
+}
+.al-cal-btn:hover { transform: translateY(-2px); background: #fff; }
+.al-cal-btn:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(43, 33, 20, 0.16); }
+@media (prefers-reduced-motion: reduce) { .al-cal-btn:hover { transform: none; } }

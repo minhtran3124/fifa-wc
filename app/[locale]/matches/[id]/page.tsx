@@ -9,6 +9,7 @@ import { getWcData } from "@/lib/footballData";
 import { getSquad } from "@/lib/squads";
 import { getMatchStats } from "@/lib/matchStats";
 import StatsRefresh from "@/components/StatsRefresh";
+import AddToCalendar from "@/components/AddToCalendar";
 import { fmtDate, fmtTime } from "@/lib/format";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/i18n";
@@ -90,6 +91,16 @@ export default async function MatchDetail({ params }: { params: Promise<{ locale
         <Link href={`/${l}/matches`} className="al-back">{dict.common.back}</Link>
         {finished && (
           <StatsRefresh label={dict.matchPage.fetchStats} busyLabel={dict.matchPage.fetchStatsBusy} />
+        )}
+        {!finished && !live && (
+          <AddToCalendar
+            uid={m.id}
+            startIso={m.date}
+            title={`${home.name} – ${away.name}`}
+            location={venueText || undefined}
+            description={`${dict.stage[m.stage]}${m.group ? ` · ${dict.team.groupLabel} ${m.group}` : ""}`}
+            label={dict.matchPage.addCalendar}
+          />
         )}
       </div>
 
