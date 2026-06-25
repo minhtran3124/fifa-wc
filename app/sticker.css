@@ -2181,6 +2181,12 @@ button.al-player:focus-visible { outline: 2px solid var(--al-red); outline-offse
 
 /* ---- FIFA-style results ribbon (home) ---- */
 .rib-wrap { position: relative; }
+/* soft fade at both ends of the conveyor */
+.rib-wrap::before, .rib-wrap::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 64px; z-index: 3; pointer-events: none;
+}
+.rib-wrap::before { left: 0; background: linear-gradient(90deg, var(--al-paper) 12%, transparent); }
+.rib-wrap::after { right: 0; background: linear-gradient(270deg, var(--al-paper) 12%, transparent); }
 .rib-track {
   display: flex; gap: 16px; overflow-x: auto;
   padding: 8px 48px 4px; scrollbar-width: none; -webkit-overflow-scrolling: touch;

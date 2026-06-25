@@ -160,7 +160,12 @@ export default async function AlbumHome({ params }: { params: Promise<{ locale: 
           <Link className="more" href={`/${l}/matches`}>{dict.home.fullSchedule}</Link>
         </div>
         {recent.length ? (
-          <ResultsRibbon items={ribbon} locale={l} />
+          <>
+            <ResultsRibbon items={ribbon} locale={l} />
+            <div className="al-matches" style={{ marginTop: 22 }}>
+              {recent.map((m) => <MatchSticker key={m.id} m={m} locale={l} dict={dict} />)}
+            </div>
+          </>
         ) : (
           <p className="al-empty">{dict.home.resultsEmpty}</p>
         )}
