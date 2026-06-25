@@ -2220,3 +2220,25 @@ button.al-player:focus-visible { outline: 2px solid var(--al-red); outline-offse
   .rib-item:hover .rib-circle { transform: none; }
   .rib-arrow:hover { transform: translateY(-50%); }
 }
+
+/* ---- substitutions (FIFA) ---- */
+.al-goal .who .nm .sub-on { color: var(--al-green); font-weight: 800; }
+.al-goal .who .nm .sub-off { color: var(--al-ink-soft); margin-left: 10px; }
+.al-goal.a .who .nm { display: inline-flex; flex-direction: column; align-items: flex-end; }
+
+/* ---- FIFA starting line-ups with player photos ---- */
+.fifa-xi { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.fifa-pl { display: flex; align-items: center; gap: 10px; padding: 5px 6px; border-radius: 10px; }
+.fifa-pl:nth-child(odd) { background: rgba(43, 33, 20, 0.04); }
+.fifa-av {
+  flex: 0 0 auto; width: 38px; height: 38px; border-radius: 50%; overflow: hidden;
+  display: grid; place-items: center; background: var(--al-paper2); border: 2px solid var(--al-line);
+}
+.fifa-av img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+.fifa-av .ph { font-family: var(--font-anton), sans-serif; font-size: 15px; color: var(--al-ink-soft); }
+.fifa-nm { font-size: 14px; font-weight: 700; color: var(--al-ink); }
+.fifa-nm .num { color: var(--al-red); font-family: var(--font-anton), sans-serif; margin-right: 6px; }
+.fifa-nm .cap {
+  display: inline-grid; place-items: center; margin-left: 6px; width: 17px; height: 17px; border-radius: 4px;
+  background: var(--al-ink); color: #fff; font-size: 10px; font-weight: 900; vertical-align: middle;
+}

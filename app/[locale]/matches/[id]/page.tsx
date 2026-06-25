@@ -11,6 +11,7 @@ import { getMatchStats } from "@/lib/matchStats";
 import StatsRefresh from "@/components/StatsRefresh";
 import AddToCalendar from "@/components/AddToCalendar";
 import ScorePredictor from "@/components/ScorePredictor";
+import { getFifaMatch } from "@/lib/fifaMatch";
 import { fmtDate, fmtTime } from "@/lib/format";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/i18n";
@@ -67,7 +68,13 @@ export default async function MatchDetail({ params }: { params: Promise<{ locale
   // post-match metrics (team stats, cards, starting XI) — fetched live from
   // ESPN (cached 1 day), with the bundled snapshot as fallback.
   const finished = m.status === "finished";
-  const stats = finished ? await getMatchStats(m.home, m.away, m.date) : null;
+  const [stats, fifa] = finished
+    ? await Promise.all([
+        getMatchStats(m.home, m.away, m.date),
+        getFifaMatch(homeTeam?.code ?? m.home, awayTeam?.code ?? m.away),
+      ])
+    : [null, null];
+  const fifaHasXi = !!(fifa && (fifa.homeStarters.length || fifa.awayStarters.length));
   const statRows = stats
     ? (["possession", "shots", "shotsOnTarget", "corners", "fouls", "offsides", "saves"] as const)
         .map((k) => ({ k, h: stats.home[k], a: stats.away[k] }))
@@ -132,6 +139,15 @@ export default async function MatchDetail({ params }: { params: Promise<{ locale
             <span>{fmtDate(m.date, l)} · {fmtTime(m.date, l)}</span>
           )}
           {venueText && <span>{venueText}</span>}
+          {fifa?.attendance && (
+            <span title={dict.matchPage.attendance}>👥 {Number(fifa.attendance).toLocaleString()}</span>
+          )}
+          {fifa?.referee && (
+            <span title={dict.matchPage.referee}>
+              🧑‍⚖️ {fifa.referee}
+              {fifa.refereeCountry ? ` (${fifa.refereeCountry})` : ""}
+            </span>
+          )}
         </div>
       </section>
 
@@ -227,6 +243,72 @@ export default async function MatchDetail({ params }: { params: Promise<{ locale
         </section>
       )}
 
+      {/* substitutions (FIFA) */}
+      {fifa && fifa.subs.length > 0 && (
+        <section className="al-sec">
+          <div className="al-sec-head"><div>
+            <span className="scribble">{dict.matchPage.subsKicker}</span>
+            <h2>{dict.matchPage.subsTitle}</h2>
+          </div></div>
+          <ul className="al-goals">
+            {fifa.subs.map((s, i) => {
+              const isHome = s.team === "home";
+              const sd = isHome ? home : away;
+              return (
+                <li key={i} className={`al-goal ${isHome ? "h" : "a"}`}>
+                  <span className="min">{s.minute ? `${s.minute}′` : "⇅"}</span>
+                  <span className="who">
+                    <span className="fl">{sd.flag}</span>
+                    <span className="nm">
+                      <span className="sub-on">▲ {s.on}</span>
+                      <span className="sub-off">▼ {s.off}</span>
+                    </span>
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
+
+      {/* starting line-ups with photos (FIFA) */}
+      {fifaHasXi && (
+        <section className="al-sec">
+          <div className="al-sec-head"><div>
+            <span className="scribble">{dict.team.squad.kicker}</span>
+            <h2>{dict.matchPage.lineupTitle}</h2>
+          </div></div>
+          <div className="al-mh-squads">
+            {[
+              { flag: home.flag, name: home.name, pl: fifa!.homeStarters },
+              { flag: away.flag, name: away.name, pl: fifa!.awayStarters },
+            ].map((x, i) => (
+              <div key={i}>
+                <h3 className="al-mh-sqttl"><span>{x.flag}</span> {x.name}</h3>
+                <ul className="fifa-xi">
+                  {x.pl.map((p, j) => (
+                    <li key={j} className="fifa-pl">
+                      <span className="fifa-av">
+                        {p.photo ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={p.photo} alt="" loading="lazy" />
+                        ) : (
+                          <span className="ph">{p.number ?? "•"}</span>
+                        )}
+                      </span>
+                      <span className="fifa-nm">
+                        {p.number != null && <b className="num">{p.number}</b>} {p.name}
+                        {p.captain && <b className="cap">©</b>}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* recent form */}
       {(homeForm.length > 0 || awayForm.length > 0) && (
         <section className="al-sec">
@@ -292,8 +374,8 @@ export default async function MatchDetail({ params }: { params: Promise<{ locale
         </section>
       )}
 
-      {/* starting XI (real line-ups when available) */}
-      {stats && (stats.homeLineup || stats.awayLineup) && (
+      {/* starting XI (ESPN fallback when FIFA line-ups are unavailable) */}
+      {!fifaHasXi && stats && (stats.homeLineup || stats.awayLineup) && (
         <section className="al-sec">
           <div className="al-sec-head"><div>
             <span className="scribble">{dict.team.squad.kicker}</span>
@@ -321,7 +403,7 @@ export default async function MatchDetail({ params }: { params: Promise<{ locale
       )}
 
       {/* squads (full squad fallback when no line-up data) */}
-      {!stats?.homeLineup && !stats?.awayLineup && (homeSquad.length > 0 || awaySquad.length > 0) && (
+      {!fifaHasXi && !stats?.homeLineup && !stats?.awayLineup && (homeSquad.length > 0 || awaySquad.length > 0) && (
         <section className="al-sec">
           <div className="al-sec-head"><div>
             <span className="scribble">{dict.team.squad.kicker}</span>
