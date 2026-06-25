@@ -2129,20 +2129,26 @@ button.al-player:focus-visible { outline: 2px solid var(--al-red); outline-offse
 @media (prefers-reduced-motion: reduce) { .al-cal-btn:hover { transform: none; } }
 
 /* ---- share button + hero action row ---- */
-.al-thero .thero-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.al-thero .thero-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+/* the row already spaces from the heading — zero the follow button's own
+   margin so both buttons sit on one baseline */
+.al-thero .thero-actions .al-fav { margin-top: 0; }
+/* mirror the follow button exactly so the pair is the same size + style */
 .al-share-btn {
-  display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font: inherit; font-weight: 800; font-size: 14px;
-  color: var(--al-ink); background: var(--al-card); border: 2px solid var(--al-ink); border-radius: 999px;
-  padding: 8px 15px; box-shadow: 0 3px 0 rgba(43, 33, 20, 0.16); transition: transform 0.16s, background 0.2s;
+  display: inline-flex; align-items: center; gap: 7px; cursor: pointer; line-height: 1;
+  padding: 9px 18px; border-radius: 999px; font-weight: 800; font-size: 13.5px; letter-spacing: 0.01em;
+  border: 2px solid var(--al-ink); background: transparent; color: var(--al-ink);
+  transition: transform 0.15s, background 0.15s, box-shadow 0.15s;
 }
-.al-share-btn:hover { transform: translateY(-2px); background: #fff; }
-.al-share-btn:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(43, 33, 20, 0.16); }
+.al-share-btn:hover { transform: translateY(-2px); background: #fff; box-shadow: 3px 4px 0 rgba(43, 33, 20, 0.22); }
+.al-share-btn:active { transform: translateY(1px); box-shadow: none; }
 @media (prefers-reduced-motion: reduce) { .al-share-btn:hover { transform: none; } }
 
 /* ---- score predictions ---- */
 .pred-card { text-align: center; }
 .pred-card .pred-title { display: block; font-weight: 800; font-size: 15px; color: var(--al-ink); margin-bottom: 12px; }
-.pred-steppers { display: inline-flex; align-items: center; gap: 16px; margin-bottom: 14px; }
+.pred-steppers { display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 14px; }
+.pred-save { display: inline-block; }
 .pred-side { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; }
 .pred-side button {
   width: 40px; height: 34px; cursor: pointer; font: inherit; font-weight: 900; font-size: 18px; line-height: 1;
