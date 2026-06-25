@@ -2138,3 +2138,37 @@ button.al-player:focus-visible { outline: 2px solid var(--al-red); outline-offse
 .al-share-btn:hover { transform: translateY(-2px); background: #fff; }
 .al-share-btn:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(43, 33, 20, 0.16); }
 @media (prefers-reduced-motion: reduce) { .al-share-btn:hover { transform: none; } }
+
+/* ---- score predictions ---- */
+.pred-card { text-align: center; }
+.pred-card .pred-title { display: block; font-weight: 800; font-size: 15px; color: var(--al-ink); margin-bottom: 12px; }
+.pred-steppers { display: inline-flex; align-items: center; gap: 16px; margin-bottom: 14px; }
+.pred-side { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; }
+.pred-side button {
+  width: 40px; height: 34px; cursor: pointer; font: inherit; font-weight: 900; font-size: 18px; line-height: 1;
+  color: var(--al-ink); background: var(--al-card); border: 2px solid var(--al-ink); border-radius: 9px;
+  box-shadow: 0 2px 0 rgba(43, 33, 20, 0.18); transition: transform 0.12s;
+}
+.pred-side button:active { transform: translateY(1px); box-shadow: none; }
+.pred-n { font-family: var(--font-anton), sans-serif; font-size: 38px; line-height: 1; color: var(--al-red); min-width: 40px; }
+.pred-dash { font-family: var(--font-anton), sans-serif; font-size: 30px; color: var(--al-line); }
+.pred-save {
+  cursor: pointer; font: inherit; font-weight: 800; color: #fff; background: var(--al-green); border: 0;
+  padding: 10px 22px; border-radius: 999px; box-shadow: 0 3px 0 rgba(20, 90, 52, 0.4); transition: transform 0.16s, filter 0.2s;
+}
+.pred-save:hover { transform: translateY(-2px); filter: brightness(1.05); }
+.pred-hint { font-size: 12px; color: var(--al-ink-soft); margin: 12px 0 0; }
+/* finished pick row */
+.pred-card .pred-row { display: inline-flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: center; }
+.pred-pick { font-family: var(--font-anton), sans-serif; font-size: 26px; color: var(--al-ink); }
+.pred-pts { font-weight: 800; padding: 4px 12px; border-radius: 999px; font-size: 14px; }
+.pred-pts.exact { background: rgba(28, 122, 71, 0.16); color: #14542f; }
+.pred-pts.ok { background: rgba(224, 165, 0, 0.18); color: #8a6400; }
+.pred-pts.miss { background: rgba(43, 33, 20, 0.08); color: var(--al-ink-soft); }
+/* predictions summary stats */
+.pred-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 14px; }
+.pred-stat { background: var(--al-paper2); border: 2px dashed var(--al-line); border-radius: 14px; padding: 16px 10px; text-align: center; }
+.pred-stat .v { display: block; font-family: var(--font-anton), sans-serif; font-size: 2.2rem; line-height: 1; color: var(--al-ink); }
+.pred-stat.big .v { color: var(--al-red); }
+.pred-stat .l { display: block; margin-top: 6px; font-size: 11.5px; font-weight: 700; color: var(--al-ink-soft); }
+@media (prefers-reduced-motion: reduce) { .pred-save:hover, .pred-side button:active { transform: none; } }

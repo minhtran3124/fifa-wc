@@ -5,6 +5,7 @@ import type { Locale } from "@/lib/i18n";
 import AlbumRefresh from "@/components/AlbumRefresh";
 import PetCorner from "@/components/PetCorner";
 import TriviaCard from "@/components/TriviaCard";
+import PredictionsSummary from "@/components/PredictionsSummary";
 
 export default async function PetsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -33,6 +34,13 @@ export default async function PetsPage({ params }: { params: Promise<{ locale: s
       </div>
 
       <TriviaCard locale={l} dict={dict} />
+
+      <PredictionsSummary
+        dict={dict}
+        finished={matches
+          .filter((m) => m.status === "finished" && m.homeScore != null && m.awayScore != null)
+          .map((m) => ({ id: m.id, h: m.homeScore as number, a: m.awayScore as number }))}
+      />
 
       <PetCorner locale={l} dict={dict} playedTeamIds={[...playedIds]} />
     </>

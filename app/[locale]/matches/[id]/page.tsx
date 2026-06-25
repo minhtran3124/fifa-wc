@@ -10,6 +10,7 @@ import { getSquad } from "@/lib/squads";
 import { getMatchStats } from "@/lib/matchStats";
 import StatsRefresh from "@/components/StatsRefresh";
 import AddToCalendar from "@/components/AddToCalendar";
+import ScorePredictor from "@/components/ScorePredictor";
 import { fmtDate, fmtTime } from "@/lib/format";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/i18n";
@@ -133,6 +134,14 @@ export default async function MatchDetail({ params }: { params: Promise<{ locale
           {venueText && <span>{venueText}</span>}
         </div>
       </section>
+
+      <ScorePredictor
+        matchId={m.id}
+        dict={dict}
+        finished={finished}
+        actualHome={m.homeScore}
+        actualAway={m.awayScore}
+      />
 
       {/* goals / scoresheet */}
       {m.goals && m.goals.length > 0 && (
